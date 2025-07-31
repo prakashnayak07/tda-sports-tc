@@ -1,7 +1,7 @@
 <?php
 
 $this->setup(array(
-    'title' => 'Page not found',
+    'title' => 'Page Not Found - 404',
     'panel' => 'centered-panel',
 ));
 
@@ -9,17 +9,136 @@ $this->setup(array(
 
 <div class="padded centered-text">
 
-    <h2><?= $this->t('Oops ... something went wrong here') ?></h2>
-    <h1><?= $this->t('This page does not (yet) exist') ?></h1>
+    <!-- 404 Icon/Image -->
+    <div style="margin-bottom: 30px;">
+        <div style="font-size: 120px; color: #e74c3c; margin-bottom: 20px;">404</div>
+        <div style="font-size: 24px; color: #7f8c8d; margin-bottom: 10px;"><?= $this->t('Page Not Found') ?></div>
+    </div>
 
     <div class="separator"></div>
 
-    <p class="gray">
-        <?= sprintf($this->t('Please %sdrop us a note%s if you were expecting this page.'), '<a href="' . $this->option('client.website.contact') . '">', '</a>'); ?>
+    <!-- Main Message -->
+    <h1 style="color: #2c3e50; margin-bottom: 20px;"><?= $this->t('Oops! This page seems to have gone missing') ?></h1>
+
+    <p class="gray" style="font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+        <?= $this->t('The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.') ?>
     </p>
 
     <div class="separator"></div>
 
-    <a href="<?= $this->url('frontend') ?>" class="default-button"><?= $this->t('Back to front page') ?></a>
+    <!-- Navigation Options -->
+    <div style="margin: 30px 0;">
+        <h3 style="color: #34495e; margin-bottom: 20px;"><?= $this->t('What would you like to do?') ?></h3>
+
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
+            <a href="<?= $this->url('frontend') ?>" class="default-button" style="min-width: 150px;">
+                <span class="symbolic symbolic-home"><?= $this->t('Go to Homepage') ?></span>
+            </a>
+
+            <a href="<?= $this->url('calendar') ?>" class="default-button" style="min-width: 150px;">
+                <span class="symbolic symbolic-calendar"><?= $this->t('View Calendar') ?></span>
+            </a>
+
+            <a href="javascript:history.back()" class="default-button" style="min-width: 150px;">
+                <span class="symbolic symbolic-back"><?= $this->t('Go Back') ?></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- Search Section -->
+    <div style="margin: 30px 0;">
+        <h3 style="color: #34495e; margin-bottom: 15px;"><?= $this->t('Looking for something specific?') ?></h3>
+        <p class="gray" style="margin-bottom: 20px;"><?= $this->t('Try searching our booking system or contact us for assistance.') ?></p>
+
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+
+
+            <a href="<?= $this->option('client.website.contact') ?>" class="default-button">
+                <span class="symbolic symbolic-contact"><?= $this->t('Contact Support') ?></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- Helpful Information -->
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0;">
+        <h4 style="color: #2c3e50; margin-bottom: 15px;"><?= $this->t('Need Help?') ?></h4>
+        <p class="gray" style="margin-bottom: 15px;">
+            <?= sprintf(
+                $this->t('If you believe this is an error or need assistance, please %scontact us%s and we\'ll be happy to help.'),
+                '<a href="' . $this->option('client.website.contact') . '" style="color: #3498db; text-decoration: underline;">',
+                '</a>'
+            ); ?>
+        </p>
+
+        <div style="font-size: 14px; color: #7f8c8d;">
+            <strong><?= $this->t('Error Code:') ?></strong> 404 - <?= $this->t('Page Not Found') ?><br>
+            <strong><?= $this->t('Requested URL:') ?></strong> <?= isset($_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['REQUEST_URI']) : 'Unknown' ?>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div style="margin-top: 30px;">
+        <h4 style="color: #34495e; margin-bottom: 15px;"><?= $this->t('Quick Links') ?></h4>
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <?php try { ?>
+                <a href="<?= $this->url('user/settings') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('My Account') ?></a>
+            <?php } catch (Exception $e) { ?>
+                <a href="<?= $this->url('frontend') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Home') ?></a>
+            <?php } ?>
+
+            <?php try { ?>
+                <a href="<?= $this->url('user/bookings') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('My Bookings') ?></a>
+            <?php } catch (Exception $e) { ?>
+                <a href="<?= $this->url('calendar') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Calendar') ?></a>
+            <?php } ?>
+
+            <?php try { ?>
+                <a href="<?= $this->url('event') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Events') ?></a>
+            <?php } catch (Exception $e) { ?>
+                <a href="<?= $this->url('square') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Courts') ?></a>
+            <?php } ?>
+
+            <a href="<?= $this->option('client.website.contact') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Contact') ?></a>
+        </div>
+    </div>
 
 </div>
+
+<style>
+    /* Custom 404 Page Styles */
+    .default-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        margin: 5px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .default-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .symbolic {
+        margin-right: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .default-button {
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        div[style*="display: flex"] {
+            flex-direction: column;
+        }
+    }
+</style>

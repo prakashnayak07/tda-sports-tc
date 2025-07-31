@@ -1,0 +1,484 @@
+<?php
+// Prevent browser caching to avoid back button issues
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+
+// --- PHP LOGIC (from your original file) ---
+$square = $this->square;
+$squareType = $this->option('subject.square.type');
+$dateStart = $this->dateStart;
+$dateEnd = $this->dateEnd;
+
+$dateDisplay = sprintf(
+    '%s to %s',
+    $dateStart->format('M d, Y, h:i A'),
+    $dateEnd->format('h:i A')
+);
+
+$this->setup(array(
+    'title' => sprintf('%s-%s', $squareType, $this->t('Booking')),
+    'panel' => 'centered-panel',
+    'messages' => array(
+        'error' => $this->message,
+    ),
+    'back' => true,
+));
+
+$paymentRequired = false;
+$paymentOptions = $this->option('service.pricing.payment', 'none');
+$requiresPayment = (strpos($paymentOptions, 'stripe') !== false || strpos($paymentOptions, 'card') !== false);
+
+// Get pricing summary for display
+$pricingSummary = $this->squarePricingSummary($dateStart, $dateEnd, $square, $this->quantityChoosen, $this->products);
+
+// DEBUG: Add debug output
+$serviceManager = $this->getHelperPluginManager()->getServiceLocator();
+$squarePricingManager = $serviceManager->get('Square\Manager\SquarePricingManager');
+$actualPricing = $squarePricingManager->getFinalPricingInRange($dateStart, $dateEnd, $square, $this->quantityChoosen);
+
+// DEBUG: Output pricing info
+error_log("DEBUG - Date Start: " . $dateStart->format('Y-m-d H:i:s'));
+error_log("DEBUG - Date End: " . $dateEnd->format('Y-m-d H:i:s'));
+error_log("DEBUG - Square ID: " . $square->get('sid'));
+error_log("DEBUG - Quantity: " . $this->quantityChoosen);
+error_log("DEBUG - Actual Pricing: " . print_r($actualPricing, true));
+error_log("DEBUG - Pricing Summary: " . ($pricingSummary ? 'YES' : 'NO'));
+error_log("DEBUG - Payment Options: " . $paymentOptions);
+error_log("DEBUG - Requires Payment: " . ($requiresPayment ? 'YES' : 'NO'));
+
+if ($requiresPayment) {
+    $hasCourtPricing = (bool)$actualPricing;
+    $hasProductPricing = false;
+    if (!empty($this->products)) {
+        foreach ($this->products as $product) {
+            if ($product->need('price') * $product->needExtra('amount') > 0) {
+                $hasProductPricing = true;
+                break;
+            }
+        }
+    }
+    $paymentRequired = $hasCourtPricing || $hasProductPricing;
+    
+    // DEBUG: Final payment decision
+    error_log("DEBUG - Has Court Pricing: " . ($hasCourtPricing ? 'YES' : 'NO'));
+    error_log("DEBUG - Has Product Pricing: " . ($hasProductPricing ? 'YES' : 'NO'));
+    error_log("DEBUG - Payment Required: " . ($paymentRequired ? 'YES' : 'NO'));
+}
+?>
+
+<!-- CSS styles for the TENNIS BALL - LIGHT THEME (Fixed Height) -->
+<style>
+    :root {
+        /* Brand colors remain the same */
+        --optic-yellow: #b8c40d;
+        --optic-yellow-bright: #dfff00;
+        --dark-text-on-yellow: #3d4013;
+
+        /* Light theme color palette */
+        --bg-light: #f4f4f9;
+        --card-light: #ffffff;
+        --border-light: #e2e8f0;
+        --text-dark: #1e293b;
+        --text-medium: #64748b;
+    }
+
+    body {
+        background-color: var(--bg-light);
+    }
+
+    .payment-container {
+        background: var(--card-light);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin: 20px auto;
+        position: relative;
+        /* NEW: Fixed dimensions and flex layout for scrolling control */
+        max-width: 750px;
+        max-height: 600px;
+        height: 90vh;
+        /* Fallback for better viewport fitting */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .header {
+        background: linear-gradient(135deg, var(--optic-yellow-bright) 0%, var(--optic-yellow) 100%);
+        color: var(--dark-text-on-yellow);
+        padding: 24px 32px;
+        text-align: center;
+        flex-shrink: 0;
+        /* Prevents header from shrinking */
+    }
+
+    .booking-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 4px;
+        letter-spacing: -0.5px;
+    }
+
+    .booking-subtitle {
+        font-size: 14px;
+        opacity: 0.9;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    /* NEW: This container holds the scrolling content and the fixed footer */
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+        /* Important for flexbox scrolling bug in some browsers */
+    }
+
+    /* NEW: This makes the main content area scrollable */
+    .content {
+        padding: 24px 32px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .booking-card,
+    .rules-section {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        border: 1px solid var(--border-light);
+    }
+
+    .booking-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 16px;
+    }
+
+    .court-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--optic-yellow-bright) 0%, var(--optic-yellow) 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark-text-on-yellow);
+        font-size: 24px;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+
+    .court-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 4px;
+    }
+
+    .court-date {
+        font-size: 14px;
+        color: var(--text-medium);
+        font-weight: 500;
+    }
+
+    .price-section {
+        background: var(--card-light);
+        border-radius: 12px;
+        border: 2px solid var(--border-light);
+        margin-top: 24px;
+        padding: 8px 20px;
+    }
+
+    .price-section table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .price-section td {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-light);
+        color: var(--text-medium);
+    }
+
+    .price-section tr:last-child td {
+        border-bottom: none;
+        color: var(--text-dark);
+        font-weight: bold;
+        padding-top: 16px;
+        font-size: 18px;
+    }
+
+    .price-section .price {
+        text-align: right;
+        color: var(--text-dark);
+    }
+
+    .rules-section p {
+        color: var(--text-dark);
+        margin-bottom: 16px;
+    }
+
+    .rules-section .rules-title {
+        color: var(--text-dark);
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .rules-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .rules-checkbox label {
+        color: var(--text-medium);
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .rules-checkbox input[type="checkbox"] {
+        accent-color: var(--optic-yellow);
+    }
+
+    .rules-checkbox label b {
+        color: var(--text-dark);
+    }
+
+    .notes-textarea {
+        width: 100%;
+        background-color: #fdfdff;
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 12px;
+        color: var(--text-dark);
+        font-family: inherit;
+        font-size: 14px;
+        margin-top: 24px;
+        min-height: 80px;
+    }
+
+    .notes-textarea::placeholder {
+        color: var(--text-medium);
+    }
+
+    .notice {
+        background: #fef9c3;
+        border: 1px solid #fde047;
+        color: #92400e;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .notice-icon {
+        width: 24px;
+        height: 24px;
+        background: #facc15;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+        flex-shrink: 0;
+        font-weight: bold;
+    }
+
+    .notice-text {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .notice-text b {
+        color: #78350f;
+    }
+
+    .payment-section {
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .payment-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .payment-icon {
+        width: 32px;
+        height: 32px;
+        background: #4f46e5;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .payment-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #312e81;
+        margin: 0;
+    }
+
+    .payment-description {
+        color: #4338ca;
+        font-size: 14px;
+        margin: 0 0 16px;
+        line-height: 1.5;
+    }
+
+    /* NEW: This footer is fixed at the bottom of the container */
+    .form-footer {
+        padding: 24px 32px;
+        background: var(--card-light);
+        flex-shrink: 0;
+        /* Prevents footer from shrinking */
+        border-top: 1px solid var(--border-light);
+    }
+
+    .proceed-button {
+        width: 100%;
+        background: linear-gradient(135deg, var(--optic-yellow-bright) 0%, var(--optic-yellow) 100%);
+        color: var(--dark-text-on-yellow);
+        border: none;
+        border-radius: 16px;
+        padding: 18px 24px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .proceed-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(184, 196, 13, 0.3);
+    }
+
+    .stripe-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+        color: var(--text-medium);
+        font-size: 13px;
+    }
+
+    .security-icon {
+        width: 16px;
+        height: 16px;
+        background: #10b981;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 10px;
+    }
+
+    .stripe-logo {
+        font-weight: 700;
+        color: #635bff;
+    }
+</style>
+
+<div class="payment-container">
+    <div class="header">
+        <h1 class="booking-title"><?= $this->t('Booking Summary') ?></h1>
+        <p class="booking-subtitle"><?= $this->t('Review your court reservation') ?></p>
+    </div>
+
+    <form method="post" action="<?= $this->url ?>" class="form-container">
+
+        <div class="content">
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="court-icon">🎾</div>
+                    <div>
+                        <div class="court-name"><?= htmlspecialchars($square->get('name')) ?></div>
+                        <div class="court-date"><?= $dateDisplay ?></div>
+                    </div>
+                </div>
+
+                <?php if ($pricingSummary): ?>
+                    <div class="price-section">
+                        <?= $pricingSummary ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <?php if ($square->getMeta('rules.document.file') || $square->getMeta('rules.text') || $square->get('allow_notes')): ?>
+                <div class="rules-section">
+                    <div class="rules-title">
+                        <span>📝 <?= $this->t('Rules & Notes') ?></span>
+                    </div>
+
+                    <?php if ($square->getMeta('rules.document.file')): ?>
+                        <p><a href="<?= $this->basePath($square->getMeta('rules.document.file')) ?>" target="_blank"><?= $this->t('Please read our rules document before proceeding.') ?></a></p>
+                        <div class="rules-checkbox">
+                            <input type="checkbox" name="bf-accept-rules-document" id="bf-accept-rules-document" required>
+                            <label for="bf-accept-rules-document"><?= sprintf($this->t('Yes, I have %1$sread and accepted%2$s the "%3$s"'), '<b>', '</b>', htmlspecialchars($square->getMeta('rules.document.name', $this->t('Rules-document')))) ?></label>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($square->getMeta('rules.text')): ?>
+                        <div style="margin-top: 16px;"><?= $square->getMeta('rules.text') ?></div>
+                        <div class="rules-checkbox">
+                            <input type="checkbox" name="bf-accept-rules-text" id="bf-accept-rules-text" required>
+                            <label for="bf-accept-rules-text"><?= sprintf($this->t('Yes, I have %sread and accepted%s these rules and notes'), '<b>', '</b>') ?></label>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($square->get('allow_notes')): ?>
+                        <textarea name="bf-user-notes" class="notes-textarea" placeholder="<?= $this->t('Optional notes for your booking') ?>"></textarea>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+
+
+        </div>
+
+        <div class="form-footer">
+            <?php
+            // Generate unique submission token
+            $submissionToken = 'booking_' . uniqid() . '_' . time();
+            $session = new \Zend\Session\Container('booking_tokens');
+            $session->offsetSet($submissionToken, true);
+            ?>
+            <input type="hidden" name="bf-confirm" value="<?= sha1('Quick and dirty' . floor(time() / 1800)) ?>">
+            <input type="hidden" name="bf-submission-token" value="<?= $submissionToken ?>">
+
+            <button type="submit" name="bf-submit" class="proceed-button">
+                <?= $paymentRequired ? $this->t('Proceed to Payment') : $this->t('Complete Booking') ?>
+            </button>
+
+            <?php if ($paymentRequired): ?>
+                <div class="stripe-footer">
+                    <div class="security-icon">🔒</div>
+                    <?= $this->t('Secure payment via') ?> <span class="stripe-logo">Stripe</span>
+                </div>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>

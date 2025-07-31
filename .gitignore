@@ -1,0 +1,18 @@
+/.ddev/config.yaml
+/.idea/
+/.settings/
+/nbproject/
+
+/vendor/
+
+composer.phar
+
+Desktop.ini
+Thumbs.db
+
+.DS_Store
+
+# Environment files with sensitive data
+config/stripe.env
+.env
+*.env

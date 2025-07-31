@@ -21,6 +21,7 @@
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/jquery-ui/jquery-ui.min.css') ?>" media="all">
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/default.min.css') ?>" media="all">
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css-client/default.css') ?>" media="all">
+    <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/modern.css') ?>" media="all">
     <?= $this->headLink() ?>
     <?= $this->headTitle($this->option(['client.name.short', 'service.name.full']))->setSeparator(' · ')->setAutoEscape(false) ?>
 
@@ -61,7 +62,7 @@
 
         body {
             font-family: 'Inter', Ariel, sans-serif;
-            font-size: 13px;
+            font-size: 11px;
             padding: 0px !important;
             color: var(--neutral-800);
             background: linear-gradient(135deg, var(--neutral-50) 0%, var(--tennis-light) 100%);
@@ -353,9 +354,14 @@
         .auto-align-footer-heading {
             font-size: 16px;
             font-weight: 700;
+            color: white;
             margin-top: 0;
             margin-bottom: 30px;
             text-transform: uppercase;
+        }
+
+        .auto-align-footer-heading a {
+            color: white;
         }
 
         .auto-align-footer-text {

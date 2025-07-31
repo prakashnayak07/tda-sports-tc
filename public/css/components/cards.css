@@ -1,0 +1,411 @@
+/* ========================================
+   SMK Tennis Academy - Card System
+   ======================================== */
+
+.card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-interactive {
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.card-interactive:active {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Card Header */
+.card-header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--border-light);
+  background-color: var(--bg-secondary);
+}
+
+.card-header-compact {
+  padding: var(--space-4) var(--space-6);
+}
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height-tight);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+  line-height: var(--line-height-normal);
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* Card Body */
+.card-body {
+  padding: var(--space-6);
+}
+
+.card-body-compact {
+  padding: var(--space-4) var(--space-6);
+}
+
+.card-body-spacious {
+  padding: var(--space-8);
+}
+
+/* Card Footer */
+.card-footer {
+  padding: var(--space-6);
+  border-top: 1px solid var(--border-light);
+  background-color: var(--bg-secondary);
+}
+
+.card-footer-compact {
+  padding: var(--space-4) var(--space-6);
+}
+
+.card-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Card Variants */
+.card-elevated {
+  box-shadow: var(--shadow-lg);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.card-bordered {
+  border-width: 2px;
+  border-color: var(--border-medium);
+}
+
+.card-bordered:hover {
+  border-color: var(--primary-500);
+}
+
+.card-flat {
+  box-shadow: none;
+  border: 1px solid var(--border-light);
+}
+
+.card-flat:hover {
+  box-shadow: var(--shadow-sm);
+  transform: none;
+}
+
+/* Card with Image */
+.card-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.card-image:hover img {
+  transform: scale(1.05);
+}
+
+.card-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-6);
+}
+
+.card-image-overlay .card-title {
+  color: var(--text-inverse);
+  margin-bottom: 0;
+}
+
+/* Stats Cards */
+.card-stats {
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.card-stats-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+  font-size: var(--font-size-xl);
+  color: var(--text-inverse);
+}
+
+.card-stats-icon.primary {
+  background-color: var(--primary-600);
+}
+.card-stats-icon.success {
+  background-color: var(--success-600);
+}
+.card-stats-icon.warning {
+  background-color: var(--warning-600);
+}
+.card-stats-icon.error {
+  background-color: var(--error-600);
+}
+.card-stats-icon.tennis {
+  background-color: var(--tennis-600);
+}
+
+.card-stats-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  line-height: 1;
+}
+
+.card-stats-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.card-stats-change {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.card-stats-change.positive {
+  color: var(--success-600);
+}
+
+.card-stats-change.negative {
+  color: var(--error-600);
+}
+
+/* Feature Cards */
+.card-feature {
+  text-align: center;
+  padding: var(--space-8);
+  border: none;
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 100%
+  );
+}
+
+.card-feature-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-6);
+  font-size: var(--font-size-2xl);
+  color: var(--tennis-600);
+  background-color: var(--tennis-50);
+  border: 2px solid var(--tennis-100);
+}
+
+.card-feature-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.card-feature-description {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Pricing Cards */
+.card-pricing {
+  text-align: center;
+  padding: var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-pricing::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tennis-500), var(--primary-500));
+}
+
+.card-pricing-popular {
+  border: 2px solid var(--tennis-500);
+  transform: scale(1.05);
+}
+
+.card-pricing-popular::after {
+  content: "Most Popular";
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background-color: var(--tennis-600);
+  color: var(--text-inverse);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.card-pricing-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.card-pricing-price {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.card-pricing-period {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.card-pricing-features {
+  list-style: none;
+  margin-bottom: var(--space-6);
+}
+
+.card-pricing-features li {
+  padding: var(--space-2) 0;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.card-pricing-features li::before {
+  content: "✓";
+  color: var(--success-600);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.card-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Responsive Cards */
+@media (max-width: 768px) {
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: var(--space-4);
+  }
+
+  .card-header-compact,
+  .card-body-compact,
+  .card-footer-compact {
+    padding: var(--space-3);
+  }
+
+  .card-body-spacious {
+    padding: var(--space-6);
+  }
+
+  .card-stats {
+    padding: var(--space-4);
+  }
+
+  .card-feature {
+    padding: var(--space-6);
+  }
+
+  .card-pricing {
+    padding: var(--space-6);
+  }
+
+  .card-pricing-popular {
+    transform: none;
+  }
+
+  .card-grid-2,
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-footer-actions {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .card-footer-actions .btn {
+    width: 100%;
+  }
+}

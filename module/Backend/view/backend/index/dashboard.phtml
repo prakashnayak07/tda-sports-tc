@@ -1,0 +1,493 @@
+<?php
+
+$this->setup(array(
+    'title' => 'Dashboard - SMK Tennis Academy',
+    'panel' => 'giant-sized',
+));
+
+?>
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-primary mb-2">Dashboard</h1>
+        <p class="text-secondary text-lg">Welcome to SMK Tennis Academy Management System</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid mb-8">
+        <div class="card-stats">
+            <div class="card-stats-icon tennis">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="card-stats-value">1,247</div>
+            <div class="card-stats-label">Total Bookings</div>
+            <div class="card-stats-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12.5%</span>
+            </div>
+        </div>
+
+        <div class="card-stats">
+            <div class="card-stats-icon success">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="card-stats-value">856</div>
+            <div class="card-stats-label">Active Members</div>
+            <div class="card-stats-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+8.3%</span>
+            </div>
+        </div>
+
+        <div class="card-stats">
+            <div class="card-stats-icon primary">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="card-stats-value">$24,580</div>
+            <div class="card-stats-label">Monthly Revenue</div>
+            <div class="card-stats-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+15.2%</span>
+            </div>
+        </div>
+
+        <div class="card-stats">
+            <div class="card-stats-icon warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="card-stats-value">92%</div>
+            <div class="card-stats-label">Court Utilization</div>
+            <div class="card-stats-change negative">
+                <i class="fas fa-arrow-down"></i>
+                <span>-2.1%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Booking Trends Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <div>
+                    <h3 class="chart-title">Booking Trends</h3>
+                    <p class="chart-subtitle">Last 30 days booking activity</p>
+                </div>
+                <div class="chart-actions">
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chart-filters">
+                <button class="chart-filter active">7 Days</button>
+                <button class="chart-filter">30 Days</button>
+                <button class="chart-filter">90 Days</button>
+            </div>
+
+            <div id="bookingTrendsChart" class="chart-line"></div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <div>
+                    <h3 class="chart-title">Revenue Overview</h3>
+                    <p class="chart-subtitle">Monthly revenue breakdown</p>
+                </div>
+                <div class="chart-actions">
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="revenueChart" class="chart-bar"></div>
+        </div>
+    </div>
+
+    <!-- Additional Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Court Utilization -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Court Utilization</h3>
+            </div>
+            <div id="courtUtilizationChart" class="chart-pie"></div>
+        </div>
+
+        <!-- Peak Hours -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Peak Hours</h3>
+            </div>
+            <div id="peakHoursChart" class="chart-area"></div>
+        </div>
+
+        <!-- Member Demographics -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Member Demographics</h3>
+            </div>
+            <div id="demographicsChart" class="chart-pie"></div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card mb-8">
+        <div class="card-header">
+            <h3 class="card-title">Recent Activity</h3>
+            <div class="card-header-actions">
+                <button class="btn btn-sm btn-outline-secondary">View All</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="activity-feed">
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-avatar">JD</div>
+                        <div class="activity-content">
+                            <div class="activity-title">John Doe booked Court 1 for 2:00 PM</div>
+                            <div class="activity-time">2 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">JS</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Jane Smith renewed membership</div>
+                            <div class="activity-time">15 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">MJ</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Mike Johnson cancelled booking</div>
+                            <div class="activity-time">1 hour ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">SL</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Sarah Lee joined as new member</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Quick Actions</h3>
+        </div>
+        <div class="card-body">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="<?= $this->url('backend/booking') ?>" class="card card-interactive text-center p-6">
+                    <div class="card-feature-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <div class="card-feature-title">New Booking</div>
+                </a>
+                <a href="<?= $this->url('backend/user') ?>" class="card card-interactive text-center p-6">
+                    <div class="card-feature-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="card-feature-title">Add Member</div>
+                </a>
+                <a href="<?= $this->url('backend/event') ?>" class="card card-interactive text-center p-6">
+                    <div class="card-feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="card-feature-title">Create Event</div>
+                </a>
+                <a href="<?= $this->url('backend/config') ?>" class="card card-interactive text-center p-6">
+                    <div class="card-feature-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="card-feature-title">Settings</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ApexCharts Script -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Booking Trends Chart
+        const bookingTrendsOptions = {
+            series: [{
+                name: 'Bookings',
+                data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 140, 120, 110, 95, 85, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240]
+            }],
+            chart: {
+                type: 'area',
+                height: 300,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Inter, sans-serif'
+            },
+            colors: ['#16a34a'],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.2,
+                    stops: [0, 90, 100]
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            xaxis: {
+                categories: Array.from({
+                    length: 30
+                }, (_, i) => i + 1),
+                labels: {
+                    style: {
+                        colors: '#64748b',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#64748b',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            grid: {
+                borderColor: '#e2e8f0',
+                strokeDashArray: 4
+            },
+            tooltip: {
+                theme: 'light',
+                style: {
+                    fontSize: '14px'
+                }
+            }
+        };
+
+        const bookingTrendsChart = new ApexCharts(document.querySelector("#bookingTrendsChart"), bookingTrendsOptions);
+        bookingTrendsChart.render();
+
+        // Revenue Chart
+        const revenueOptions = {
+            series: [{
+                name: 'Revenue',
+                data: [21000, 22000, 23500, 24800, 25200, 24100, 25800, 26200, 26800, 27200, 27500, 28000]
+            }],
+            chart: {
+                type: 'bar',
+                height: 300,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Inter, sans-serif'
+            },
+            colors: ['#0ea5e9'],
+            plotOptions: {
+                bar: {
+                    borderRadius: 8,
+                    columnWidth: '60%',
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: {
+                    style: {
+                        colors: '#64748b',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#64748b',
+                        fontSize: '12px'
+                    },
+                    formatter: function(val) {
+                        return '$' + (val / 1000) + 'k';
+                    }
+                }
+            },
+            grid: {
+                borderColor: '#e2e8f0',
+                strokeDashArray: 4
+            },
+            tooltip: {
+                theme: 'light',
+                y: {
+                    formatter: function(val) {
+                        return '$' + val.toLocaleString();
+                    }
+                }
+            }
+        };
+
+        const revenueChart = new ApexCharts(document.querySelector("#revenueChart"), revenueOptions);
+        revenueChart.render();
+
+        // Court Utilization Chart
+        const courtUtilizationOptions = {
+            series: [92, 85, 78, 65],
+            chart: {
+                type: 'pie',
+                height: 300,
+                fontFamily: 'Inter, sans-serif'
+            },
+            labels: ['Court 1', 'Court 2', 'Court 3', 'Court 4'],
+            colors: ['#16a34a', '#0ea5e9', '#f59e0b', '#ef4444'],
+            legend: {
+                position: 'bottom',
+                fontSize: '14px',
+                labels: {
+                    colors: '#64748b'
+                }
+            },
+            dataLabels: {
+                style: {
+                    fontSize: '14px',
+                    fontFamily: 'Inter, sans-serif'
+                }
+            },
+            tooltip: {
+                theme: 'light',
+                y: {
+                    formatter: function(val) {
+                        return val + '%';
+                    }
+                }
+            }
+        };
+
+        const courtUtilizationChart = new ApexCharts(document.querySelector("#courtUtilizationChart"), courtUtilizationOptions);
+        courtUtilizationChart.render();
+
+        // Peak Hours Chart
+        const peakHoursOptions = {
+            series: [{
+                name: 'Bookings',
+                data: [10, 15, 25, 35, 45, 55, 65, 70, 65, 55, 45, 35, 25, 15, 10, 5]
+            }],
+            chart: {
+                type: 'area',
+                height: 300,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Inter, sans-serif'
+            },
+            colors: ['#f59e0b'],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.2,
+                    stops: [0, 90, 100]
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            xaxis: {
+                categories: ['6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM'],
+                labels: {
+                    style: {
+                        colors: '#64748b',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#64748b',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            grid: {
+                borderColor: '#e2e8f0',
+                strokeDashArray: 4
+            },
+            tooltip: {
+                theme: 'light'
+            }
+        };
+
+        const peakHoursChart = new ApexCharts(document.querySelector("#peakHoursChart"), peakHoursOptions);
+        peakHoursChart.render();
+
+        // Demographics Chart
+        const demographicsOptions = {
+            series: [45, 30, 15, 10],
+            chart: {
+                type: 'pie',
+                height: 300,
+                fontFamily: 'Inter, sans-serif'
+            },
+            labels: ['Adults (25-45)', 'Seniors (45+)', 'Youth (18-25)', 'Juniors (<18)'],
+            colors: ['#16a34a', '#0ea5e9', '#f59e0b', '#ef4444'],
+            legend: {
+                position: 'bottom',
+                fontSize: '14px',
+                labels: {
+                    colors: '#64748b'
+                }
+            },
+            dataLabels: {
+                style: {
+                    fontSize: '14px',
+                    fontFamily: 'Inter, sans-serif'
+                }
+            },
+            tooltip: {
+                theme: 'light',
+                y: {
+                    formatter: function(val) {
+                        return val + '%';
+                    }
+                }
+            }
+        };
+
+        const demographicsChart = new ApexCharts(document.querySelector("#demographicsChart"), demographicsOptions);
+        demographicsChart.render();
+
+        // Chart filter functionality
+        document.querySelectorAll('.chart-filter').forEach(filter => {
+            filter.addEventListener('click', function() {
+                // Remove active class from all filters
+                document.querySelectorAll('.chart-filter').forEach(f => f.classList.remove('active'));
+                // Add active class to clicked filter
+                this.classList.add('active');
+
+                // Here you would typically update the chart data based on the selected filter
+                console.log('Filter changed to:', this.textContent);
+            });
+        });
+    });
+</script>

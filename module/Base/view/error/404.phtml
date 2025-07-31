@@ -7,138 +7,140 @@ $this->setup(array(
 
 ?>
 
-<div class="padded centered-text">
-
-    <!-- 404 Icon/Image -->
-    <div style="margin-bottom: 30px;">
-        <div style="font-size: 120px; color: #e74c3c; margin-bottom: 20px;">404</div>
-        <div style="font-size: 24px; color: #7f8c8d; margin-bottom: 10px;"><?= $this->t('Page Not Found') ?></div>
-    </div>
-
-    <div class="separator"></div>
-
-    <!-- Main Message -->
-    <h1 style="color: #2c3e50; margin-bottom: 20px;"><?= $this->t('Oops! This page seems to have gone missing') ?></h1>
-
-    <p class="gray" style="font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-        <?= $this->t('The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.') ?>
-    </p>
-
-    <div class="separator"></div>
-
-    <!-- Navigation Options -->
-    <div style="margin: 30px 0;">
-        <h3 style="color: #34495e; margin-bottom: 20px;"><?= $this->t('What would you like to do?') ?></h3>
-
-        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
-            <a href="<?= $this->url('frontend') ?>" class="default-button" style="min-width: 150px;">
-                <span class="symbolic symbolic-home"><?= $this->t('Go to Homepage') ?></span>
-            </a>
-
-            <a href="<?= $this->url('calendar') ?>" class="default-button" style="min-width: 150px;">
-                <span class="symbolic symbolic-calendar"><?= $this->t('View Calendar') ?></span>
-            </a>
-
-            <a href="javascript:history.back()" class="default-button" style="min-width: 150px;">
-                <span class="symbolic symbolic-back"><?= $this->t('Go Back') ?></span>
-            </a>
+<div class="container">
+    <div class="card card-elevated text-center p-8">
+        <!-- 404 Icon/Image -->
+        <div class="mb-8">
+            <div class="text-6xl font-bold text-error mb-4">404</div>
+            <div class="text-xl text-secondary mb-2"><?= $this->t('Page Not Found') ?></div>
         </div>
-    </div>
 
-    <div class="separator"></div>
+        <div class="border-b border-light mb-6"></div>
 
-    <!-- Search Section -->
-    <div style="margin: 30px 0;">
-        <h3 style="color: #34495e; margin-bottom: 15px;"><?= $this->t('Looking for something specific?') ?></h3>
-        <p class="gray" style="margin-bottom: 20px;"><?= $this->t('Try searching our booking system or contact us for assistance.') ?></p>
+        <!-- Main Message -->
+        <h1 class="text-3xl font-bold text-primary mb-4"><?= $this->t('Oops! This page seems to have gone missing') ?></h1>
 
-        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-
-
-            <a href="<?= $this->option('client.website.contact') ?>" class="default-button">
-                <span class="symbolic symbolic-contact"><?= $this->t('Contact Support') ?></span>
-            </a>
-        </div>
-    </div>
-
-    <div class="separator"></div>
-
-    <!-- Helpful Information -->
-    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0;">
-        <h4 style="color: #2c3e50; margin-bottom: 15px;"><?= $this->t('Need Help?') ?></h4>
-        <p class="gray" style="margin-bottom: 15px;">
-            <?= sprintf(
-                $this->t('If you believe this is an error or need assistance, please %scontact us%s and we\'ll be happy to help.'),
-                '<a href="' . $this->option('client.website.contact') . '" style="color: #3498db; text-decoration: underline;">',
-                '</a>'
-            ); ?>
+        <p class="text-secondary text-lg leading-relaxed mb-6">
+            <?= $this->t('The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.') ?>
         </p>
 
-        <div style="font-size: 14px; color: #7f8c8d;">
-            <strong><?= $this->t('Error Code:') ?></strong> 404 - <?= $this->t('Page Not Found') ?><br>
-            <strong><?= $this->t('Requested URL:') ?></strong> <?= isset($_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['REQUEST_URI']) : 'Unknown' ?>
+        <div class="border-b border-light mb-6"></div>
+
+        <!-- Navigation Options -->
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-primary mb-4"><?= $this->t('What would you like to do?') ?></h3>
+
+            <div class="flex justify-center gap-4 flex-wrap mb-6">
+                <a href="<?= $this->url('frontend') ?>" class="btn btn-tennis btn-lg">
+                    <i class="fas fa-home mr-2"></i>
+                    <?= $this->t('Go to Homepage') ?>
+                </a>
+
+                <a href="<?= $this->url('calendar') ?>" class="btn btn-outline-tennis btn-lg">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <?= $this->t('View Calendar') ?>
+                </a>
+
+                <a href="javascript:history.back()" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <?= $this->t('Go Back') ?>
+                </a>
+            </div>
+        </div>
+
+        <div class="border-b border-light mb-6"></div>
+
+        <!-- Search Section -->
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-primary mb-3"><?= $this->t('Looking for something specific?') ?></h3>
+            <p class="text-secondary mb-4"><?= $this->t('Try searching our booking system or contact us for assistance.') ?></p>
+
+            <div class="flex justify-center gap-3 flex-wrap">
+                <a href="<?= $this->option('client.website.contact') ?>" class="btn btn-primary">
+                    <i class="fas fa-envelope mr-2"></i>
+                    <?= $this->t('Contact Support') ?>
+                </a>
+            </div>
+        </div>
+
+        <div class="border-b border-light mb-6"></div>
+
+        <!-- Helpful Information -->
+        <div class="bg-secondary p-6 rounded-xl mb-6">
+            <h4 class="text-lg font-semibold text-primary mb-3"><?= $this->t('Need Help?') ?></h4>
+            <p class="text-secondary mb-3">
+                <?= sprintf(
+                    $this->t('If you believe this is an error or need assistance, please %scontact us%s and we\'ll be happy to help.'),
+                    '<a href="' . $this->option('client.website.contact') . '" class="text-primary hover:underline font-medium">',
+                    '</a>'
+                ); ?>
+            </p>
+
+            <div class="text-sm text-tertiary">
+                <div class="mb-1">
+                    <strong><?= $this->t('Error Code:') ?></strong> 404 - <?= $this->t('Page Not Found') ?>
+                </div>
+                <div>
+                    <strong><?= $this->t('Requested URL:') ?></strong> <?= isset($_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['REQUEST_URI']) : 'Unknown' ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="mb-4">
+            <h4 class="text-lg font-semibold text-primary mb-3"><?= $this->t('Quick Links') ?></h4>
+            <div class="flex justify-center gap-3 flex-wrap">
+                <?php try { ?>
+                    <a href="<?= $this->url('user/settings') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('My Account') ?></a>
+                <?php } catch (Exception $e) { ?>
+                    <a href="<?= $this->url('frontend') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('Home') ?></a>
+                <?php } ?>
+
+                <?php try { ?>
+                    <a href="<?= $this->url('user/bookings') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('My Bookings') ?></a>
+                <?php } catch (Exception $e) { ?>
+                    <a href="<?= $this->url('calendar') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('Calendar') ?></a>
+                <?php } ?>
+
+                <?php try { ?>
+                    <a href="<?= $this->url('event') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('Events') ?></a>
+                <?php } catch (Exception $e) { ?>
+                    <a href="<?= $this->url('square') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('Courts') ?></a>
+                <?php } ?>
+
+                <a href="<?= $this->option('client.website.contact') ?>" class="text-primary hover:text-primary-700 hover:underline font-medium px-3 py-1 rounded-md hover:bg-primary-50 transition-colors"><?= $this->t('Contact') ?></a>
+            </div>
         </div>
     </div>
-
-    <!-- Quick Links -->
-    <div style="margin-top: 30px;">
-        <h4 style="color: #34495e; margin-bottom: 15px;"><?= $this->t('Quick Links') ?></h4>
-        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-            <?php try { ?>
-                <a href="<?= $this->url('user/settings') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('My Account') ?></a>
-            <?php } catch (Exception $e) { ?>
-                <a href="<?= $this->url('frontend') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Home') ?></a>
-            <?php } ?>
-
-            <?php try { ?>
-                <a href="<?= $this->url('user/bookings') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('My Bookings') ?></a>
-            <?php } catch (Exception $e) { ?>
-                <a href="<?= $this->url('calendar') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Calendar') ?></a>
-            <?php } ?>
-
-            <?php try { ?>
-                <a href="<?= $this->url('event') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Events') ?></a>
-            <?php } catch (Exception $e) { ?>
-                <a href="<?= $this->url('square') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Courts') ?></a>
-            <?php } ?>
-
-            <a href="<?= $this->option('client.website.contact') ?>" style="color: #3498db; text-decoration: none; padding: 5px 10px;"><?= $this->t('Contact') ?></a>
-        </div>
-    </div>
-
 </div>
 
 <style>
-    /* Custom 404 Page Styles */
-    .default-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 24px;
-        margin: 5px;
-        border-radius: 6px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-
-    .default-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .symbolic {
-        margin-right: 8px;
+    /* Additional 404 Page Specific Styles */
+    .card {
+        max-width: 800px;
+        margin: 0 auto;
     }
 
     @media (max-width: 768px) {
-        .default-button {
-            width: 100%;
-            margin: 5px 0;
+        .card {
+            margin: 1rem;
         }
 
-        div[style*="display: flex"] {
+        .flex {
             flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .text-6xl {
+            font-size: 4rem;
+        }
+
+        .text-3xl {
+            font-size: 1.5rem;
         }
     }
 </style>

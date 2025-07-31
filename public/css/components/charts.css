@@ -1,0 +1,459 @@
+/* ========================================
+   SMK Tennis Academy - ApexCharts Integration
+   ======================================== */
+
+/* Chart Container Styles */
+.chart-container {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+  transition: all var(--transition-normal);
+}
+
+.chart-container:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.chart-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.chart-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+.chart-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.chart-filters {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.chart-filter {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-family: var(--font-family-sans);
+}
+
+.chart-filter:hover {
+  border-color: var(--primary-500);
+  background-color: var(--primary-50);
+  color: var(--primary-700);
+}
+
+.chart-filter.active {
+  background-color: var(--primary-600);
+  color: var(--text-inverse);
+  border-color: var(--primary-600);
+}
+
+.chart-filter.active:hover {
+  background-color: var(--primary-700);
+  border-color: var(--primary-700);
+}
+
+/* Chart Loading State */
+.chart-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.chart-loading::after {
+  content: "";
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-light);
+  border-top: 3px solid var(--primary-600);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: var(--space-3);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Chart Error State */
+.chart-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--error-600);
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.chart-error-icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-3);
+  opacity: 0.7;
+}
+
+.chart-error-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-2);
+}
+
+.chart-error-message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* Chart Legend */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-light);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-normal);
+}
+
+.legend-item:hover {
+  color: var(--text-primary);
+}
+
+.legend-item.disabled {
+  opacity: 0.4;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.legend-label {
+  white-space: nowrap;
+}
+
+/* Chart Metrics */
+.chart-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.chart-metric {
+  text-align: center;
+}
+
+.chart-metric-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.chart-metric-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--font-weight-medium);
+}
+
+.chart-metric-change {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  margin-top: var(--space-1);
+}
+
+.chart-metric-change.positive {
+  color: var(--success-600);
+}
+
+.chart-metric-change.negative {
+  color: var(--error-600);
+}
+
+/* Chart Types */
+.chart-line {
+  height: 300px;
+}
+
+.chart-bar {
+  height: 350px;
+}
+
+.chart-pie {
+  height: 300px;
+}
+
+.chart-area {
+  height: 300px;
+}
+
+.chart-candlestick {
+  height: 400px;
+}
+
+.chart-heatmap {
+  height: 300px;
+}
+
+/* Chart Responsive */
+.chart-responsive {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+/* Chart Tooltips */
+.apexcharts-tooltip {
+  background-color: var(--bg-primary) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-family-sans) !important;
+  font-size: var(--font-size-sm) !important;
+  padding: var(--space-3) var(--space-4) !important;
+}
+
+.apexcharts-tooltip-title {
+  background-color: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  margin: calc(-1 * var(--space-3)) calc(-1 * var(--space-4)) var(--space-3) !important;
+  padding: var(--space-3) var(--space-4) !important;
+}
+
+.apexcharts-tooltip-y-group {
+  padding: var(--space-1) 0 !important;
+}
+
+.apexcharts-tooltip-marker {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  margin-right: var(--space-2) !important;
+}
+
+/* Chart Axes */
+.apexcharts-xaxis-label,
+.apexcharts-yaxis-label {
+  font-family: var(--font-family-sans) !important;
+  font-size: var(--font-size-xs) !important;
+  color: var(--text-secondary) !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+.apexcharts-xaxis-title,
+.apexcharts-yaxis-title {
+  font-family: var(--font-family-sans) !important;
+  font-size: var(--font-size-sm) !important;
+  color: var(--text-primary) !important;
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+/* Chart Grid */
+.apexcharts-gridline {
+  stroke: var(--border-light) !important;
+  stroke-width: 1 !important;
+}
+
+.apexcharts-gridline-horizontal {
+  stroke-dasharray: 4, 4 !important;
+}
+
+/* Chart Legend Styling */
+.apexcharts-legend {
+  font-family: var(--font-family-sans) !important;
+  font-size: var(--font-size-sm) !important;
+  color: var(--text-secondary) !important;
+}
+
+.apexcharts-legend-marker {
+  border-radius: var(--radius-sm) !important;
+  margin-right: var(--space-2) !important;
+}
+
+.apexcharts-legend-text {
+  color: var(--text-secondary) !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* Chart Animation */
+.apexcharts-canvas {
+  transition: all var(--transition-normal);
+}
+
+/* Chart Export Options */
+.chart-export {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-light);
+}
+
+.chart-export-btn {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-medium);
+}
+
+.chart-export-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-dark);
+}
+
+/* Chart Comparison */
+.chart-comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.chart-comparison-item {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-comparison-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+/* Responsive Charts */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: var(--space-4);
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .chart-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .chart-filters {
+    flex-direction: column;
+  }
+
+  .chart-filter {
+    width: 100%;
+    text-align: center;
+  }
+
+  .chart-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-legend {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .chart-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-export {
+    flex-direction: column;
+  }
+
+  .chart-export-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .chart-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-line,
+  .chart-bar,
+  .chart-pie,
+  .chart-area,
+  .chart-candlestick,
+  .chart-heatmap {
+    height: 250px;
+  }
+}

@@ -31,7 +31,9 @@ $todayUrl = $this->url('frontend', [], ['query' => $todayUrlQuery]);
 
 <table style="height: 100%;">
     <tr>
-        <td><a href="<?= $previousDayUrl ?>" class="default-button symbolic symbolic-button"><div class="arrow-left"></div>&nbsp;</a></td>
+        <td><a href="<?= $previousDayUrl ?>" class="default-button symbolic symbolic-button">
+                <div class="arrow-left"></div>&nbsp;
+            </a></td>
         <td><a href="<?= $todayUrl ?>" class="default-button"><?= $this->t('Today') ?></a></td>
 
         <td>
@@ -45,8 +47,10 @@ $todayUrl = $this->url('frontend', [], ['query' => $todayUrlQuery]);
                 <?php
 
                 if ($this->squaresFilter) {
-                    printf('<input type="hidden" name="squares" value="%s">',
-                        $this->squaresFilter);
+                    printf(
+                        '<input type="hidden" name="squares" value="%s">',
+                        $this->squaresFilter
+                    );
                 }
 
                 ?>
@@ -55,6 +59,8 @@ $todayUrl = $this->url('frontend', [], ['query' => $todayUrlQuery]);
             </form>
         </td>
 
-        <td><a href="<?= $nextDayUrl ?>" class="default-button symbolic symbolic-button"><div class="arrow-right"></div>&nbsp;</a></td>
+        <td><a href="<?= $nextDayUrl ?>" class="default-button symbolic symbolic-button">
+                <div class="arrow-right"></div>&nbsp;
+            </a></td>
     </tr>
 </table>

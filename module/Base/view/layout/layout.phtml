@@ -72,535 +72,114 @@
             flex-direction: column;
             font-weight: 400;
         }
-
-
-
-        /* New Header Styles */
-        .auto-align-header {
-            background-color: #ffffff;
-
-            padding: 10px 0;
-            position: relative;
-            z-index: 1000;
-            font-family: 'Inter', Arial, sans-serif;
-        }
-
-        .auto-align-header .auto-align-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 5px 40px;
-        }
-
-        .auto-align-logo img {
-            height: 66px;
-            width: auto;
-            vertical-align: middle;
-        }
-
-        .auto-align-nav-desktop {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        .auto-align-nav-desktop ul {
-            display: flex;
-            list-style: none;
-            gap: 45px;
-        }
-
-        .auto-align-nav-desktop a {
-            text-decoration: none;
-            color: #3a3a3a;
-            font-size: 16px;
-            font-weight: 500;
-            padding-bottom: 8px;
-            /* Increased padding for underline space */
-            position: relative;
-        }
-
-        .auto-align-nav-desktop a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #3a3a3a;
-            transform-origin: bottom left;
-            transition: transform 0.25s ease-out;
-        }
-
-        .auto-align-nav-desktop a:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        .auto-align-nav-desktop a.auto-align-active::after {
-            transform: scaleX(1);
-            transition: none;
-        }
-
-
-        .auto-align-actions {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .auto-align-cart {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .auto-align-cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -10px;
-            background-color: #F58220;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .auto-align-book-btn {
-            background-color: #8DB042;
-            color: white !important;
-            padding: 16px 28px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            text-transform: uppercase;
-            border-radius: 2px;
-            line-height: 1;
-            white-space: nowrap;
-        }
-
-        .auto-align-hamburger {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            z-index: 1001;
-        }
-
-        .auto-align-hamburger span {
-            display: block;
-            width: 28px;
-            height: 3px;
-            background-color: #333;
-            margin: 6px 0;
-            border-radius: 3px;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .auto-align-nav-mobile {
-            position: fixed;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background-color: #4A5E1F;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 40px;
-            transition: left 0.3s ease-in-out;
-            font-family: 'INter', Arial, sans-serif;
-        }
-
-        .auto-align-nav-mobile.auto-align-is-open {
-            left: 0;
-        }
-
-        .auto-align-mobile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 40px;
-        }
-
-        .auto-align-logo-mobile img {
-            height: 45px;
-            width: auto;
-        }
-
-        .auto-align-close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .auto-align-mobile-links ul {
-            list-style: none;
-        }
-
-        .auto-align-mobile-links li {
-            margin-bottom: 20px;
-        }
-
-        .auto-align-mobile-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 2.2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 1024px) {
-
-            .auto-align-nav-desktop,
-            .auto-align-actions {
-                display: none;
-            }
-
-            .auto-align-hamburger {
-                display: block;
-            }
-
-            .auto-align-header .auto-align-container {
-                padding: 5px 20px;
-            }
-
-            .auto-align-nav-mobile {
-                padding: 20px;
-            }
-        }
-
-        /* End of New Header Styles */
-
-        /* Main Content */
-        .main-wrapper {
-            flex: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 32px 24px;
-            width: 100%;
-        }
-
-        #content {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--neutral-200);
-            position: relative;
-        }
-
-        .content-panel {
-            margin-top: 24px;
-        }
-
-        /* New Footer Design */
-        .auto-align-footer-section {
-            background-color: #1b400a;
-            color: #ffffff;
-            font-family: 'Inter', Arial, sans-serif;
-            padding: 80px 0 40px;
-            position: relative;
-            margin-top: auto;
-        }
-
-        .auto-align-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        .auto-align-footer-top {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 40px;
-            padding-bottom: 60px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .auto-align-footer-col {
-            flex: 1 1 200px;
-        }
-
-        .auto-align-col-1 {
-            flex-basis: 35%;
-        }
-
-        .auto-align-col-2 {
-            flex-basis: 22%;
-        }
-
-        .auto-align-col-3 {
-            flex-basis: 10%;
-        }
-
-        .auto-align-col-4 {
-            flex-basis: 18%;
-        }
-
-        .auto-align-footer-heading {
-            font-size: 16px;
-            font-weight: 700;
-            color: white;
-            margin-top: 0;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-        }
-
-        .auto-align-footer-heading a {
-            color: white;
-        }
-
-        .auto-align-footer-text {
-            font-size: 15px;
-            line-height: 1.6;
-            margin: 0 0 30px 0;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .auto-align-col-2 .auto-align-footer-link {
-            display: block;
-            text-decoration: underline;
-            margin-bottom: 30px;
-
-        }
-
-        .auto-align-footer-phone {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 0;
-        }
-
-        .auto-align-footer-link {
-            color: #fff !important;
-            text-decoration: none;
-            font-size: 15px;
-        }
-
-        .auto-align-footer-link:hover,
-        .auto-align-dev-link:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-
-        .auto-align-footer-nav,
-        .auto-align-footer-socials {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .auto-align-footer-nav li,
-        .auto-align-footer-socials li {
-            margin-bottom: 20px;
-        }
-
-        .auto-align-footer-nav li:last-child,
-        .auto-align-footer-socials li:last-child {
-            margin-bottom: 0;
-        }
-
-        .auto-align-social-link {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #fff !important;
-            text-decoration: none;
-            font-size: 15px;
-        }
-
-        .auto-align-social-link:hover {
-            color: #ffffff;
-        }
-
-        .auto-align-social-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        .auto-align-footer-bottom {
-            padding-top: 35px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .auto-align-copyright {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            margin: 0;
-        }
-
-        .auto-align-dev-link {
-            color: #03a549 !important;
-            text-decoration: none;
-        }
-
-        .auto-align-go-to-top {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .auto-align-go-to-top span {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
-
-        .auto-align-go-to-top img {
-            width: 10px;
-            height: 18px;
-        }
-
-        /* Mobile Responsiveness */
-
-        @media (max-width: 992px) {
-            .auto-align-footer-top {
-                gap: 30px;
-            }
-
-            .auto-align-col-1,
-            .auto-align-col-2 {
-                flex-basis: 48%;
-            }
-
-            .auto-align-col-3,
-            .auto-align-col-4 {
-                flex-basis: 48%;
-            }
-
-            .auto-align-footer-bottom {
-                position: relative;
-                padding-right: 60px;
-            }
-
-            .auto-align-go-to-top {
-                position: absolute;
-                right: 0;
-                top: 35px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-wrapper {
-                padding: 24px 16px;
-            }
-
-            #content {
-                padding: 24px;
-                border-radius: 12px;
-            }
-
-            /* This overrides a higher-level style; it's okay to keep */
-            .auto-align-container {
-                padding: 0 20px;
-            }
-
-            .auto-align-col-1,
-            .auto-align-col-2,
-            .auto-align-col-3,
-            .auto-align-col-4 {
-                flex-basis: 100%;
-            }
-
-            .auto-align-footer-bottom {
-                flex-direction: column;
-                text-align: center;
-                padding-right: 0;
-            }
-
-            .auto-align-copyright {
-                order: 2;
-            }
-
-            .auto-align-go-to-top {
-                order: 1;
-                position: static;
-                margin-bottom: 30px;
-            }
-        }
     </style>
 </head>
 
 <body>
 
     <!-- New Header Code -->
-    <section>
-        <div class="auto-align-header">
-            <div class="auto-align-container">
-                <a href="https://dev.smktennis.com.au/" class="auto-align-logo">
-                    <img src="https://dev.smktennis.com.au/wp-content/uploads/2025/02/smk-1.png" alt="SMK Tennis Academy Logo">
-                </a>
+    <div id="smk-tennis-header" class="font-sans bg-white">
+        <header class="relative border-b border-gray-200">
+            <div class="max-w-7xl px-4 mx-auto sm:px-8 lg:px-10">
+                <div class="flex items-center justify-between h-24">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0">
+                        <a href="#" title="SMK Tennis Academy Home" class="block">
+                            <img class="w-auto h-16" src="https://dev.smktennis.com.au/wp-content/uploads/2025/02/smk-1.png" alt="SMK Tennis Academy Logo">
+                        </a>
+                    </div>
+                    <!-- Desktop Navigation -->
+                    <nav class="items-center hidden lg:flex lg:ml-auto lg:space-x-8">
+                        <a href="#" class="text-base font-medium text-gray-700 transition-all duration-200 hover:text-black relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 hover:after:w-full">About Us</a>
 
-                <nav class="auto-align-nav-desktop">
-                    <ul>
-                        <li><a href="https://dev.smktennis.com.au/about-us/" class="">About Us</a></li>
-                        <li><a href="https://dev.smktennis.com.au/coaching/">Coaching</a></li>
-                        <li><a href="https://dev.smktennis.com.au/events/">Competitions</a></li>
-                        <li><a href="https://dev.smktennis.com.au/blog/">Resources</a></li>
-                        <li><a href="https://dev.smktennis.com.au/shop/">Shop</a></li>
-                        <li><a href="https://dev.smktennis.com.au/contact/">Contact</a></li>
-                    </ul>
-                </nav>
+                        <!-- Coaching Dropdown -->
+                        <div class="relative group">
+                            <button class="inline-flex items-center text-base font-medium text-gray-700 transition-all duration-200 hover:text-black relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 group-hover:after:w-full">
+                                Coaching
+                                <svg class="ml-1 w-4 h-4 transition-transform duration-300 group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="absolute z-20 invisible opacity-0 w-56 p-4 bg-[#3f6229] rounded-md shadow-lg transition-all duration-300 transform translate-y-2 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 top-full left-1/2 -translate-x-1/2 mt-2">
+                                <div class="space-y-3">
+                                    <a href="#" class="block text-base font-normal text-white hover:text-gray-200 transition-colors duration-200">Junior coaching</a>
+                                    <a href="#" class="block text-base font-normal text-white hover:text-gray-200 transition-colors duration-200">Adults coaching</a>
+                                    <a href="#" class="block text-base font-normal text-white hover:text-gray-200 transition-colors duration-200">Performance Squad</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="text-base font-medium text-gray-700 transition-all duration-200 hover:text-black relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 hover:after:w-full">Competitions</a>
+                        <a href="#" class="text-base font-medium text-gray-700 transition-all duration-200 hover:text-black relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 hover:after:w-full">Resources</a>
+                        <a href="#" class="text-base font-medium text-gray-700 transition-all duration-200 hover:text-black relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 hover:after:w-full">Shop</a>
+                        <a href="#" class="text-base font-medium text-gray-700 transition-all duration-200 hover:text-black relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-black after:transition-all after:duration-300 hover:after:w-full">Contact</a>
+                    </nav>
+                    <!-- Right-side items: Cart and Button (Desktop) -->
+                    <div class="items-center hidden ml-8 lg:flex lg:space-x-5">
+                        <a href="#" class="relative p-2 text-gray-700 transition-colors duration-200 hover:text-black">
+                            <span class="sr-only">Shopping Cart</span>
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+                                <path d="M216.3,88.3a8,8,0,0,0-8.2-7.1H176V72a48,48,0,0,0-96,0v8.8H48.2a8,8,0,0,0-8.2,7.1L32.2,199.1A16,16,0,0,0,48,216H208a16,16,0,0,0,15.8-16.9ZM96,72a32,32,0,0,1,64,0v8.8H96ZM48,200,59.7,96.8H80V120a8,8,0,0,0,16,0V96.8h64V120a8,8,0,0,0,16,0V96.8h20.3L192,200Z"></path>
+                            </svg>
+                            <span class="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-orange-500 rounded-full">0</span>
+                        </a>
+                        <a href="#" class="inline-block px-5 py-3 text-sm font-semibold text-white uppercase transition-all duration-200 bg-[#93b353] rounded hover:bg-[#7a9646] transform hover:-translate-y-0.5 whitespace-nowrap">
+                            BOOK A COURT
+                        </a>
+                    </div>
 
-                <div class="auto-align-actions">
-                    <a href="#" class="auto-align-cart">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #3a3a3a;">
-                            <path d="M19.988 8.988H16V7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7V8.988H4.012C3.452 8.988 3 9.44 3 10L3 20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V10C21 9.44 20.548 8.988 19.988 8.988ZM10 7C10 5.9 10.9 5 12 5C13.1 5 14 5.9 14 7V8.988H10V7ZM19 20H5V11H19V20Z" />
-                        </svg>
-                        <span class="auto-align-cart-badge">0</span>
-                    </a>
-                    <a href="https://dev.smktennis.com.au/booking/" class="auto-align-book-btn">Book a Court</a>
+                    <!-- Hamburger Menu Button (Mobile) -->
+                    <div class="flex items-center lg:hidden">
+                        <button id="menu-toggle" type="button" class="inline-flex items-center justify-center p-2 text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-controls="navbar-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg id="menu-icon-open" class="block w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                            <svg id="menu-icon-close" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu Panel -->
+            <div id="navbar-menu" class="absolute z-[9999] hidden w-full bg-white border-b border-gray-200 shadow-lg lg:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50">About Us</a>
+
+                    <div>
+                        <button id="coaching-toggle-mobile" class="flex items-center justify-between w-full px-3 py-2 text-base font-medium text-left text-black bg-gray-50 rounded-md">
+                            <span>Coaching</span>
+                            <svg class="w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+                        <div id="coaching-submenu-mobile" class="hidden pl-6 mt-1 space-y-1">
+                            <a href="#" class="block px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50">Junior coaching</a>
+                            <a href="#" class="block px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50">Adults coaching</a>
+                            <a href="#" class="block px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50">Performance Squad</a>
+                        </div>
+                    </div>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50">Competitions</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50">Resources</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50">Shop</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50">Contact</a>
                 </div>
 
-                <button class="auto-align-hamburger" aria-label="Open menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                <div class="px-4 py-4 space-y-4 border-t border-gray-200">
+                    <a href="#" class="relative flex items-center p-2 -ml-2 text-gray-700 transition-colors duration-200 rounded-md hover:bg-gray-50 w-min">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M216.3,88.3a8,8,0,0,0-8.2-7.1H176V72a48,48,0,0,0-96,0v8.8H48.2a8,8,0,0,0-8.2,7.1L32.2,199.1A16,16,0,0,0,48,216H208a16,16,0,0,0,15.8-16.9ZM96,72a32,32,0,0,1,64,0v8.8H96ZM48,200,59.7,96.8H80V120a8,8,0,0,0,16,0V96.8h64V120a8,8,0,0,0,16,0V96.8h20.3L192,200Z"></path>
+                        </svg>
+                        <span class="absolute top-0 left-5 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-orange-500 rounded-full">0</span>
+                        <span class="ml-8 text-base font-medium">Cart</span>
+                    </a>
+                    <button href="#" class="block w-full px-5 py-3 text-sm font-semibold text-center text-white hover:text-white uppercase transition-all duration-200 bg-[#93b353] rounded hover:bg-[#7a9646] transform hover:-translate-y-0.5">
+                        BOOK A COURT
+                    </button>
+                </div>
             </div>
-        </div>
-
-        <div class="auto-align-nav-mobile">
-            <div class="auto-align-mobile-header">
-                <a href="https://dev.smktennis.com.au/" class="auto-align-logo-mobile">
-                    <img src="https://dev.smktennis.com.au/wp-content/uploads/2025/02/smk-1.png" alt="SMK Tennis Academy Logo">
-                </a>
-                <button class="auto-align-close-btn">Close ×</button>
-            </div>
-            <nav class="auto-align-mobile-links">
-                <ul>
-                    <li><a href="https://dev.smktennis.com.au/about-us/">About Us</a></li>
-                    <li><a href="https://dev.smktennis.com.au/coaching/">Coaching →</a></li>
-                    <li><a href="https://dev.smktennis.com.au/events/">Competitions</a></li>
-                    <li><a href="https://dev.smktennis.com.au/blog/">Resources</a></li>
-                    <li><a href="https://dev.smktennis.com.au/shop/">Shop</a></li>
-                    <li><a href="https://dev.smktennis.com.au/contact/">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </section>
+        </header>
+    </div>
     <!-- End of New Header Code -->
 
     <!-- Main Content Wrapper -->
@@ -617,86 +196,169 @@
 
             <?= $this->links() ?>
 
-            <div class="text-3xl">
-                Hello Tailwindcss
-            </div>
+
         </div>
     </div>
+    <!-- Footer Area -->
+    <section id="tennis-academy-footer" class="bg-green-900 text-white py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <!-- Main footer content -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 mb-12">
 
-    <!-- New Footer -->
-    <section class="auto-align-footer-section">
-        <div class="auto-align-container">
-            <div class="auto-align-footer-top">
-                <div class="auto-align-footer-col auto-align-col-1">
-                    <h3 class="auto-align-footer-heading">
-                        <a href="https://dev.smktennis.com.au/">
-                            SMK TENNIS ACADEMY
-                        </a>
-                    </h3>
-                    <p class="auto-align-footer-text">
+                <!-- SMK Tennis Academy -->
+                <div class="md:col-span-1">
+                    <a href="https://dev.smktennis.com.au/">
+                        <h3 class="text-lg font-bold mb-6 tracking-wide hover:text-gray-200 transition-colors">SMK TENNIS ACADEMY</h3>
+                    </a>
+                    <p class="text-gray-300 text-sm leading-relaxed">
                         At SMK Tennis Academy, we believe in the power of tennis to transform lives. Our academy is dedicated to helping players of all ages and skill levels achieve their full potential.
                     </p>
                 </div>
-                <div class="auto-align-footer-col auto-align-col-2">
-                    <h3 class="auto-align-footer-heading">OFFICE</h3>
-                    <p class="auto-align-footer-text">Rose Park,<br>110 Woods Rd,<br>Sefton NSW 2162</p>
-                    <a href="mailto:smktennis@hotmail.com" class="auto-align-footer-link">smktennis@hotmail.com</a>
-                    <p class="auto-align-footer-phone">+61 411 300 375</p>
+
+                <!-- Office -->
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-bold mb-6 tracking-wide">OFFICE</h3>
+                    <div class="text-gray-300 text-sm space-y-1">
+                        <p>Rose Park,</p>
+                        <p>110 Woods Rd,</p>
+                        <p>Sefton NSW 2162</p>
+                        <p class="mt-4">
+                            <a href="mailto:smktennis@hotmail.com" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-white text-lg font-bold py-4">smktennis@hotmail.com</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </a>
+                        </p>
+                        <p class="text-xl font-bold text-white mt-4">+61 411 300 375</p>
+                    </div>
                 </div>
-                <div class="auto-align-footer-col auto-align-col-3">
-                    <h3 class="auto-align-footer-heading">LINKS</h3>
-                    <ul class="auto-align-footer-nav">
-                        <li><a href="https://dev.smktennis.com.au/" class="auto-align-footer-link">Home</a></li>
-                        <li><a href="https://dev.smktennis.com.au/about-us/" class="auto-align-footer-link">About</a></li>
-                        <li><a href="https://dev.smktennis.com.au/blog-resources/" class="auto-align-footer-link">Blog</a></li>
-                        <li><a href="https://dev.smktennis.com.au/shop/" class="auto-align-footer-link">Shop</a></li>
-                        <li><a href="https://dev.smktennis.com.au/contact/" class="auto-align-footer-link">Contact</a></li>
+
+                <!-- Links -->
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-bold mb-6 tracking-wide">LINKS</h3>
+                    <ul class="text-sm space-y-3">
+                        <li><a href="https://dev.smktennis.com.au/" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Home</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </a></li>
+                        <li><a href="https://dev.smktennis.com.au/about-us/" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">About</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </a></li>
+                        <li><a href="https://dev.smktennis.com.au/blog-resources/" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Blog</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </a></li>
+                        <li><a href="https://dev.smktennis.com.au/shop/" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Shop</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </a></li>
+                        <li><a href="https://dev.smktennis.com.au/contact/" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Contact</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            </a></li>
                     </ul>
                 </div>
-                <div class="auto-align-footer-col auto-align-col-4">
-                    <h3 class="auto-align-footer-heading">GET IN TOUCH</h3>
-                    <ul class="auto-align-footer-socials">
-                        <li>
-                            <a href="#" class="auto-align-social-link" target="_blank">
-                                <i class="fab fa-facebook auto-align-social-icon"></i>
-                                <span>Facebook</span>
+
+                <!-- Get In Touch -->
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-bold mb-6 tracking-wide">GET IN TOUCH</h3>
+                    <ul class="text-sm space-y-3">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                            <a href="#" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Facebook</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="auto-align-social-link" target="_blank">
-                                <i class="fab fa-twitter auto-align-social-icon"></i>
-                                <span>Twitter</span>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                            </svg>
+                            <a href="#" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Twitter</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="auto-align-social-link" target="_blank">
-                                <i class="fab fa-dribbble auto-align-social-icon"></i>
-                                <span>Dribbble</span>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0C5.374 0 0 5.374 0 12s5.374 12 12 12 12-5.374 12-12S18.626 0 12 0zm5.568 13.363c-.367 1.626-1.232 3.9-1.741 5.522-.216.688-.404.904-.66.926-.561.052-.99-.371-1.535-.728-.852-.559-1.333-.906-2.160-1.450-.956-.628-.336-1.372.209-2.166.143-.209 2.611-2.393 2.659-2.600.007-.026.007-.121-.056-.17-.063-.05-.156-.033-.223-.019-.095.019-1.597 1.016-4.509 2.973-.427.293-.814.435-1.160.428-.382-.008-1.117-.216-1.666-.394-.673-.219-1.209-.334-1.171-.705.020-.194.232-.392.635-.595 2.48-1.080 4.134-1.795 4.963-2.144 2.364-.984 2.855-1.156 3.176-1.156.070 0 .229.016.332.099.085.069.108.162.120.227-.001.013.009.085-.002.136z" />
+                            </svg>
+                            <a href="#" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Dribbble</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="auto-align-social-link" target="_blank">
-                                <i class="fab fa-instagram auto-align-social-icon"></i>
-                                <span>Instagram</span>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                            <a href="#" class="text-gray-100 relative hover:text-white transition-colors group">
+                                <span class="text-gray-200">Instagram</span>
+                                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="auto-align-footer-bottom">
-                <p class="auto-align-copyright">
+
+            <!-- Bottom border line -->
+            <div class="border-t border-gray-700 pt-8">
+                <p class="text-gray-400 text-sm">
                     © 2025 SMK Tennis Academy. All Rights Reserved. Powered By
-                    <a href="https://thedevelopment.com.au/" class="auto-align-dev-link" target="_blank">The Development Agency</a>
+                    <a href="https://thedevelopment.com.au/" target="_blank" rel="noopener noreferrer" class="relative text-green-400 hover:text-green-300 transition-colors group">
+                        <span class="text-green-300">The Development Agency</span>
+
+                    </a>
                 </p>
-                <!-- <a href="#" class="auto-align-go-to-top" onclick="scrollToTop()">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>Go to Top</span>
-                </a> -->
             </div>
         </div>
     </section>
+    <!-- Footer Area End -->
 
 
+    <script>
+        if (!document.getElementById('smk-tennis-header').dataset.scriptLoaded) {
+            const menuToggleBtn = document.getElementById('menu-toggle');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const navbarMenu = document.getElementById('navbar-menu');
+            const coachingToggleBtn = document.getElementById('coaching-toggle-mobile');
+            const coachingSubMenu = document.getElementById('coaching-submenu-mobile');
+
+            if (menuToggleBtn) {
+                menuToggleBtn.addEventListener('click', () => {
+                    const isExpanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
+                    menuToggleBtn.setAttribute('aria-expanded', !isExpanded);
+                    navbarMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+
+                    if (navbarMenu.classList.contains('hidden')) {
+                        coachingSubMenu.classList.add('hidden');
+                        const chevron = coachingToggleBtn.querySelector('svg');
+                        if (chevron) {
+                            chevron.classList.remove('rotate-180');
+                        }
+                    }
+                });
+            }
+
+            if (coachingToggleBtn) {
+                coachingToggleBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    coachingSubMenu.classList.toggle('hidden');
+                    const chevron = coachingToggleBtn.querySelector('svg');
+                    if (chevron) {
+                        chevron.classList.toggle('rotate-180');
+                    }
+                });
+            }
+
+            document.getElementById('smk-tennis-header').dataset.scriptLoaded = 'true';
+        }
+    </script>
     <!-- Original Scripts -->
     <script type="text/javascript" src="<?= $this->basePath('js/jquery/jquery.min.js') ?>"></script>
     <script type="text/javascript" src="<?= $this->basePath('js/jquery-ui/jquery-ui.min.js') ?>"></script>

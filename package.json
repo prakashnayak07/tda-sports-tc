@@ -1,0 +1,14 @@
+{
+  "name": "ep3-bookingsystem",
+  "version": "1.9.0",
+  "description": "Online booking system for courts - Tailwind CSS integration",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/input.css -o ./public/css/tailwind.css --watch",
+    "build-css-prod": "tailwindcss -i ./src/input.css -o ./public/css/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10"
+  }
+}

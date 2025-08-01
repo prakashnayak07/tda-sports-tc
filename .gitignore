@@ -4,8 +4,10 @@
 /nbproject/
 
 /vendor/
+/node_modules/
 
 composer.phar
+package-lock.json
 
 Desktop.ini
 Thumbs.db

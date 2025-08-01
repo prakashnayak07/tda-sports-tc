@@ -22,6 +22,7 @@
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/default.min.css') ?>" media="all">
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css-client/default.css') ?>" media="all">
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/modern.css') ?>" media="all">
+    <link rel="stylesheet" href="/css/tailwind.css">
     <?= $this->headLink() ?>
     <?= $this->headTitle($this->option(['client.name.short', 'service.name.full']))->setSeparator(' · ')->setAutoEscape(false) ?>
 
@@ -615,6 +616,10 @@
             </div>
 
             <?= $this->links() ?>
+
+            <div class="text-3xl">
+                Hello Tailwindcss
+            </div>
         </div>
     </div>
 

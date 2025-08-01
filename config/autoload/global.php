@@ -29,7 +29,7 @@ return [
     'stripe' => [
         'secret_key' => getenv('STRIPE_SECRET_KEY') ?: '',
         'publishable_key' => getenv('STRIPE_PUBLISHABLE_KEY') ?: '',
-        'currency' => 'aud', // Change to your currency
+        'currency' => 'AUD', // Australian Dollar
         'webhook_secret' => getenv('STRIPE_WEBHOOK_SECRET') ?: '', // Add this later when you set up webhooks
     ],
 ];

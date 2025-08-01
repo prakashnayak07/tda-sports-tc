@@ -975,10 +975,9 @@ p.symbolic {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5)
 }
 
-a:link,
-a:visited {
-    opacity: .75;
-    color: #334f6a
+a:link {
+   
+    color: #9fbe41
 }
 
 a:hover {

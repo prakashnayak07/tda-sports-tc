@@ -1,316 +1,211 @@
-# UI Modernization Todo List
-
-## SMK Tennis Academy - Enterprise Level Design Upgrade
-
-### 🎯 **Project Overview**
-
-Transform the ep-3 Bookingsystem from dated design to modern, enterprise-level UI following current design trends.
-
-### 📋 **Phase 1: Foundation & Design System**
-
-#### 1.1 **Color Palette & Typography**
-
-- [ ] **Define Modern Color Scheme**
-
-  - [ ] Primary: Deep blue (#1a365d) or Navy (#0f172a)
-  - [ ] Secondary: Clean gray (#64748b)
-  - [ ] Accent: Tennis green (#059669) or Blue (#3b82f6)
-  - [ ] Success: Green (#10b981)
-  - [ ] Warning: Amber (#f59e0b)
-  - [ ] Error: Red (#ef4444)
-  - [ ] Background: Off-white (#f8fafc)
-  - [ ] Surface: White (#ffffff)
-
-- [ ] **Typography System**
-  - [ ] Primary font: Inter or SF Pro Display
-  - [ ] Secondary font: System fonts fallback
-  - [ ] Font weights: 400 (regular), 500 (medium), 600 (semibold), 700 (bold)
-  - [ ] Line heights: 1.5 (body), 1.25 (headings)
-
-#### 1.2 **Spacing & Layout System**
-
-- [ ] **Spacing Scale**
-
-  - [ ] 4px, 8px, 12px, 16px, 20px, 24px, 32px, 40px, 48px, 64px
-  - [ ] Consistent padding/margin throughout
-
-- [ ] **Grid System**
-  - [ ] 12-column responsive grid
-  - [ ] Breakpoints: 640px, 768px, 1024px, 1280px, 1536px
-  - [ ] Container max-widths: 640px, 768px, 1024px, 1280px
-
-#### 1.3 **Component Library**
-
-- [ ] **Button System**
-
-  - [ ] Primary buttons (filled)
-  - [ ] Secondary buttons (outlined)
-  - [ ] Ghost buttons (text only)
-  - [ ] Icon buttons
-  - [ ] Loading states
-  - [ ] Disabled states
-
-- [ ] **Form Elements**
-
-  - [ ] Modern input fields with floating labels
-  - [ ] Select dropdowns with custom styling
-  - [ ] Checkboxes and radio buttons
-  - [ ] Date/time pickers
-  - [ ] Search inputs
-
-- [ ] **Cards & Containers**
-  - [ ] Elevated cards with subtle shadows
-  - [ ] Rounded corners (8px, 12px, 16px)
-  - [ ] Hover effects and transitions
-
-### 📋 **Phase 2: Header & Navigation**
-
-#### 2.1 **Main Header Redesign**
-
-- [ ] **Logo & Branding**
-
-  - [ ] Modern logo placement
-  - [ ] Clean typography for brand name
-  - [ ] Proper spacing and alignment
-
-- [ ] **Navigation Menu**
-
-  - [ ] Horizontal navigation with hover effects
-  - [ ] Active state indicators
-  - [ ] Mobile hamburger menu
-  - [ ] Dropdown menus for sub-items
-
-- [ ] **User Account Area**
-  - [ ] Profile avatar/icon
-  - [ ] User menu dropdown
-  - [ ] Notification indicators
-  - [ ] Login/logout buttons
-
-#### 2.2 **Breadcrumbs & Secondary Navigation**
-
-- [ ] **Breadcrumb System**
-  - [ ] Clean breadcrumb trail
-  - [ ] Separator icons
-  - [ ] Responsive behavior
-
-### 📋 **Phase 3: Calendar & Booking Interface**
-
-#### 3.1 **Calendar Redesign**
-
-- [ ] **Calendar Grid**
-
-  - [ ] Clean, modern calendar layout
-  - [ ] Better time slot visualization
-  - [ ] Hover effects on available slots
-  - [ ] Clear booking states (available, booked, unavailable)
-
-- [ ] **Time Slots**
-  - [ ] Modern time slot design
-  - [ ] Color-coded availability
-  - [ ] Smooth hover animations
-  - [ ] Clear booking actions
-
-#### 3.2 **Booking Forms**
-
-- [ ] **Booking Modal/Form**
-
-  - [ ] Clean form layout
-  - [ ] Step-by-step booking process
-  - [ ] Progress indicators
-  - [ ] Form validation with modern error states
-
-- [ ] **Confirmation Pages**
-  - [ ] Success/confirmation states
-  - [ ] Booking summary cards
-  - [ ] Action buttons (print, email, etc.)
-
-### 📋 **Phase 4: Dashboard & User Interface**
-
-#### 4.1 **User Dashboard**
-
-- [ ] **Dashboard Layout**
-
-  - [ ] Card-based layout
-  - [ ] Statistics widgets
-  - [ ] Recent bookings
-  - [ ] Quick actions
-
-- [ ] **User Profile**
-  - [ ] Modern profile page
-  - [ ] Settings interface
-  - [ ] Booking history
-  - [ ] Preferences
-
-#### 4.2 **Admin Interface**
-
-- [ ] **Admin Dashboard**
-  - [ ] Modern admin layout
-  - [ ] Data tables with sorting/filtering
-  - [ ] Analytics widgets
-  - [ ] User management interface
-
-### 📋 **Phase 5: Error Pages & Feedback**
-
-#### 5.1 **Error Pages**
-
-- [ ] **404 Page** (Already started)
-
-  - [ ] Modern error illustrations
-  - [ ] Clear error messages
-  - [ ] Helpful navigation options
-
-- [ ] **500 Page**
-  - [ ] Consistent with 404 design
-  - [ ] Technical error handling
-  - [ ] Support contact options
-
-#### 5.2 **Feedback & Notifications**
-
-- [ ] **Toast Notifications**
-
-  - [ ] Success, error, warning, info states
-  - [ ] Auto-dismiss functionality
-  - [ ] Manual close options
-
-- [ ] **Loading States**
-  - [ ] Skeleton loaders
-  - [ ] Spinner animations
-  - [ ] Progress bars
-
-### 📋 **Phase 6: Mobile & Responsive Design**
-
-#### 6.1 **Mobile Optimization**
-
-- [ ] **Mobile Navigation**
-
-  - [ ] Bottom navigation bar
-  - [ ] Swipe gestures
-  - [ ] Touch-friendly buttons
-
-- [ ] **Mobile Calendar**
-  - [ ] Touch-friendly time slots
-  - [ ] Swipe navigation
-  - [ ] Mobile-optimized forms
-
-#### 6.2 **Tablet & Desktop**
-
-- [ ] **Responsive Breakpoints**
-  - [ ] Tablet-specific layouts
-  - [ ] Desktop optimizations
-  - [ ] Large screen enhancements
-
-### 📋 **Phase 7: Performance & Accessibility**
-
-#### 7.1 **Performance**
-
-- [ ] **CSS Optimization**
-
-  - [ ] Critical CSS inlining
-  - [ ] CSS minification
-  - [ ] Unused CSS removal
-
-- [ ] **Image Optimization**
-  - [ ] WebP format support
-  - [ ] Lazy loading
-  - [ ] Responsive images
-
-#### 7.2 **Accessibility**
-
-- [ ] **WCAG Compliance**
-  - [ ] Color contrast ratios
-  - [ ] Keyboard navigation
-  - [ ] Screen reader support
-  - [ ] Focus indicators
-
-### 📋 **Phase 8: Implementation Plan**
-
-#### 8.1 **File Structure**
-
-- [ ] **CSS Organization**
-  - [ ] `public/css/modern/` - New modern styles
-  - [ ] `public/css/components/` - Component styles
-  - [ ] `public/css/utilities/` - Utility classes
-  - [ ] `public/css/themes/` - Theme variations
-
-#### 8.2 **Implementation Order**
-
-1. [ ] Design system foundation
-2. [ ] Header and navigation
-3. [ ] Calendar interface
-4. [ ] Booking forms
-5. [ ] Dashboard layouts
-6. [ ] Error pages
-7. [ ] Mobile optimization
-8. [ ] Performance optimization
-
-#### 8.3 **Testing Strategy**
-
-- [ ] **Cross-browser Testing**
-
-  - [ ] Chrome, Firefox, Safari, Edge
-  - [ ] Mobile browsers
-  - [ ] Different screen sizes
-
-- [ ] **User Testing**
-  - [ ] Booking flow testing
-  - [ ] Navigation testing
-  - [ ] Accessibility testing
-
-### 🎨 **Design Principles**
-
-#### **Modern Aesthetics**
-
-- Clean, minimal design
-- Ample white space
-- Subtle shadows and depth
-- Smooth animations (200-300ms)
-- Rounded corners (8-16px)
-
-#### **Enterprise Feel**
-
-- Professional color scheme
-- Consistent typography
-- Clear information hierarchy
-- Intuitive navigation
-- Reliable functionality
-
-#### **Trendy Elements**
-
-- Card-based layouts
-- Micro-interactions
-- Subtle hover effects
-- Modern form design
-- Clean iconography
-
-### 📊 **Success Metrics**
-
-- [ ] Improved user engagement
-- [ ] Faster booking completion
-- [ ] Reduced bounce rate
-- [ ] Better mobile usage
-- [ ] Positive user feedback
-
-### 🔧 **Technical Requirements**
-
-- [ ] CSS Grid and Flexbox
-- [ ] CSS Custom Properties (variables)
-- [ ] Modern CSS features
-- [ ] Progressive enhancement
-- [ ] Performance optimization
+# UI Modernization TODO List
+
+## Overview
+This document contains a complete checklist of all 82 template files that need to be converted to modern UI design using Tailwind CSS. Each file should be updated to follow the design patterns outlined in the `UI_LAYOUT_README.md`.
+
+## Progress Tracking
+- **Total Files**: 82
+- **Completed**: 0
+- **In Progress**: 0
+- **Remaining**: 82
+
+## Conversion Priority
+
+### 🔥 **CRITICAL PRIORITY** (Start Here)
+These files affect the entire application and should be converted first.
+
+#### Base Module (Layout & Error Pages)
+- [ ] `module/Base/view/layout/layout.phtml` - **Main application layout**
+- [ ] `module/Base/view/layout/layout_updated.phtml` - **Updated layout variant**
+- [ ] `module/Base/view/error/404.phtml` - **404 error page**
+- [ ] `module/Base/view/error/500.phtml` - **500 error page**
+
+### 🚀 **HIGH PRIORITY** (User-Facing Interface)
+These are the main user-facing components that users interact with daily.
+
+#### Frontend Module (Main User Interface)
+- [ ] `module/Frontend/view/frontend/index/index.phtml` - **Main homepage**
+- [ ] `module/Frontend/view/frontend/index/datepicker.phtml` - **Date picker component**
+- [ ] `module/Frontend/view/frontend/index/userpanel.offline.phtml` - **Offline user panel**
+- [ ] `module/Frontend/view/frontend/index/userpanel.online.phtml` - **Online user panel**
+
+#### User Module (Authentication & Account)
+- [ ] `module/User/view/user/session/login.phtml` - **Login page**
+- [ ] `module/User/view/user/session/logout.phtml` - **Logout page**
+- [ ] `module/User/view/user/account/registration.phtml` - **User registration**
+- [ ] `module/User/view/user/account/registration-confirmation.phtml` - **Registration confirmation**
+- [ ] `module/User/view/user/account/settings.phtml` - **User settings**
+- [ ] `module/User/view/user/account/bookings.phtml` - **User bookings list**
+- [ ] `module/User/view/user/account/bills.phtml` - **User bills**
+- [ ] `module/User/view/user/account/password.phtml` - **Password change**
+- [ ] `module/User/view/user/account/password-reset.phtml` - **Password reset**
+- [ ] `module/User/view/user/account/activation.phtml` - **Account activation**
+- [ ] `module/User/view/user/account/activation-resend.phtml` - **Resend activation**
+
+### 📅 **MEDIUM PRIORITY** (Core Booking Functionality)
+These handle the main booking and calendar functionality.
+
+#### Calendar Module
+- [ ] `module/Calendar/view/calendar/calendar/index.phtml` - **Main calendar view**
+- [ ] `module/Calendar/view/calendar/calendar/index.landscape.phtml` - **Landscape calendar**
+- [ ] `module/Calendar/view/calendar/calendar/index.portrait.phtml` - **Portrait calendar**
+
+#### Square Module (Booking Interface)
+- [ ] `module/Square/view/square/square/index.phtml` - **Square overview**
+- [ ] `module/Square/view/square/square/index.free.phtml` - **Free square view**
+- [ ] `module/Square/view/square/square/index.occupied.phtml` - **Occupied square view**
+- [ ] `module/Square/view/square/square/index.own.phtml` - **Own booking view**
+- [ ] `module/Square/view/square/booking/confirmation.phtml` - **Booking confirmation**
+- [ ] `module/Square/view/square/booking/cancellation.phtml` - **Booking cancellation**
+- [ ] `module/Square/view/square/booking/customization.phtml` - **Booking customization**
+
+#### Event Module
+- [ ] `module/Event/view/event/event/index.phtml` - **Event listing**
+
+#### Payment Module
+- [ ] `module/Payment/view/payment/stripe/index.phtml` - **Payment interface**
+
+### 🛠️ **LOWER PRIORITY** (Admin Interface)
+These are administrative interfaces used by staff/admins.
+
+#### Backend Module - Dashboard
+- [ ] `module/Backend/view/backend/index/index.phtml` - **Admin dashboard**
+- [ ] `module/Backend/view/backend/index/dashboard.phtml` - **Dashboard widgets**
+
+#### Backend Module - Booking Management
+- [ ] `module/Backend/view/backend/booking/index.phtml` - **Booking list**
+- [ ] `module/Backend/view/backend/booking/index.datepicker.phtml` - **Admin datepicker**
+- [ ] `module/Backend/view/backend/booking/edit.phtml` - **Edit booking**
+- [ ] `module/Backend/view/backend/booking/edit-choice.phtml` - **Edit booking choice**
+- [ ] `module/Backend/view/backend/booking/edit-mode.phtml` - **Edit booking mode**
+- [ ] `module/Backend/view/backend/booking/edit-range.phtml` - **Edit booking range**
+- [ ] `module/Backend/view/backend/booking/delete.phtml` - **Delete booking**
+- [ ] `module/Backend/view/backend/booking/delete.reservation.phtml` - **Delete reservation**
+- [ ] `module/Backend/view/backend/booking/bills.phtml` - **Booking bills**
+- [ ] `module/Backend/view/backend/booking/players.phtml` - **Booking players**
+- [ ] `module/Backend/view/backend/booking/stats.phtml` - **Booking statistics**
+
+#### Backend Module - Configuration
+- [ ] `module/Backend/view/backend/config/index.phtml` - **Config overview**
+- [ ] `module/Backend/view/backend/config/behaviour.phtml` - **Behavior settings**
+- [ ] `module/Backend/view/backend/config/behaviour-rules.phtml` - **Behavior rules**
+- [ ] `module/Backend/view/backend/config/behaviour-status-colors.phtml` - **Status colors**
+- [ ] `module/Backend/view/backend/config/help.phtml` - **Help page**
+- [ ] `module/Backend/view/backend/config/info.phtml` - **Info page**
+- [ ] `module/Backend/view/backend/config/text.phtml` - **Text settings**
+
+#### Backend Module - Square Configuration
+- [ ] `module/Backend/view/backend/config-square/index.phtml` - **Square config list**
+- [ ] `module/Backend/view/backend/config-square/edit.phtml` - **Edit square**
+- [ ] `module/Backend/view/backend/config-square/edit-info.phtml` - **Edit square info**
+- [ ] `module/Backend/view/backend/config-square/delete.phtml` - **Delete square**
+- [ ] `module/Backend/view/backend/config-square/pricing.phtml` - **Square pricing**
+- [ ] `module/Backend/view/backend/config-square/coupon.phtml` - **Square coupons**
+- [ ] `module/Backend/view/backend/config-square/product.phtml` - **Square products**
+- [ ] `module/Backend/view/backend/config-square/product-edit.phtml` - **Edit product**
+- [ ] `module/Backend/view/backend/config-square/product-delete.phtml` - **Delete product**
+
+#### Backend Module - Event Management
+- [ ] `module/Backend/view/backend/event/index.phtml` - **Event list**
+- [ ] `module/Backend/view/backend/event/index.datepicker.phtml` - **Event datepicker**
+- [ ] `module/Backend/view/backend/event/edit.phtml` - **Edit event**
+- [ ] `module/Backend/view/backend/event/edit-choice.phtml` - **Edit event choice**
+- [ ] `module/Backend/view/backend/event/delete.phtml` - **Delete event**
+- [ ] `module/Backend/view/backend/event/stats.phtml` - **Event statistics**
+
+#### Backend Module - User Management
+- [ ] `module/Backend/view/backend/user/index.phtml` - **User list**
+- [ ] `module/Backend/view/backend/user/index.search.phtml` - **User search**
+- [ ] `module/Backend/view/backend/user/edit.phtml` - **Edit user**
+- [ ] `module/Backend/view/backend/user/delete.phtml` - **Delete user**
+- [ ] `module/Backend/view/backend/user/stats.phtml` - **User statistics**
+
+### 🔧 **SETUP & SERVICE** (System Pages)
+These are used during installation and for system information.
+
+#### Service Module
+- [ ] `module/Service/view/service/service/help.phtml` - **Service help**
+- [ ] `module/Service/view/service/service/info.phtml` - **Service info**
+- [ ] `module/Service/view/service/service/status.phtml` - **Service status**
+
+#### Setup Module
+- [ ] `module/Setup/view/layout/layout.phtml` - **Setup layout**
+- [ ] `module/Setup/view/error/404.phtml` - **Setup 404**
+- [ ] `module/Setup/view/error/500.phtml` - **Setup 500**
+- [ ] `module/Setup/view/setup/index/index.phtml` - **Setup main**
+- [ ] `module/Setup/view/setup/index/complete.phtml` - **Setup complete**
+- [ ] `module/Setup/view/setup/index/records.phtml` - **Setup records**
+- [ ] `module/Setup/view/setup/index/tables.phtml` - **Setup tables**
+- [ ] `module/Setup/view/setup/index/user.phtml` - **Setup user**
+
+## Conversion Guidelines
+
+### For Each File:
+1. **Backup Original**: Keep a copy of the original file
+2. **Include Tailwind**: Add Tailwind CSS link
+3. **Apply Modern Design**: Use Tailwind utility classes
+4. **Use Custom Components**: Leverage predefined components from `src/input.css`
+5. **Ensure Responsiveness**: Test on mobile, tablet, and desktop
+6. **Maintain Functionality**: Don't break existing PHP logic
+7. **Test Thoroughly**: Verify all features work after conversion
+
+### Design Patterns to Follow:
+- **Mobile-First**: Start with mobile design, then scale up
+- **Consistent Spacing**: Use Tailwind spacing scale (p-4, m-6, etc.)
+- **Color Harmony**: Use the custom color palette
+- **Typography**: Follow the typography guidelines
+- **Accessibility**: Ensure ARIA labels and keyboard navigation
+
+### Resources:
+- `UI_LAYOUT_README.md` - Complete UI guidelines
+- `TAILWIND_INTEGRATION.md` - Tailwind setup details
+- `src/input.css` - Custom component definitions
+- `tailwind.config.js` - Tailwind configuration
+
+## Testing Checklist
+
+For each converted file, verify:
+- [ ] **Visual Design**: Matches modern UI standards
+- [ ] **Responsiveness**: Works on all screen sizes
+- [ ] **Functionality**: All PHP features work correctly
+- [ ] **Performance**: Page loads quickly
+- [ ] **Accessibility**: Screen reader friendly
+- [ ] **Browser Compatibility**: Works in major browsers
+
+## Notes
+
+### Development Commands:
+```bash
+# Watch for changes during development
+npm run build-css
+
+# Build for production
+npm run build-css-prod
+```
+
+### File Naming Convention:
+- Keep original file names
+- Add `.backup` extension for backups
+- Document changes in git commits
+
+### Common Patterns:
+- Forms: Use `space-y-6` for field spacing
+- Buttons: Use predefined `btn-booking` classes
+- Cards: Use `card-booking` components
+- Tables: Use responsive table patterns
+- Navigation: Follow header patterns
 
 ---
 
-**Priority Order:**
+**Start Date**: January 2025  
+**Target Completion**: [Set your target date]  
+**Last Updated**: January 2025
 
-1. **High Priority**: Header, Calendar, Booking forms
-2. **Medium Priority**: Dashboard, Error pages
-3. **Low Priority**: Admin interface, Advanced features
+## Quick Start
+1. Begin with the **CRITICAL PRIORITY** files
+2. Test each file after conversion
+3. Move to **HIGH PRIORITY** user-facing files
+4. Continue with **MEDIUM PRIORITY** booking functionality
+5. Finish with **LOWER PRIORITY** admin interfaces
 
-**Estimated Timeline:**
-
-- Phase 1-2: 1-2 weeks
-- Phase 3-4: 2-3 weeks
-- Phase 5-6: 1-2 weeks
-- Phase 7-8: 1 week
-
-**Total Estimated Time: 5-8 weeks**
+Remember: Quality over speed. It's better to do fewer files well than to rush through many files with poor results.

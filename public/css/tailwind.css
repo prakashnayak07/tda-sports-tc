@@ -1385,6 +1385,14 @@ code {
   padding-top: 0.5rem;
 }
 
+.pl-20 {
+  padding-left: 5rem;
+}
+
+.pr-20 {
+  padding-right: 5rem;
+}
+
 .text-left {
   text-align: left;
 }

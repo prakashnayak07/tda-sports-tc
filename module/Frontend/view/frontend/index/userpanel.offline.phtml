@@ -1,43 +1,54 @@
-<form method="post" action="<?= $this->url('user/login') ?>">
-    <table style="height: 100%;">
-        <tr>
-            <td style="padding-right: 12px;">
-                <?php
-
-                echo sprintf($this->t('To book %s, %splease register first%s'),
-                    $this->option('subject.square.type.plural'),
-                    '<br><a href="' . $this->url('user/registration') . '" class="symbolic symbolic-plus-link">', '</a>');
-
-                ?>
-            </td>
-
-            <td class="responsive-pass-5" style="padding-left: 12px; padding-right: 12px; border-left: solid 1px #CCC;">
-                <?= sprintf($this->t('or simply %s login here'), '<br>') ?>
-            </td>
-
-            <td class="responsive-pass-3">
-                <div class="inline-element">
-                    <label for="lf-email" class="inline-label symbolic symbolic-email"><span><?= $this->t('Email address') ?></span></label>
-                    <input type="text" name="lf-email" id="lf-email" value=""
-                        class="inline-label-container" style="padding-left: 32px; width: 150px;">
-                </div>
-            </td>
-
-            <td class="responsive-pass-3">
-                <div class="inline-element">
-                    <label for="lf-pw" class="inline-label symbolic symbolic-pw"><span><?= $this->t('Password') ?></span></label>
-                    <input type="password" name="lf-pw" id="lf-pw" size="10" value=""
-                        class="inline-label-container" style="padding-left: 24px; width: 158px;">
-                </div>
-            </td>
-
-            <td style="padding-right: 12px;">
-                <input type="submit" value="<?= $this->t('Login') ?>" class="default-button">
-            </td>
-
-            <td style="padding-left: 12px; border-left: solid 1px #CCC;">
-                <a href="<?= $this->url('service/help') ?>" class="default-button" data-tooltip="<?= sprintf($this->t('Get additional %shelp and information%s'), '<b>', '</b>') ?>"><b>?</b></a>
-            </td>
-        </tr>
-    </table>
-</form>
+<div class="w-full lg:w-auto">
+    <!-- Registration message (commented out in the original) -->
+    <!-- <?php
+    echo sprintf($this->t('To book %s, %splease register first%s'),
+        $this->option('subject.square.type.plural'),
+        '<br><a href="' . $this->url('user/registration') . '" class="symbolic symbolic-plus-link">', '</a>');
+    ?> -->
+    
+    <form method="post" action="<?= $this->url('user/login') ?>" class="flex flex-col sm:flex-row gap-3 p-4 bg-white rounded-lg shadow-md">
+        <!-- Email Input with Icon -->
+        <div class="relative flex-grow">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <!-- Email Icon -->
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <input type="email" name="lf-email" id="lf-email" placeholder="<?= $this->t('Email address') ?>" 
+                class="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all">
+        </div>
+        
+        <!-- Password Input with Icon -->
+        <div class="relative flex-grow">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <!-- Password Icon -->
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <input type="password" name="lf-pw" id="lf-pw" placeholder="<?= $this->t('Password') ?>" 
+                class="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all">
+        </div>
+        
+        <!-- Primary Action: Login Button -->
+        <button type="submit" class="px-6 py-2 bg-lime-500 text-white font-medium rounded-md shadow-sm hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 transition-colors">
+            <?= $this->t('Login') ?>
+        </button>
+        
+        <!-- Secondary Actions: Register and Help -->
+        <div class="flex gap-2">
+            <a href="<?= $this->url('user/registration') ?>" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 transition-colors">
+                <?= $this->t('Register') ?>
+            </a>
+            
+            <!-- <a href="<?= $this->url('service/help') ?>" class="px-3 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 transition-colors relative group" 
+               data-tooltip="<?= sprintf($this->t('Get additional %shelp and information%s'), '<b>', '</b>') ?>">
+                <b>?</b>
+                <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <?= $this->t('Help') ?>
+                </span>
+            </a> -->
+        </div>
+    </form>
+</div>

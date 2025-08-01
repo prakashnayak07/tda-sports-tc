@@ -21,7 +21,7 @@
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/jquery-ui/jquery-ui.min.css') ?>" media="all">
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/default.min.css') ?>" media="all">
     <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css-client/default.css') ?>" media="all">
-    <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/modern.css') ?>" media="all">
+    <!-- <link type="text/css" rel="stylesheet" href="<?= $this->basePath('css/modern.css') ?>" media="all"> -->
     <link rel="stylesheet" href="/css/tailwind.css">
     <?= $this->headLink() ?>
     <?= $this->headTitle($this->option(['client.name.short', 'service.name.full']))->setSeparator(' · ')->setAutoEscape(false) ?>
@@ -31,9 +31,9 @@
 
         body {
             font-family: 'Inter', Ariel, sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             padding: 0px !important;
-            color: var(--neutral-800);
+       
             background: white;
             min-height: 100vh;
             display: flex;
@@ -151,7 +151,7 @@
     <!-- End of New Header Code -->
 
     <!-- Main Content Wrapper -->
-    <div class="mx-auto w-full pl-20 pr-20">
+    <div class="mx-auto w-full pl-0 pr-0 md:pl-20 md:pr-20">
         <!-- <div id="content"> -->
         <div id="">
             <?= $this->messages() ?>

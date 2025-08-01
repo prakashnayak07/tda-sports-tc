@@ -34,7 +34,7 @@ a.cc-single:hover {
 
 a.cc-multiple:link,
 a.cc-multiple:visited {
-  background-color: #547b97;
+  background-color: #93b353;
 }
 a.cc-multiple:hover {
   background-color: #334f6a;
@@ -51,8 +51,8 @@ a.cc-conflict:hover {
 /* Layout - Alternate Calendar */
 
 .cc-range-member a {
-  border-color: #547b97 !important;
-  background-color: #547b97 !important;
+  border-color: #93b353 !important;
+  background-color: #93b353 !important;
 }
 
 /* General Purpose - Classes */
@@ -62,10 +62,10 @@ a.cc-conflict:hover {
 }
 
 .badge {
-  background-color: #547b97;
+  background-color: #93b353;
 }
 .badge-label {
-  color: #547b97;
+  color: #93b353;
 }
 
 /* Links */

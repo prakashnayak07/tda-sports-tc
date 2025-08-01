@@ -975,10 +975,10 @@ p.symbolic {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5)
 }
 
-a:link {
+/* a:link {
    
     color: #9fbe41
-}
+} */
 
 a:hover {
     opacity: 1.0
@@ -1119,7 +1119,7 @@ form {
 }
 
 input[type="text"],
-input[type="password"],
+/* input[type="password"], */
 textarea,
 select {
     padding: 6px;
@@ -1138,8 +1138,8 @@ select {
 
 input[type="text"]:hover,
 input[type="text"]:focus,
-input[type="password"]:hover,
-input[type="password"]:focus,
+/* input[type="password"]:hover,
+input[type="password"]:focus, */
 textarea:hover,
 textarea:focus,
 select:hover,

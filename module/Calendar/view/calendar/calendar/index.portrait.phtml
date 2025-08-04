@@ -10,145 +10,147 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 ?>
 
 <!-- Modern Calendar Container -->
-<div class="modern-calendar-container">
-
-    <!-- Desktop Grid View -->
+<div class="modern-calendar-wrapper">
+    <!-- Desktop Table View -->
     <div class="modern-calendar-desktop">
-        <!-- Grid Header -->
-        <div class="modern-calendar-header">
-            <div class="modern-calendar-time-header"></div>
-            <?php foreach ($this->squares as $square): ?>
-                <div class="modern-calendar-court-header">
-                    <?= $this->t($square->need('name')) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-        <!-- Time Slot Rows -->
-        <?php for ($walkingTime = $this->timeStart; $walkingTime < $this->timeEnd; $walkingTime += $this->timeBlock): ?>
-            <div class="modern-calendar-row">
-                <div class="modern-calendar-time-slot">
-                    <?= $this->timeFormat($walkingTime, false, 'UTC') ?>
-                </div>
-
+        <div class="modern-calendar-table">
+            <div class="modern-calendar-header">
+                <div class="modern-calendar-time-header"></div>
                 <?php foreach ($this->squares as $square): ?>
-                    <?php
-                    $walkingDate = clone $this->dateStart;
-                    $walkingDate->modify('+' . $walkingTime . ' sec');
-
-                    $reservationsForCol = $reservationsForColPlugin($reservations, $walkingDate, $walkingTime, $this->timeBlock);
-                    $eventsForCol = $eventsForColPlugin($events, $walkingDate, $walkingTime, $this->timeBlock);
-
-                    $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
-
-                    // Extract the content and determine the status
-                    $isFree = strpos($cellContent, 'cc-free') !== false;
-                    $isBooked = strpos($cellContent, 'cc-single') !== false;
-                    $isMultiple = strpos($cellContent, 'cc-multiple') !== false;
-                    $isOwn = strpos($cellContent, 'cc-own') !== false;
-                    $isConflict = strpos($cellContent, 'cc-conflict') !== false;
-                    $isOver = strpos($cellContent, 'cc-over') !== false;
-
-                    // Extract the link if it's clickable
-                    preg_match('/href="([^"]+)"/', $cellContent, $matches);
-                    $link = isset($matches[1]) ? $matches[1] : null;
-
-                    // Extract the text content
-                    preg_match('/<[^>]*>([^<]+)<\/[^>]*>/', $cellContent, $matches);
-                    $text = isset($matches[1]) ? trim($matches[1]) : 'Free';
-
-                    // Determine status class
-                    $statusClass = 'modern-calendar-status-past';
-                    if ($isFree) $statusClass = 'modern-calendar-status-free';
-                    elseif ($isBooked) $statusClass = 'modern-calendar-status-booked';
-                    elseif ($isMultiple) $statusClass = 'modern-calendar-status-multiple';
-                    elseif ($isOwn) $statusClass = 'modern-calendar-status-own';
-                    elseif ($isConflict) $statusClass = 'modern-calendar-status-conflict';
-                    elseif ($isOver) $statusClass = 'modern-calendar-status-closed';
-                    ?>
-
-                    <div class="modern-calendar-cell">
-                        <?php if ($link && $isFree): ?>
-                            <a href="<?= $link ?>" class="modern-calendar-slot <?= $statusClass ?>">
-                                <?= $text ?>
-                            </a>
-                        <?php else: ?>
-                            <div class="modern-calendar-slot <?= $statusClass ?>">
-                                <?= $text ?>
-                            </div>
-                        <?php endif; ?>
+                    <div class="modern-calendar-court-header">
+                        <?= $this->t($square->need('name')) ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-        <?php endfor; ?>
+
+            <div class="modern-calendar-body">
+                <?php for ($walkingTime = $this->timeStart; $walkingTime < $this->timeEnd; $walkingTime += $this->timeBlock): ?>
+                    <div class="modern-calendar-row">
+                        <div class="modern-calendar-time-slot">
+                            <?= $this->timeFormat($walkingTime, false, 'UTC') ?>
+                        </div>
+
+                        <?php foreach ($this->squares as $square): ?>
+                            <div class="modern-calendar-cell">
+                                <?php
+                                $walkingDate = clone $this->dateStart;
+                                $walkingDate->modify('+' . $walkingTime . ' sec');
+
+                                $reservationsForCol = $reservationsForColPlugin($reservations, $walkingDate, $walkingTime, $this->timeBlock);
+                                $eventsForCol = $eventsForColPlugin($events, $walkingDate, $walkingTime, $this->timeBlock);
+
+                                $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
+
+                                // Determine status and apply modern styling
+                                $isFree = strpos($cellContent, 'cc-free') !== false;
+                                $isBooked = strpos($cellContent, 'cc-single') !== false;
+                                $isMultiple = strpos($cellContent, 'cc-multiple') !== false;
+                                $isOwn = strpos($cellContent, 'cc-own') !== false;
+                                $isConflict = strpos($cellContent, 'cc-conflict') !== false;
+                                $isOver = strpos($cellContent, 'cc-over') !== false;
+
+                                // Extract link if available
+                                preg_match('/href="([^"]+)"/', $cellContent, $matches);
+                                $link = isset($matches[1]) ? $matches[1] : null;
+
+                                // Extract text content
+                                preg_match('/<[^>]*>([^<]+)<\/[^>]*>/', $cellContent, $matches);
+                                $text = isset($matches[1]) ? trim($matches[1]) : 'Free';
+
+                                // Determine status class
+                                $statusClass = 'modern-status-unavailable';
+                                if ($isFree) $statusClass = 'modern-status-free';
+                                elseif ($isBooked) $statusClass = 'modern-status-booked';
+                                elseif ($isMultiple) $statusClass = 'modern-status-multiple';
+                                elseif ($isOwn) $statusClass = 'modern-status-own';
+                                elseif ($isConflict) $statusClass = 'modern-status-conflict';
+                                elseif ($isOver) $statusClass = 'modern-status-past';
+                                ?>
+
+                                <?php if ($link && $isFree): ?>
+                                    <a href="<?= $link ?>" class="modern-slot <?= $statusClass ?>">
+                                        <?= $text ?>
+                                    </a>
+                                <?php else: ?>
+                                    <div class="modern-slot <?= $statusClass ?>">
+                                        <?= $text ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endfor; ?>
+            </div>
+        </div>
     </div>
 
-    <!-- Mobile & Tablet Tab View -->
+    <!-- Mobile Tab View -->
     <div class="modern-calendar-mobile">
         <!-- Tab Headers -->
-        <div class="modern-calendar-tabs">
+        <div class="modern-tab-headers">
             <?php foreach ($this->squares as $index => $square): ?>
-                <button onclick="changeTab(<?= $index ?>)"
-                    data-tab
-                    class="modern-calendar-tab <?= $index === 0 ? 'modern-calendar-tab-active' : '' ?>">
+                <button onclick="switchTab(<?= $index ?>)"
+                    data-tab="<?= $index ?>"
+                    class="modern-tab-button <?= $index === 0 ? 'modern-tab-active' : '' ?>">
                     <?= $this->t($square->need('name')) ?>
                 </button>
             <?php endforeach; ?>
         </div>
 
-        <!-- Tab Content Panels -->
-        <div class="modern-calendar-tab-content">
+        <!-- Tab Content -->
+        <div class="modern-tab-content">
             <?php foreach ($this->squares as $squareIndex => $square): ?>
-                <div data-tab-content class="modern-calendar-panel <?= $squareIndex === 0 ? '' : 'modern-calendar-panel-hidden' ?>">
-                    <h3 class="modern-calendar-panel-title"><?= $this->t($square->need('name')) ?></h3>
-                    <div class="modern-calendar-panel-slots">
+                <div data-tab-content="<?= $squareIndex ?>"
+                    class="modern-tab-panel <?= $squareIndex === 0 ? 'modern-tab-visible' : '' ?>">
+                    <h3 class="modern-tab-title"><?= $this->t($square->need('name')) ?></h3>
+                    <div class="modern-time-slots">
                         <?php for ($walkingTime = $this->timeStart; $walkingTime < $this->timeEnd; $walkingTime += $this->timeBlock): ?>
-                            <?php
-                            $walkingDate = clone $this->dateStart;
-                            $walkingDate->modify('+' . $walkingTime . ' sec');
-
-                            $reservationsForCol = $reservationsForColPlugin($reservations, $walkingDate, $walkingTime, $this->timeBlock);
-                            $eventsForCol = $eventsForColPlugin($events, $walkingDate, $walkingTime, $this->timeBlock);
-
-                            $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
-
-                            // Extract the content and determine the status
-                            $isFree = strpos($cellContent, 'cc-free') !== false;
-                            $isBooked = strpos($cellContent, 'cc-single') !== false;
-                            $isMultiple = strpos($cellContent, 'cc-multiple') !== false;
-                            $isOwn = strpos($cellContent, 'cc-own') !== false;
-                            $isConflict = strpos($cellContent, 'cc-conflict') !== false;
-                            $isOver = strpos($cellContent, 'cc-over') !== false;
-
-                            // Extract the link if it's clickable
-                            preg_match('/href="([^"]+)"/', $cellContent, $matches);
-                            $link = isset($matches[1]) ? $matches[1] : null;
-
-                            // Extract the text content
-                            preg_match('/<[^>]*>([^<]+)<\/[^>]*>/', $cellContent, $matches);
-                            $text = isset($matches[1]) ? trim($matches[1]) : 'Free';
-
-                            // Determine status class
-                            $statusClass = 'modern-calendar-status-past';
-                            if ($isFree) $statusClass = 'modern-calendar-status-free';
-                            elseif ($isBooked) $statusClass = 'modern-calendar-status-booked';
-                            elseif ($isMultiple) $statusClass = 'modern-calendar-status-multiple';
-                            elseif ($isOwn) $statusClass = 'modern-calendar-status-own';
-                            elseif ($isConflict) $statusClass = 'modern-calendar-status-conflict';
-                            elseif ($isOver) $statusClass = 'modern-calendar-status-closed';
-                            ?>
-
-                            <div class="modern-calendar-mobile-slot">
-                                <span class="modern-calendar-mobile-time">
+                            <div class="modern-time-slot-row">
+                                <span class="modern-time-label">
                                     <?= $this->timeFormat($walkingTime, false, 'UTC') ?> - <?= $this->timeFormat($walkingTime + $this->timeBlock, true, 'UTC', true) ?>
                                 </span>
-                                <div class="modern-calendar-mobile-status">
+                                <div class="modern-slot-container">
+                                    <?php
+                                    $walkingDate = clone $this->dateStart;
+                                    $walkingDate->modify('+' . $walkingTime . ' sec');
+
+                                    $reservationsForCol = $reservationsForColPlugin($reservations, $walkingDate, $walkingTime, $this->timeBlock);
+                                    $eventsForCol = $eventsForColPlugin($events, $walkingDate, $walkingTime, $this->timeBlock);
+
+                                    $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
+
+                                    // Determine status and apply modern styling
+                                    $isFree = strpos($cellContent, 'cc-free') !== false;
+                                    $isBooked = strpos($cellContent, 'cc-single') !== false;
+                                    $isMultiple = strpos($cellContent, 'cc-multiple') !== false;
+                                    $isOwn = strpos($cellContent, 'cc-own') !== false;
+                                    $isConflict = strpos($cellContent, 'cc-conflict') !== false;
+                                    $isOver = strpos($cellContent, 'cc-over') !== false;
+
+                                    // Extract link if available
+                                    preg_match('/href="([^"]+)"/', $cellContent, $matches);
+                                    $link = isset($matches[1]) ? $matches[1] : null;
+
+                                    // Extract text content
+                                    preg_match('/<[^>]*>([^<]+)<\/[^>]*>/', $cellContent, $matches);
+                                    $text = isset($matches[1]) ? trim($matches[1]) : 'Free';
+
+                                    // Determine status class
+                                    $statusClass = 'modern-status-unavailable';
+                                    if ($isFree) $statusClass = 'modern-status-free';
+                                    elseif ($isBooked) $statusClass = 'modern-status-booked';
+                                    elseif ($isMultiple) $statusClass = 'modern-status-multiple';
+                                    elseif ($isOwn) $statusClass = 'modern-status-own';
+                                    elseif ($isConflict) $statusClass = 'modern-status-conflict';
+                                    elseif ($isOver) $statusClass = 'modern-status-past';
+                                    ?>
+
                                     <?php if ($link && $isFree): ?>
-                                        <a href="<?= $link ?>" class="modern-calendar-mobile-button <?= $statusClass ?>">
+                                        <a href="<?= $link ?>" class="modern-slot <?= $statusClass ?>">
                                             <?= $text ?>
                                         </a>
                                     <?php else: ?>
-                                        <div class="modern-calendar-mobile-button <?= $statusClass ?>">
+                                        <div class="modern-slot <?= $statusClass ?>">
                                             <?= $text ?>
                                         </div>
                                     <?php endif; ?>
@@ -163,177 +165,247 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 </div>
 
 <script>
-    // Initialize tabs on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set first tab as active by default
-        const firstTab = document.querySelector('[data-tab]');
-        const firstContent = document.querySelector('[data-tab-content]');
+    function switchTab(tabIndex) {
+        // Get all tab buttons and content panels
+        const tabButtons = document.querySelectorAll('[data-tab]');
+        const tabPanels = document.querySelectorAll('[data-tab-content]');
 
-        if (firstTab && firstContent) {
-            firstTab.classList.add('modern-calendar-tab-active');
-            firstContent.classList.remove('modern-calendar-panel-hidden');
+        // Remove active class from all tabs
+        tabButtons.forEach(button => {
+            button.classList.remove('modern-tab-active');
+        });
+
+        // Hide all tab panels
+        tabPanels.forEach(panel => {
+            panel.classList.remove('modern-tab-visible');
+        });
+
+        // Activate selected tab
+        const activeButton = document.querySelector(`[data-tab="${tabIndex}"]`);
+        const activePanel = document.querySelector(`[data-tab-content="${tabIndex}"]`);
+
+        if (activeButton && activePanel) {
+            activeButton.classList.add('modern-tab-active');
+            activePanel.classList.add('modern-tab-visible');
+        }
+    }
+
+    // Ensure default tab is active on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Activate the first tab by default
+        switchTab(0);
+    });
+
+    // Also ensure default tab is active when page is fully loaded
+    window.addEventListener('load', function() {
+        // Double-check that the first tab is active
+        const firstTab = document.querySelector('[data-tab="0"]');
+        const firstPanel = document.querySelector('[data-tab-content="0"]');
+
+        if (firstTab && firstPanel) {
+            // Remove active class from all tabs
+            document.querySelectorAll('[data-tab]').forEach(button => {
+                button.classList.remove('modern-tab-active');
+            });
+
+            // Hide all tab panels
+            document.querySelectorAll('[data-tab-content]').forEach(panel => {
+                panel.classList.remove('modern-tab-visible');
+            });
+
+            // Activate first tab
+            firstTab.classList.add('modern-tab-active');
+            firstPanel.classList.add('modern-tab-visible');
         }
     });
 
-    function changeTab(tabIndex) {
-        const tabs = document.querySelectorAll('[data-tab]');
-        const contents = document.querySelectorAll('[data-tab-content]');
+    // Immediate execution to ensure default tab is active
+    (function() {
+        // Force the first tab to be active immediately
+        const firstTab = document.querySelector('[data-tab="0"]');
+        const firstPanel = document.querySelector('[data-tab-content="0"]');
 
-        // Check if the clicked tab is already active
-        if (tabs[tabIndex] && tabs[tabIndex].classList.contains('modern-calendar-tab-active')) {
-            return; // Don't do anything if the tab is already active
+        if (firstTab && firstPanel) {
+            // Remove active class from all tabs
+            document.querySelectorAll('[data-tab]').forEach(button => {
+                button.classList.remove('modern-tab-active');
+            });
+
+            // Hide all tab panels
+            document.querySelectorAll('[data-tab-content]').forEach(panel => {
+                panel.classList.remove('modern-tab-visible');
+            });
+
+            // Activate first tab
+            firstTab.classList.add('modern-tab-active');
+            firstPanel.classList.add('modern-tab-visible');
         }
+    })();
 
-        // Reset all tabs
-        tabs.forEach(tab => {
-            tab.classList.remove('modern-calendar-tab-active');
-        });
+    // Additional immediate execution with setTimeout to ensure it runs after DOM is ready
+    setTimeout(function() {
+        const firstTab = document.querySelector('[data-tab="0"]');
+        const firstPanel = document.querySelector('[data-tab-content="0"]');
 
-        // Set active tab
-        if (tabs[tabIndex]) {
-            tabs[tabIndex].classList.add('modern-calendar-tab-active');
+        if (firstTab && firstPanel) {
+            // Remove active class from all tabs
+            document.querySelectorAll('[data-tab]').forEach(button => {
+                button.classList.remove('modern-tab-active');
+            });
+
+            // Hide all tab panels
+            document.querySelectorAll('[data-tab-content]').forEach(panel => {
+                panel.classList.remove('modern-tab-visible');
+            });
+
+            // Activate first tab
+            firstTab.classList.add('modern-tab-active');
+            firstPanel.classList.add('modern-tab-visible');
         }
-
-        // Hide all content and show active
-        contents.forEach(content => {
-            content.classList.add('modern-calendar-panel-hidden');
-        });
-
-        if (contents[tabIndex]) {
-            contents[tabIndex].classList.remove('modern-calendar-panel-hidden');
-        }
-    }
+    }, 0);
 </script>
-
 <style>
-    /* Modern Calendar Styles - Completely Override Old CSS */
-    .modern-calendar-container {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        border: 1px solid #e2e8f0;
-        overflow: hidden;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Reset and override all existing styles */
+    .modern-calendar-wrapper * {
+        box-sizing: border-box;
     }
 
-    /* Desktop Grid Layout */
+    .modern-calendar-wrapper {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        margin: 20px;
+    }
+
+    /* Desktop Styles */
     .modern-calendar-desktop {
         display: none;
     }
 
     @media (min-width: 1024px) {
         .modern-calendar-desktop {
-            display: grid;
-            grid-template-columns: auto repeat(6, 1fr);
-            border-collapse: collapse;
+            display: block;
         }
     }
 
+    .modern-calendar-table {
+        width: 100%;
+    }
+
     .modern-calendar-header {
-        display: contents;
+        display: grid;
+        grid-template-columns: 120px repeat(6, 1fr);
+        background: #f8fafc;
+        border-bottom: 2px solid #e5e7eb;
     }
 
     .modern-calendar-time-header {
-        background: #f8fafc;
-        border-right: 1px solid #e2e8f0;
-        border-bottom: 1px solid #e2e8f0;
         padding: 16px;
         font-weight: 600;
-        color: #475569;
+        color: #374151;
+        border-right: 1px solid #e5e7eb;
     }
 
     .modern-calendar-court-header {
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-        border-left: 1px solid #e2e8f0;
         padding: 16px;
         text-align: center;
         font-weight: 700;
         font-size: 14px;
-        color: #1e293b;
+        color: #111827;
+        border-left: 1px solid #e5e7eb;
     }
 
-    .modern-calendar-row {
+    .modern-calendar-body {
         display: contents;
     }
 
+    .modern-calendar-row {
+        display: grid;
+        grid-template-columns: 120px repeat(6, 1fr);
+        border-bottom: 1px solid #e5e7eb;
+    }
+
     .modern-calendar-time-slot {
-        background: #f8fafc;
-        border-right: 1px solid #e2e8f0;
-        border-top: 1px solid #e2e8f0;
         padding: 16px;
         text-align: right;
-        font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+        font-family: 'SF Mono', Monaco, monospace;
         font-size: 12px;
-        color: #64748b;
+        color: #6b7280;
         font-weight: 500;
+        background: #f8fafc;
+        border-right: 1px solid #e5e7eb;
     }
 
     .modern-calendar-cell {
-        border-top: 1px solid #e2e8f0;
-        border-left: 1px solid #e2e8f0;
         padding: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-left: 1px solid #e5e7eb;
+        min-height: 60px;
     }
 
-    .modern-calendar-slot {
+    .modern-slot {
         width: 100%;
-        padding: 12px;
+        padding: 12px 16px;
         text-align: center;
         border-radius: 8px;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         text-decoration: none;
         transition: all 0.2s ease;
-        display: block;
-        border: none;
         cursor: pointer;
+        border: none;
+        display: block;
     }
 
     /* Status Colors */
-    .modern-calendar-status-free {
-        background-color: #ecfdf5;
-        color: #15803d;
+    .modern-status-free {
+        background: #dcfce7;
+        color: #166534;
     }
 
-    .modern-calendar-status-free:hover {
-        background-color: #d1fae5;
+    .modern-status-free:hover {
+        background: #bbf7d0;
         transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
     }
 
-    .modern-calendar-status-booked {
-        background-color: #fef2f2;
-        color: #be123c;
+    .modern-status-booked {
+        background: #fee2e2;
+        color: #991b1b;
     }
 
-    .modern-calendar-status-multiple {
-        background-color: #eff6ff;
-        color: #1d4ed8;
+    .modern-status-multiple {
+        background: #dbeafe;
+        color: #1e40af;
     }
 
-    .modern-calendar-status-own {
-        background-color: #ecfdf5;
-        color: #047857;
+    .modern-status-own {
+        background: #dcfce7;
+        color: #166534;
+        border: 2px solid #22c55e;
     }
 
-    .modern-calendar-status-conflict {
-        background-color: #fef2f2;
+    .modern-status-conflict {
+        background: #fef2f2;
         color: #dc2626;
     }
 
-    .modern-calendar-status-past {
-        background-color: #f1f5f9;
-        color: #64748b;
+    .modern-status-past {
+        background: #f3f4f6;
+        color: #6b7280;
     }
 
-    .modern-calendar-status-closed {
-        background-color: #f1f5f9;
-        color: #64748b;
+    .modern-status-unavailable {
+        background: #f3f4f6;
+        color: #9ca3af;
     }
 
-    /* Mobile Layout */
+    /* Mobile Styles */
     .modern-calendar-mobile {
         display: block;
     }
@@ -344,95 +416,97 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
         }
     }
 
-    .modern-calendar-tabs {
-        background: #f1f5f9;
-        border-bottom: 1px solid #e2e8f0;
-        padding: 8px;
+    .modern-tab-headers {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 8px;
+        padding: 16px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e5e7eb;
     }
 
-    .modern-calendar-tab {
-        background: white;
-        border: none;
+    .modern-tab-button {
+        padding: 12px 16px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 600;
-        color: #64748b;
+        color: #374151;
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
-    .modern-calendar-tab:hover {
+    .modern-tab-button:hover {
         background: #f0fdf4;
-        color: #15803d;
+        color: #166534;
+        border-color: #22c55e;
     }
 
-    .modern-calendar-tab-active {
-        background: #84cc16;
-        color: white;
-        box-shadow: 0 2px 4px rgba(132, 204, 22, 0.3);
+    .modern-tab-active {
+        background: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
     }
 
-    .modern-calendar-tab-content {
-        padding: 16px;
+    .modern-tab-content {
+        padding: 20px;
     }
 
-    .modern-calendar-panel {
-        display: block;
+    .modern-tab-panel {
+        display: none !important;
     }
 
-    .modern-calendar-panel-hidden {
-        display: none;
+    .modern-tab-visible {
+        display: block !important;
     }
 
-    .modern-calendar-panel-title {
-        font-size: 18px;
+    /* Ensure first tab is always visible by default */
+    .modern-tab-panel[data-tab-content="0"] {
+        display: block !important;
+    }
+
+    /* Force first tab button to be active by default */
+    .modern-tab-button[data-tab="0"] {
+        background: #22c55e !important;
+        color: #ffffff !important;
+        border-color: #22c55e !important;
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3) !important;
+    }
+
+    .modern-tab-title {
+        font-size: 20px;
         font-weight: 700;
-        color: #1e293b;
-        margin: 0 0 16px 0;
+        color: #111827;
+        margin: 0 0 20px 0;
     }
 
-    .modern-calendar-panel-slots {
+    .modern-time-slots {
         display: flex;
         flex-direction: column;
         gap: 12px;
     }
 
-    .modern-calendar-mobile-slot {
+    .modern-time-slot-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 16px;
         background: #f8fafc;
-        border-radius: 8px;
-        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
     }
 
-    .modern-calendar-mobile-time {
-        font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    .modern-time-label {
+        font-family: 'SF Mono', Monaco, monospace;
         font-size: 12px;
-        color: #64748b;
+        color: #6b7280;
         font-weight: 500;
     }
 
-    .modern-calendar-mobile-status {
-        width: 96px;
-    }
-
-    .modern-calendar-mobile-button {
-        width: 100%;
-        padding: 8px 12px;
-        text-align: center;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        display: block;
-        border: none;
-        cursor: pointer;
+    .modern-slot-container {
+        width: 120px;
     }
 
     /* Override any existing calendar styles */

@@ -8,6 +8,56 @@ $this->headScript()->appendFile($this->basePath('js/controller/calendar/index.mi
     #content {
         padding: 0 !important;
     }
+
+    /* Squarebox popup styles */
+    #squarebox-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        z-index: 9999 !important;
+        display: none !important;
+    }
+
+    #squarebox-panel {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        background: white !important;
+        border: 1px solid #ccc !important;
+        border-radius: 5px !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+        z-index: 10000 !important;
+        max-width: 90% !important;
+        max-height: 90% !important;
+        overflow: auto !important;
+        display: none !important;
+    }
+
+    .squarebox-close-link {
+        position: absolute !important;
+        top: 10px !important;
+        right: 15px !important;
+        font-size: 20px !important;
+        font-weight: bold !important;
+        color: #666 !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        z-index: 10001 !important;
+    }
+
+    .squarebox-close-link:hover {
+        color: #000 !important;
+    }
+
+    #squarebox-content {
+        padding: 20px !important;
+        min-width: 300px !important;
+        min-height: 200px !important;
+    }
 </style>
 
 <div id="calendar" class="panel">

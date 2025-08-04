@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     var calendar;
 
@@ -10,16 +10,31 @@
     var loadingDelay = 300;
     var animationDuration = 350;
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         calendar = $(".calendar-table");
 
         /* Squarebox */
 
-        calendar.on("click", "a.calendar-cell", function(event) {
+        calendar.on("click", "a.calendar-cell", function (event) {
             var that = $(this);
 
-            if (! that.hasClass("squarebox-external-link")) {
+            if (!that.hasClass("squarebox-external-link")) {
+                event.preventDefault();
+
+                if (!squarebox) {
+                    event.stopPropagation();
+
+                    loadSquarebox(that.attr("href"));
+                }
+            }
+        });
+
+        // Handle clicks on modern calendar cells
+        $(document).on("click", "a.modern-slot", function (event) {
+            var that = $(this);
+
+            if (!that.hasClass("squarebox-external-link")) {
                 event.preventDefault();
 
                 if (!squarebox) {
@@ -34,13 +49,13 @@
 
         $(window).on("squarebox.update", updateSquarebox);
 
-        $("body").on("click", "#squarebox-overlay", function() {
+        $("body").on("click", "#squarebox-overlay", function () {
             removeSquarebox();
         });
 
         /* Group highlighting */
 
-        $("a.calendar-cell").hover(function() {
+        $("a.calendar-cell").hover(function () {
             var that = $(this);
             var classes = that.attr("class");
             var group = classes.match(/cc-group-\d+/);
@@ -48,15 +63,15 @@
             if (group) {
                 var groupMembers = $("a." + group);
 
-                groupMembers.each(function() {
+                groupMembers.each(function () {
                     $(this).data("original-style", $(this).attr("style"));
                 });
 
-                groupMembers.css({"opacity": 0.9, "background-color": that.css("background-color")});
+                groupMembers.css({ "opacity": 0.9, "background-color": that.css("background-color") });
 
                 that.css("opacity", 1.0);
             }
-        }, function() {
+        }, function () {
             var that = $(this);
             var classes = that.attr("class");
             var group = classes.match(/cc-group-\d+/);
@@ -64,7 +79,7 @@
             if (group) {
                 var groupMembers = $("a." + group);
 
-                groupMembers.each(function() {
+                groupMembers.each(function () {
                     $(this).attr("style", $(this).data("original-style"));
                 });
             }
@@ -84,35 +99,34 @@
 
     });
 
-    function loadSquarebox(href)
-    {
+    function loadSquarebox(href) {
         var calendarSquareboxTemplate = $("#calendar-squarebox-template");
 
         if (calendarSquareboxTemplate.length) {
-            populateSquarebox( calendarSquareboxTemplate.html() );
+            populateSquarebox(calendarSquareboxTemplate.html());
         } else {
             populateSquarebox('<div class="padded">...</p>');
         }
 
-        squarebox.clearQueue().delay(loadingDelay).queue(function() {
+        squarebox.clearQueue().delay(loadingDelay).queue(function () {
             $.ajax({
                 "cache": false,
                 "data": { "ajax": true },
                 "dataType": "html",
-                "error": function() {
-                    if (squarebox && ! squareboxShutdown) {
+                "error": function () {
+                    if (squarebox && !squareboxShutdown) {
                         window.location.href = href;
                     }
                 },
                 "success": function (data) {
-                    if (squarebox && ! squareboxShutdown) {
+                    if (squarebox && !squareboxShutdown) {
                         populateSquarebox(data);
 
                         squarebox.find(".no-ajax").remove();
                         squarebox.find(".datepicker").datepicker();
 
-                        squarebox.find(".inline-label-container").each(function() {
-                            updateInlineLabel( $(this) );
+                        squarebox.find(".inline-label-container").each(function () {
+                            updateInlineLabel($(this));
                         });
 
                         squarebox.append('<a href="#" class="squarebox-primary-close-link squarebox-close-link">&times;</a>');
@@ -121,15 +135,15 @@
 
                         /* Recognize squarebox internal links */
 
-                        squarebox.on("click", "a.squarebox-internal-link", function(event) {
+                        squarebox.on("click", "a.squarebox-internal-link", function (event) {
                             event.preventDefault();
 
-                            loadSquarebox( $(this).attr("href") );
+                            loadSquarebox($(this).attr("href"));
                         });
 
                         /* Recognize squarebox close links */
 
-                        squarebox.on("click", "a.squarebox-close-link", function(event) {
+                        squarebox.on("click", "a.squarebox-close-link", function (event) {
                             event.preventDefault();
 
                             removeSquarebox();
@@ -143,9 +157,8 @@
         });
     }
 
-    function prepareSquarebox()
-    {
-        if (! squareboxOverlay) {
+    function prepareSquarebox() {
+        if (!squareboxOverlay) {
             squareboxOverlay = $('<div id="squarebox-overlay"></div>').css({
                 "position": "absolute",
                 "z-index": 1532,
@@ -158,7 +171,7 @@
             $("body").prepend(squareboxOverlay);
         }
 
-        if (! squarebox) {
+        if (!squarebox) {
             squarebox = $('<div class="panel"></div>').css({
                 "position": "absolute",
                 "z-index": 1536
@@ -168,8 +181,7 @@
         }
     }
 
-    function populateSquarebox(content)
-    {
+    function populateSquarebox(content) {
         prepareSquarebox();
 
         squarebox.clearQueue();
@@ -183,8 +195,7 @@
         fadeOutContent();
     }
 
-    function updateSquarebox()
-    {
+    function updateSquarebox() {
         if (squarebox) {
             var orientation;
 
@@ -202,12 +213,11 @@
         }
     }
 
-    function removeSquarebox()
-    {
+    function removeSquarebox() {
         if (squarebox) {
             squareboxShutdown = true;
 
-            squarebox.clearQueue().fadeOut(animationDuration, function() {
+            squarebox.clearQueue().fadeOut(animationDuration, function () {
                 if (squarebox) {
                     squarebox.remove();
                     squarebox = undefined;
@@ -220,17 +230,15 @@
         }
     }
 
-    function fadeOutContent()
-    {
+    function fadeOutContent() {
         if (squareboxOverlay) {
             squareboxOverlay.clearQueue().fadeTo(animationDuration, 0.75);
         }
     }
 
-    function fadeInContent()
-    {
+    function fadeInContent() {
         if (squareboxOverlay) {
-            squareboxOverlay.clearQueue().fadeTo(animationDuration, 0.00, function() {
+            squareboxOverlay.clearQueue().fadeTo(animationDuration, 0.00, function () {
                 if (squareboxOverlay) {
                     squareboxOverlay.remove();
                     squareboxOverlay = undefined;
@@ -239,26 +247,24 @@
         }
     }
 
-    function updateCalendarCols()
-    {
+    function updateCalendarCols() {
         var calendarWidth = $("#calendar").width();
         var calendarLegendColWidth = $(".calendar-time-col, .calendar-square-col").width();
 
         var calendarDateCols = $(".calendar-date-col:visible");
 
         if (calendarWidth && calendarLegendColWidth && calendarDateCols.length) {
-            calendarDateCols.width( Math.floor((calendarWidth - calendarLegendColWidth) / calendarDateCols.length) );
+            calendarDateCols.width(Math.floor((calendarWidth - calendarLegendColWidth) / calendarDateCols.length));
         }
     }
 
-    function updateCalendarEvents()
-    {
-        $(".calendar-date-col").each(function(dateIndex) {
+    function updateCalendarEvents() {
+        $(".calendar-date-col").each(function (dateIndex) {
             var calendarDateCol = $(this);
 
             var eventGroups = [];
 
-            calendarDateCol.find(".cc-event").each(function() {
+            calendarDateCol.find(".cc-event").each(function () {
                 var classes = $(this).attr("class");
                 var eventGroup = classes.match(/cc-group-\d+/);
 
@@ -294,9 +300,9 @@
 
                     var eventGroupOverlay = $("#" + eventGroup + "-overlay-" + dateIndex);
 
-                    if (! eventGroupOverlay.length) {
+                    if (!eventGroupOverlay.length) {
                         eventGroupOverlay = eventGroupCellFirst.clone();
-                        eventGroupOverlay.appendTo( eventGroupCellFirst.closest("td") );
+                        eventGroupOverlay.appendTo(eventGroupCellFirst.closest("td"));
                         eventGroupOverlay.attr("id", eventGroup + "-overlay-" + dateIndex);
                         eventGroupOverlay.removeClass(eventGroup);
                     }

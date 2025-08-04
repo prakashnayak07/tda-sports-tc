@@ -154,7 +154,7 @@ $todayUrl = $this->url('frontend', [], ['query' => $todayUrlQuery]);
         <!-- Header: Month/Year and Navigation -->
         <!-- Days of the Week (now dynamic) -->
         <!-- Calendar Days Grid -->
-        <!-- <div class="relative">
+        <div class="relative">
             <div
                 @click="open = !open"
                 class="relative w-40 h-10 flex items-center justify-between px-3 bg-white border border-gray-300 rounded-md cursor-pointer">
@@ -212,7 +212,7 @@ $todayUrl = $this->url('frontend', [], ['query' => $todayUrlQuery]);
                     </template>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <!-- Next Day Button -->
         <a href="<?= $nextDayUrl ?>" title="Next Day" class="flex items-center justify-center w-10 h-10 rounded-full text-gray-500 hover:bg-gray-200 transition-colors">

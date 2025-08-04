@@ -58,6 +58,187 @@ $this->headScript()->appendFile($this->basePath('js/controller/calendar/index.mi
         min-width: 300px !important;
         min-height: 200px !important;
     }
+
+    /* Enhanced Status Colors - Better matching original project */
+    .modern-status-free {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .modern-status-free:hover {
+        background: #bbf7d0;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+
+    .modern-status-booked {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    .modern-status-booked:hover {
+        background: #fecaca;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    .modern-status-multiple {
+        background: #dbeafe;
+        color: #1e40af;
+        border: 1px solid #bfdbfe;
+    }
+
+    .modern-status-multiple:hover {
+        background: #bfdbfe;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .modern-status-own {
+        background: #dcfce7;
+        color: #166534;
+        border: 2px solid #22c55e;
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
+    }
+
+    .modern-status-own:hover {
+        background: #bbf7d0;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .modern-status-conflict {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    .modern-status-conflict:hover {
+        background: #fecaca;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    }
+
+    .modern-status-event {
+        background: #fdf4ff;
+        color: #7c3aed;
+        border: 1px solid #e9d5ff;
+    }
+
+    .modern-status-event:hover {
+        background: #e9d5ff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+    }
+
+    .modern-status-past {
+        background: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #e5e7eb;
+    }
+
+    .modern-status-past:hover {
+        background: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    .modern-status-unavailable {
+        background: #f3f4f6;
+        color: #9ca3af;
+        border: 1px solid #e5e7eb;
+    }
+
+    /* Enhanced Billing Status Indicators - Better visual hierarchy */
+    .modern-billing-pending {
+        border-left: 4px solid #ef4444 !important;
+        position: relative;
+        background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%);
+    }
+
+    .modern-billing-pending::after {
+        content: "⏳";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #ef4444;
+        font-weight: bold;
+    }
+
+    .modern-billing-paid {
+        border-left: 4px solid #10b981 !important;
+        position: relative;
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
+    }
+
+    .modern-billing-paid::after {
+        content: "✓";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #10b981;
+        font-weight: bold;
+    }
+
+    .modern-billing-cancelled {
+        border-left: 4px solid #f59e0b !important;
+        position: relative;
+        background: linear-gradient(90deg, rgba(245, 158, 11, 0.1) 0%, transparent 100%);
+    }
+
+    .modern-billing-cancelled::after {
+        content: "✗";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #f59e0b;
+        font-weight: bold;
+    }
+
+    .modern-billing-uncollectable {
+        border-left: 4px solid #6b7280 !important;
+        position: relative;
+        background: linear-gradient(90deg, rgba(107, 114, 128, 0.1) 0%, transparent 100%);
+    }
+
+    .modern-billing-uncollectable::after {
+        content: "⚠";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #6b7280;
+        font-weight: bold;
+    }
+
+    /* Status combination styles - for when billing status combines with booking status */
+    .modern-status-own.modern-billing-pending {
+        background: linear-gradient(135deg, #dcfce7 0%, rgba(239, 68, 68, 0.1) 100%);
+        border: 2px solid #22c55e;
+        border-left: 4px solid #ef4444;
+    }
+
+    .modern-status-own.modern-billing-paid {
+        background: linear-gradient(135deg, #dcfce7 0%, rgba(16, 185, 129, 0.1) 100%);
+        border: 2px solid #22c55e;
+        border-left: 4px solid #10b981;
+    }
+
+    .modern-status-own.modern-billing-cancelled {
+        background: linear-gradient(135deg, #dcfce7 0%, rgba(245, 158, 11, 0.1) 100%);
+        border: 2px solid #22c55e;
+        border-left: 4px solid #f59e0b;
+    }
+
+    .modern-status-own.modern-billing-uncollectable {
+        background: linear-gradient(135deg, #dcfce7 0%, rgba(107, 114, 128, 0.1) 100%);
+        border: 2px solid #22c55e;
+        border-left: 4px solid #6b7280;
+    }
 </style>
 
 <div id="calendar" class="panel">

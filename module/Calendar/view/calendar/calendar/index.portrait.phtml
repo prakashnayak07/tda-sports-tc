@@ -41,33 +41,112 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 
                                 $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
 
-                                // Determine status and apply modern styling
-                                $isFree = strpos($cellContent, 'cc-free') !== false;
-                                $isBooked = strpos($cellContent, 'cc-single') !== false;
-                                $isMultiple = strpos($cellContent, 'cc-multiple') !== false;
-                                $isOwn = strpos($cellContent, 'cc-own') !== false;
-                                $isConflict = strpos($cellContent, 'cc-conflict') !== false;
-                                $isOver = strpos($cellContent, 'cc-over') !== false;
+                                // Determine status and apply modern styling - improved detection
+                                $isFree = preg_match('/\bcc-free\b/', $cellContent);
+                                $isBooked = preg_match('/\bcc-single\b/', $cellContent);
+                                $isMultiple = preg_match('/\bcc-multiple\b/', $cellContent);
+                                $isOwn = preg_match('/\bcc-own\b/', $cellContent);
+                                $isConflict = preg_match('/\bcc-conflict\b/', $cellContent);
+                                $isOver = preg_match('/\bcc-over\b/', $cellContent);
+                                $isEvent = preg_match('/\bcc-event\b/', $cellContent);
+
+                                // Extract billing status directly from booking data (like original project)
+                                $billingStatus = null;
+                                if ($this->user && $this->user->can('calendar.see-data')) {
+                                    // Get reservations for this cell
+                                    $reservationsForCell = $this->calendarReservationsForCell($reservationsForCol, $square);
+
+                                    if (!empty($reservationsForCell)) {
+                                        // Get the first reservation (like original project logic)
+                                        $reservation = current($reservationsForCell);
+                                        $booking = $reservation->needExtra('booking');
+
+                                        if ($booking) {
+                                            $billingStatus = $booking->getBillingStatus();
+                                        }
+                                    }
+                                }
 
                                 // Extract link if available
                                 preg_match('/href="([^"]+)"/', $cellContent, $matches);
                                 $link = isset($matches[1]) ? $matches[1] : null;
 
-                                // Extract text content
-                                preg_match('/<[^>]*>([^<]+)<\/[^>]*>/', $cellContent, $matches);
-                                $text = isset($matches[1]) ? trim($matches[1]) : 'Free';
+                                // Extract text content - improved extraction to match original project
+                                $text = 'Free'; // Default text
 
-                                // Determine status class
+                                // First try to extract from cc-label div (most common case)
+                                if (preg_match('/<div[^>]*class="[^"]*cc-label[^"]*"[^>]*>([^<]+)<\/div>/', $cellContent, $matches)) {
+                                    $text = trim($matches[1]);
+                                }
+                                // If no cc-label, try to extract from any div content
+                                elseif (preg_match('/<div[^>]*>([^<]+)<\/div>/', $cellContent, $matches)) {
+                                    $text = trim($matches[1]);
+                                }
+                                // If no div content, try to extract from link text
+                                elseif (preg_match('/<a[^>]*>([^<]+)<\/a>/', $cellContent, $matches)) {
+                                    $text = trim($matches[1]);
+                                }
+                                // Last fallback: strip HTML tags and get text
+                                else {
+                                    $text = trim(strip_tags($cellContent));
+                                }
+
+                                // Clean up the text
+                                $text = $text ?: 'Free';
+
+                                // Update text based on billing status if present - this should override the extracted text
+                                if ($billingStatus) {
+                                    switch ($billingStatus) {
+                                        case 'pending':
+                                            $text = 'Pending Payment';
+                                            break;
+                                        case 'paid':
+                                            $text = 'Paid';
+                                            break;
+                                        case 'cancelled':
+                                            $text = 'Cancelled';
+                                            break;
+                                        case 'uncollectable':
+                                            $text = 'Uncollectable';
+                                            break;
+                                    }
+                                }
+
+                                // Determine status class - improved priority order to match original project logic
                                 $statusClass = 'modern-status-unavailable';
-                                if ($isFree) $statusClass = 'modern-status-free';
-                                elseif ($isBooked) $statusClass = 'modern-status-booked';
-                                elseif ($isMultiple) $statusClass = 'modern-status-multiple';
-                                elseif ($isOwn) $statusClass = 'modern-status-own';
-                                elseif ($isConflict) $statusClass = 'modern-status-conflict';
-                                elseif ($isOver) $statusClass = 'modern-status-past';
+
+                                // Priority order based on original project logic:
+                                // 1. Own booking (highest priority)
+                                // 2. Conflict (high priority)
+                                // 3. Event (high priority)
+                                // 4. Multiple bookings
+                                // 5. Single booking
+                                // 6. Past/Over (low priority)
+                                // 7. Free (lowest priority)
+
+                                if ($isOwn) {
+                                    $statusClass = 'modern-status-own';
+                                } elseif ($isConflict) {
+                                    $statusClass = 'modern-status-conflict';
+                                } elseif ($isEvent) {
+                                    $statusClass = 'modern-status-event';
+                                } elseif ($isMultiple) {
+                                    $statusClass = 'modern-status-multiple';
+                                } elseif ($isBooked) {
+                                    $statusClass = 'modern-status-booked';
+                                } elseif ($isOver) {
+                                    $statusClass = 'modern-status-past';
+                                } elseif ($isFree) {
+                                    $statusClass = 'modern-status-free';
+                                }
+
+                                // Add billing status modifier if present
+                                if ($billingStatus) {
+                                    $statusClass .= ' modern-billing-' . $billingStatus;
+                                }
                                 ?>
 
-                                <?php if ($link && $isFree): ?>
+                                <?php if ($link): ?>
                                     <a href="<?= $link ?>" class="modern-slot <?= $statusClass ?>">
                                         <?= $text ?>
                                     </a>
@@ -119,33 +198,112 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 
                                     $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
 
-                                    // Determine status and apply modern styling
-                                    $isFree = strpos($cellContent, 'cc-free') !== false;
-                                    $isBooked = strpos($cellContent, 'cc-single') !== false;
-                                    $isMultiple = strpos($cellContent, 'cc-multiple') !== false;
-                                    $isOwn = strpos($cellContent, 'cc-own') !== false;
-                                    $isConflict = strpos($cellContent, 'cc-conflict') !== false;
-                                    $isOver = strpos($cellContent, 'cc-over') !== false;
+                                    // Determine status and apply modern styling - improved detection
+                                    $isFree = preg_match('/\bcc-free\b/', $cellContent);
+                                    $isBooked = preg_match('/\bcc-single\b/', $cellContent);
+                                    $isMultiple = preg_match('/\bcc-multiple\b/', $cellContent);
+                                    $isOwn = preg_match('/\bcc-own\b/', $cellContent);
+                                    $isConflict = preg_match('/\bcc-conflict\b/', $cellContent);
+                                    $isOver = preg_match('/\bcc-over\b/', $cellContent);
+                                    $isEvent = preg_match('/\bcc-event\b/', $cellContent);
+
+                                    // Extract billing status directly from booking data (like original project)
+                                    $billingStatus = null;
+                                    if ($this->user && $this->user->can('calendar.see-data')) {
+                                        // Get reservations for this cell
+                                        $reservationsForCell = $this->calendarReservationsForCell($reservationsForCol, $square);
+
+                                        if (!empty($reservationsForCell)) {
+                                            // Get the first reservation (like original project logic)
+                                            $reservation = current($reservationsForCell);
+                                            $booking = $reservation->needExtra('booking');
+
+                                            if ($booking) {
+                                                $billingStatus = $booking->getBillingStatus();
+                                            }
+                                        }
+                                    }
 
                                     // Extract link if available
                                     preg_match('/href="([^"]+)"/', $cellContent, $matches);
                                     $link = isset($matches[1]) ? $matches[1] : null;
 
-                                    // Extract text content
-                                    preg_match('/<[^>]*>([^<]+)<\/[^>]*>/', $cellContent, $matches);
-                                    $text = isset($matches[1]) ? trim($matches[1]) : 'Free';
+                                    // Extract text content - improved extraction to match original project
+                                    $text = 'Free'; // Default text
 
-                                    // Determine status class
+                                    // First try to extract from cc-label div (most common case)
+                                    if (preg_match('/<div[^>]*class="[^"]*cc-label[^"]*"[^>]*>([^<]+)<\/div>/', $cellContent, $matches)) {
+                                        $text = trim($matches[1]);
+                                    }
+                                    // If no cc-label, try to extract from any div content
+                                    elseif (preg_match('/<div[^>]*>([^<]+)<\/div>/', $cellContent, $matches)) {
+                                        $text = trim($matches[1]);
+                                    }
+                                    // If no div content, try to extract from link text
+                                    elseif (preg_match('/<a[^>]*>([^<]+)<\/a>/', $cellContent, $matches)) {
+                                        $text = trim($matches[1]);
+                                    }
+                                    // Last fallback: strip HTML tags and get text
+                                    else {
+                                        $text = trim(strip_tags($cellContent));
+                                    }
+
+                                    // Clean up the text
+                                    $text = $text ?: 'Free';
+
+                                    // Update text based on billing status if present
+                                    if ($billingStatus) {
+                                        switch ($billingStatus) {
+                                            case 'pending':
+                                                $text = 'Pending Payment';
+                                                break;
+                                            case 'paid':
+                                                $text = 'Paid';
+                                                break;
+                                            case 'cancelled':
+                                                $text = 'Cancelled';
+                                                break;
+                                            case 'uncollectable':
+                                                $text = 'Uncollectable';
+                                                break;
+                                        }
+                                    }
+
+                                    // Determine status class - improved priority order to match original project logic
                                     $statusClass = 'modern-status-unavailable';
-                                    if ($isFree) $statusClass = 'modern-status-free';
-                                    elseif ($isBooked) $statusClass = 'modern-status-booked';
-                                    elseif ($isMultiple) $statusClass = 'modern-status-multiple';
-                                    elseif ($isOwn) $statusClass = 'modern-status-own';
-                                    elseif ($isConflict) $statusClass = 'modern-status-conflict';
-                                    elseif ($isOver) $statusClass = 'modern-status-past';
+
+                                    // Priority order based on original project logic:
+                                    // 1. Own booking (highest priority)
+                                    // 2. Conflict (high priority)
+                                    // 3. Event (high priority)
+                                    // 4. Multiple bookings
+                                    // 5. Single booking
+                                    // 6. Past/Over (low priority)
+                                    // 7. Free (lowest priority)
+
+                                    if ($isOwn) {
+                                        $statusClass = 'modern-status-own';
+                                    } elseif ($isConflict) {
+                                        $statusClass = 'modern-status-conflict';
+                                    } elseif ($isEvent) {
+                                        $statusClass = 'modern-status-event';
+                                    } elseif ($isMultiple) {
+                                        $statusClass = 'modern-status-multiple';
+                                    } elseif ($isBooked) {
+                                        $statusClass = 'modern-status-booked';
+                                    } elseif ($isOver) {
+                                        $statusClass = 'modern-status-past';
+                                    } elseif ($isFree) {
+                                        $statusClass = 'modern-status-free';
+                                    }
+
+                                    // Add billing status modifier if present
+                                    if ($billingStatus) {
+                                        $statusClass .= ' modern-billing-' . $billingStatus;
+                                    }
                                     ?>
 
-                                    <?php if ($link && $isFree): ?>
+                                    <?php if ($link): ?>
                                         <a href="<?= $link ?>" class="modern-slot <?= $statusClass ?>">
                                             <?= $text ?>
                                         </a>
@@ -362,10 +520,11 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
         display: block;
     }
 
-    /* Status Colors */
+    /* Status Colors - Enhanced */
     .modern-status-free {
         background: #dcfce7;
         color: #166534;
+        border: 1px solid #bbf7d0;
     }
 
     .modern-status-free:hover {
@@ -377,22 +536,32 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
     .modern-status-booked {
         background: #fee2e2;
         color: #991b1b;
+        border: 1px solid #fecaca;
     }
 
     .modern-status-multiple {
         background: #dbeafe;
         color: #1e40af;
+        border: 1px solid #bfdbfe;
     }
 
     .modern-status-own {
         background: #dcfce7;
         color: #166534;
         border: 2px solid #22c55e;
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
     }
 
     .modern-status-conflict {
         background: #fef2f2;
         color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    .modern-status-event {
+        background: #fdf4ff;
+        color: #7c3aed;
+        border: 1px solid #e9d5ff;
     }
 
     .modern-status-past {
@@ -403,6 +572,63 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
     .modern-status-unavailable {
         background: #f3f4f6;
         color: #9ca3af;
+    }
+
+    /* Billing Status Indicators */
+    .modern-billing-pending {
+        border-left: 4px solid #ef4444 !important;
+        position: relative;
+    }
+
+    .modern-billing-pending::after {
+        content: "⏳";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #ef4444;
+    }
+
+    .modern-billing-paid {
+        border-left: 4px solid #10b981 !important;
+        position: relative;
+    }
+
+    .modern-billing-paid::after {
+        content: "✓";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #10b981;
+    }
+
+    .modern-billing-cancelled {
+        border-left: 4px solid #f59e0b !important;
+        position: relative;
+    }
+
+    .modern-billing-cancelled::after {
+        content: "✗";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #f59e0b;
+    }
+
+    .modern-billing-uncollectable {
+        border-left: 4px solid #6b7280 !important;
+        position: relative;
+    }
+
+    .modern-billing-uncollectable::after {
+        content: "⚠";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        color: #6b7280;
     }
 
     /* Mobile Styles */

@@ -2,6 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Modern calendar styles */
+.calendar-modern {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200;
+}
+
+.calendar-grid {
+  @apply hidden lg:grid;
+}
+
+.calendar-tabs {
+  @apply block lg:hidden;
+}
+
+.calendar-tab-button-active {
+  @apply bg-lime-500 text-white shadow-md;
+}
+
+.calendar-status-free {
+  @apply bg-lime-100 text-lime-700 hover:bg-lime-200;
+}
+
+.calendar-status-booked {
+  @apply bg-rose-100 text-rose-700;
+}
+
+.calendar-status-multiple {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.calendar-status-own {
+  @apply bg-emerald-100 text-emerald-700;
+}
+
+.calendar-status-conflict {
+  @apply bg-red-100 text-red-700;
+}
+
+.calendar-status-past {
+  @apply bg-slate-100 text-slate-400;
+}
+
+.calendar-status-closed {
+  @apply bg-slate-200 text-slate-500;
+}
+
+/* Modern table styling */
+.calendar-table-modern {
+  @apply border-collapse w-full;
+}
+
+.calendar-table-modern td {
+  @apply border border-slate-200 p-2;
+}
+
+.calendar-table-modern th {
+  @apply bg-slate-50 border border-slate-200 p-3 font-semibold text-center text-slate-700;
+}
+
+.calendar-cell-modern {
+  @apply border-none p-0 transition-all duration-200 ease-in-out;
+}
+
+.calendar-cell-modern:hover {
+  @apply bg-transparent;
+}
+
+.cc-label-modern {
+  @apply p-3 text-center rounded-lg text-sm font-semibold transition-all duration-200 ease-in-out border-none;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .calendar-desktop {
+    @apply hidden;
+  }
+  
+  .calendar-mobile {
+    @apply block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .calendar-desktop {
+    @apply block;
+  }
+  
+  .calendar-mobile {
+    @apply hidden;
+  }
+}
+
 /* Custom component classes for your booking system */
 @layer components {
   .btn-booking {

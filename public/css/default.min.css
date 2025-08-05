@@ -297,6 +297,7 @@ a#logo:active {
 
 #calendar {
   clear: both;
+  overflow: auto;
 }
 
 .calendar-table,
@@ -342,7 +343,7 @@ a#logo:active {
 }
 
 .calendar-core-row td {
-  height: 30px;
+  height: 62px;
 }
 
 .cts-label,

@@ -77,7 +77,7 @@
   .calendar-desktop {
     @apply hidden;
   }
-  
+
   .calendar-mobile {
     @apply block;
   }
@@ -87,7 +87,7 @@
   .calendar-desktop {
     @apply block;
   }
-  
+
   .calendar-mobile {
     @apply hidden;
   }
@@ -98,23 +98,23 @@
   .btn-booking {
     @apply px-4 py-2 bg-booking-primary text-white rounded hover:bg-booking-accent transition-colors;
   }
-  
+
   .card-booking {
     @apply bg-white rounded-lg shadow-md p-6 border border-gray-200;
   }
-  
+
   .header-booking {
     @apply bg-booking-primary text-white p-4 border-b border-booking-accent;
   }
-  
+
   .calendar-cell {
     @apply border border-gray-300 p-2 hover:bg-gray-50 transition-colors;
   }
-  
+
   .calendar-cell-occupied {
     @apply bg-red-100 border-red-300 text-red-800;
   }
-  
+
   .calendar-cell-available {
     @apply bg-green-100 border-green-300 text-green-800 cursor-pointer;
   }
@@ -125,24 +125,38 @@
   img {
     @apply max-w-full border-0;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply m-0 p-0 font-normal;
     font-family: Arial, sans-serif;
   }
-  
-  h1 { @apply text-2xl; }
-  h2 { @apply text-lg text-booking-secondary; }
-  h3, h4, h5, h6 { @apply text-base text-booking-secondary; }
-  
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-lg text-booking-secondary;
+  }
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-base text-booking-secondary;
+  }
+
   p {
     @apply mb-4 leading-6;
   }
-  
+
   p:last-child {
     @apply mb-0;
   }
-  
+
   code {
     @apply inline-block px-1 font-mono text-sm bg-booking-light rounded;
   }

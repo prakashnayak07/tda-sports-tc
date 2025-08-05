@@ -41,7 +41,10 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 
                                 $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
 
-                                // Determine status and apply modern styling - improved detection
+                                // Check if this is a split cell (contains cc-height-2)
+                                $isSplitCell = strpos($cellContent, 'cc-height-2') !== false;
+
+                                // Determine status and apply modern styling
                                 $isFree = preg_match('/\bcc-free\b/', $cellContent);
                                 $isBooked = preg_match('/\bcc-single\b/', $cellContent);
                                 $isMultiple = preg_match('/\bcc-multiple\b/', $cellContent);
@@ -50,28 +53,17 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
                                 $isOver = preg_match('/\bcc-over\b/', $cellContent);
                                 $isEvent = preg_match('/\bcc-event\b/', $cellContent);
 
-                                // Extract billing status directly from booking data (like original project)
-                                $billingStatus = null;
-                                if ($this->user && $this->user->can('calendar.see-data')) {
-                                    // Get reservations for this cell
-                                    $reservationsForCell = $this->calendarReservationsForCell($reservationsForCol, $square);
-
-                                    if (!empty($reservationsForCell)) {
-                                        // Get the first reservation (like original project logic)
-                                        $reservation = current($reservationsForCell);
-                                        $booking = $reservation->needExtra('booking');
-
-                                        if ($booking) {
-                                            $billingStatus = $booking->getBillingStatus();
-                                        }
-                                    }
+                                // Extract billing status class from the cell content (added by view helpers)
+                                $billingStatusClass = '';
+                                if (preg_match('/\bmodern-billing-(\w+)\b/', $cellContent, $matches)) {
+                                    $billingStatusClass = ' ' . $matches[0];
                                 }
 
                                 // Extract link if available
                                 preg_match('/href="([^"]+)"/', $cellContent, $matches);
                                 $link = isset($matches[1]) ? $matches[1] : null;
 
-                                // Extract text content - improved extraction to match original project
+                                // Extract text content
                                 $text = 'Free'; // Default text
 
                                 // First try to extract from cc-label div (most common case)
@@ -94,35 +86,8 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
                                 // Clean up the text
                                 $text = $text ?: 'Free';
 
-                                // Update text based on billing status if present - this should override the extracted text
-                                if ($billingStatus) {
-                                    switch ($billingStatus) {
-                                        case 'pending':
-                                            $text = 'Pending Payment';
-                                            break;
-                                        case 'paid':
-                                            $text = 'Paid';
-                                            break;
-                                        case 'cancelled':
-                                            $text = 'Cancelled';
-                                            break;
-                                        case 'uncollectable':
-                                            $text = 'Uncollectable';
-                                            break;
-                                    }
-                                }
-
-                                // Determine status class - improved priority order to match original project logic
+                                // Determine status class
                                 $statusClass = 'modern-status-unavailable';
-
-                                // Priority order based on original project logic:
-                                // 1. Own booking (highest priority)
-                                // 2. Conflict (high priority)
-                                // 3. Event (high priority)
-                                // 4. Multiple bookings
-                                // 5. Single booking
-                                // 6. Past/Over (low priority)
-                                // 7. Free (lowest priority)
 
                                 if ($isOwn) {
                                     $statusClass = 'modern-status-own';
@@ -141,8 +106,11 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
                                 }
 
                                 // Add billing status modifier if present
-                                if ($billingStatus) {
-                                    $statusClass .= ' modern-billing-' . $billingStatus;
+                                $statusClass .= $billingStatusClass;
+
+                                // Add split cell class if needed
+                                if ($isSplitCell) {
+                                    $statusClass .= ' cc-height-2';
                                 }
                                 ?>
 
@@ -198,7 +166,10 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 
                                     $cellContent = $this->calendarCellLogic($walkingDate, $walkingTime, $this->timeBlock, $this->dateNow, $square, $this->user, $reservationsForCol, $eventsForCol);
 
-                                    // Determine status and apply modern styling - improved detection
+                                    // Check if this is a split cell (contains cc-height-2)
+                                    $isSplitCell = strpos($cellContent, 'cc-height-2') !== false;
+
+                                    // Determine status and apply modern styling
                                     $isFree = preg_match('/\bcc-free\b/', $cellContent);
                                     $isBooked = preg_match('/\bcc-single\b/', $cellContent);
                                     $isMultiple = preg_match('/\bcc-multiple\b/', $cellContent);
@@ -207,28 +178,17 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
                                     $isOver = preg_match('/\bcc-over\b/', $cellContent);
                                     $isEvent = preg_match('/\bcc-event\b/', $cellContent);
 
-                                    // Extract billing status directly from booking data (like original project)
-                                    $billingStatus = null;
-                                    if ($this->user && $this->user->can('calendar.see-data')) {
-                                        // Get reservations for this cell
-                                        $reservationsForCell = $this->calendarReservationsForCell($reservationsForCol, $square);
-
-                                        if (!empty($reservationsForCell)) {
-                                            // Get the first reservation (like original project logic)
-                                            $reservation = current($reservationsForCell);
-                                            $booking = $reservation->needExtra('booking');
-
-                                            if ($booking) {
-                                                $billingStatus = $booking->getBillingStatus();
-                                            }
-                                        }
+                                    // Extract billing status class from the cell content (added by view helpers)
+                                    $billingStatusClass = '';
+                                    if (preg_match('/\bmodern-billing-(\w+)\b/', $cellContent, $matches)) {
+                                        $billingStatusClass = ' ' . $matches[0];
                                     }
 
                                     // Extract link if available
                                     preg_match('/href="([^"]+)"/', $cellContent, $matches);
                                     $link = isset($matches[1]) ? $matches[1] : null;
 
-                                    // Extract text content - improved extraction to match original project
+                                    // Extract text content
                                     $text = 'Free'; // Default text
 
                                     // First try to extract from cc-label div (most common case)
@@ -251,35 +211,8 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
                                     // Clean up the text
                                     $text = $text ?: 'Free';
 
-                                    // Update text based on billing status if present
-                                    if ($billingStatus) {
-                                        switch ($billingStatus) {
-                                            case 'pending':
-                                                $text = 'Pending Payment';
-                                                break;
-                                            case 'paid':
-                                                $text = 'Paid';
-                                                break;
-                                            case 'cancelled':
-                                                $text = 'Cancelled';
-                                                break;
-                                            case 'uncollectable':
-                                                $text = 'Uncollectable';
-                                                break;
-                                        }
-                                    }
-
-                                    // Determine status class - improved priority order to match original project logic
+                                    // Determine status class
                                     $statusClass = 'modern-status-unavailable';
-
-                                    // Priority order based on original project logic:
-                                    // 1. Own booking (highest priority)
-                                    // 2. Conflict (high priority)
-                                    // 3. Event (high priority)
-                                    // 4. Multiple bookings
-                                    // 5. Single booking
-                                    // 6. Past/Over (low priority)
-                                    // 7. Free (lowest priority)
 
                                     if ($isOwn) {
                                         $statusClass = 'modern-status-own';
@@ -298,8 +231,11 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
                                     }
 
                                     // Add billing status modifier if present
-                                    if ($billingStatus) {
-                                        $statusClass .= ' modern-billing-' . $billingStatus;
+                                    $statusClass .= $billingStatusClass;
+
+                                    // Add split cell class if needed
+                                    if ($isSplitCell) {
+                                        $statusClass .= ' cc-height-2';
                                     }
                                     ?>
 
@@ -733,6 +669,46 @@ $eventsCleanupPlugin = $this->plugin('CalendarEventsCleanup');
 
     .modern-slot-container {
         width: 120px;
+    }
+
+    /* Split cell styling for half-hour bookings */
+    .cc-height-2 {
+        height: 50% !important;
+        min-height: 30px !important;
+    }
+
+    .calendar-cell.cc-height-2 {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .calendar-cell.cc-height-2:first-child {
+        border-bottom: 1px solid #e5e7eb !important;
+    }
+
+    /* Ensure billing status colors work in split cells */
+    .cc-height-2.modern-billing-pending,
+    .cc-height-2.modern-billing-paid,
+    .cc-height-2.modern-billing-cancelled,
+    .cc-height-2.modern-billing-uncollectable {
+        border-left: 4px solid !important;
+        position: relative !important;
+    }
+
+    .cc-height-2.modern-billing-pending {
+        border-left-color: #ef4444 !important;
+    }
+
+    .cc-height-2.modern-billing-paid {
+        border-left-color: #10b981 !important;
+    }
+
+    .cc-height-2.modern-billing-cancelled {
+        border-left-color: #f59e0b !important;
+    }
+
+    .cc-height-2.modern-billing-uncollectable {
+        border-left-color: #6b7280 !important;
     }
 
     /* Override any existing calendar styles */

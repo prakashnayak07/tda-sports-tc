@@ -9,8 +9,10 @@ class CellLogic extends AbstractHelper
 
     public function __invoke($walkingDate, $walkingTime, $timeBlock, $now, $square, $user, $reservationsForCol, $eventsForCol)
     {
-        return sprintf('<td>%s</td>',
-            $this->determineCell($walkingDate, $walkingTime, $timeBlock, $now, $square, $user, $reservationsForCol, $eventsForCol));
+        return sprintf(
+            '<td>%s</td>',
+            $this->determineCell($walkingDate, $walkingTime, $timeBlock, $now, $square, $user, $reservationsForCol, $eventsForCol)
+        );
     }
 
     protected function determineCell($walkingDate, $walkingTime, $timeBlock, $now, $square, $user, $reservationsForCol, $eventsForCol)
@@ -118,14 +120,28 @@ class CellLogic extends AbstractHelper
                 }
             }
 
-            $firstHalf = $view->calendarCellRenderCell($walkingDate, $walkingTime, $timeBlockSplit, $square, $user,
-                $reservationsForFirstHalf, $eventsForFirstHalf);
+            $firstHalf = $view->calendarCellRenderCell(
+                $walkingDate,
+                $walkingTime,
+                $timeBlockSplit,
+                $square,
+                $user,
+                $reservationsForFirstHalf,
+                $eventsForFirstHalf
+            );
             $firstHalfUnified = preg_replace('/ts=[0-9:]{5}\&te=[0-9:]{5}/', '', $firstHalf);
 
             $walkingDate->modify('+' . $timeBlockSplit . ' sec');
 
-            $secondHalf = $view->calendarCellRenderCell($walkingDate, $walkingTime + $timeBlockSplit, $timeBlockSplit, $square, $user,
-                $reservationsForSecondHalf, $eventsForSecondHalf);
+            $secondHalf = $view->calendarCellRenderCell(
+                $walkingDate,
+                $walkingTime + $timeBlockSplit,
+                $timeBlockSplit,
+                $square,
+                $user,
+                $reservationsForSecondHalf,
+                $eventsForSecondHalf
+            );
             $secondHalfUnified = preg_replace('/ts=[0-9:]{5}\&te=[0-9:]{5}/', '', $secondHalf);
 
             $walkingDate->modify('-' . $timeBlockSplit . ' sec');
@@ -139,13 +155,14 @@ class CellLogic extends AbstractHelper
 
                 return preg_replace('/te=[0-9:]{5}/', 'te=' . $timeEnd, $firstHalf);
             } else {
-                return sprintf('%s%s',
+                return sprintf(
+                    '%s%s',
                     str_replace('calendar-cell', 'calendar-cell cc-height-2', $firstHalf),
-                    str_replace('calendar-cell', 'calendar-cell cc-height-2', $secondHalf));
+                    str_replace('calendar-cell', 'calendar-cell cc-height-2', $secondHalf)
+                );
             }
         } else {
             return $view->calendarCellRenderCell($walkingDate, $walkingTime, $timeBlock, $square, $user, $reservationsForCell, $eventsForCell);
         }
     }
-
 }

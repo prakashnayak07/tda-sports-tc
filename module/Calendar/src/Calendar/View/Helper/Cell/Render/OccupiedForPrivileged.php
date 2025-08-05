@@ -26,7 +26,18 @@ class OccupiedForPrivileged extends AbstractHelper
         } else {
             $reservation = current($reservations);
             $booking = $reservation->needExtra('booking');
-            $bookingStatusColor = $this->bookingStatusService->getStatusColor($booking->getBillingStatus());
+            $billingStatus = $booking->getBillingStatus();
+
+            // Normalize billing status to handle inconsistencies
+            $normalizedStatus = $this->normalizeBillingStatus($billingStatus);
+
+            $bookingStatusColor = $this->bookingStatusService->getStatusColor($normalizedStatus);
+
+            // Add billing status class for modern styling
+            $billingStatusClass = '';
+            if ($normalizedStatus) {
+                $billingStatusClass = ' modern-billing-' . $normalizedStatus;
+            }
 
             if ($bookingStatusColor) {
                 $cellStyle = 'outline: solid 3px ' . $bookingStatusColor;
@@ -39,11 +50,31 @@ class OccupiedForPrivileged extends AbstractHelper
 
             switch ($booking->need('status')) {
                 case 'single':
-                    return $view->calendarCellLink($view->escapeHtml($cellLabel), $view->url('backend/booking/edit', [], $cellLinkParams), 'cc-single' . $cellGroup, null, $cellStyle);
+                    return $view->calendarCellLink($view->escapeHtml($cellLabel), $view->url('backend/booking/edit', [], $cellLinkParams), 'cc-single' . $cellGroup . $billingStatusClass, null, $cellStyle);
                 case 'subscription':
-                    return $view->calendarCellLink($cellLabel, $view->url('backend/booking/edit', [], $cellLinkParams), 'cc-multiple' . $cellGroup, null, $cellStyle);
+                    return $view->calendarCellLink($cellLabel, $view->url('backend/booking/edit', [], $cellLinkParams), 'cc-multiple' . $cellGroup . $billingStatusClass, null, $cellStyle);
             }
         }
     }
 
+    /**
+     * Normalize billing status to handle inconsistencies in the database
+     */
+    protected function normalizeBillingStatus($status)
+    {
+        if (!$status) {
+            return 'pending';
+        }
+
+        // Handle common inconsistencies
+        $statusMap = [
+            'pending_payment' => 'pending',
+            'pending' => 'pending',
+            'paid' => 'paid',
+            'cancelled' => 'cancelled',
+            'uncollectable' => 'uncollectable'
+        ];
+
+        return $statusMap[$status] ?? 'pending';
+    }
 }

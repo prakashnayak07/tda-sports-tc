@@ -18,7 +18,7 @@ class LoginForm extends Form
             'attributes' => array(
                 'id' => 'lf-email',
                 'class' => 'autofocus',
-                'style' => 'width: 250px;',
+                // Removed old CSS styles to prevent conflicts with Tailwind
             ),
             'options' => array(
                 'label' => 'Email address',
@@ -33,7 +33,7 @@ class LoginForm extends Form
             'type' => 'Password',
             'attributes' => array(
                 'id' => 'lf-pw',
-                'style' => 'width: 250px;',
+                // Removed old CSS styles to prevent conflicts with Tailwind
             ),
             'options' => array(
                 'label' => 'Password',
@@ -49,7 +49,7 @@ class LoginForm extends Form
             'attributes' => array(
                 'value' => 'Login',
                 'class' => 'default-button',
-                'style' => 'width: 175px;',
+                // Removed old CSS styles to prevent conflicts with Tailwind
             ),
         ));
 
@@ -77,5 +77,4 @@ class LoginForm extends Form
             ),
         )));
     }
-
 }

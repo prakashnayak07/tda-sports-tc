@@ -40,7 +40,8 @@ class SessionController extends AbstractActionController
                         $user = $loginResult->getIdentity();
 
                         $this->flashMessenger()->addSuccessMessage(
-                            sprintf($this->t('Welcome, %s'), $user->need('alias')));
+                            sprintf($this->t('Welcome, %s'), $user->need('alias'))
+                        );
 
                         return $this->redirectBack()->toOrigin();
 
@@ -86,7 +87,7 @@ class SessionController extends AbstractActionController
                 }
             }
 
-            $loginForm->setData( $loginForm->getData() );
+            $loginForm->setData($loginForm->getData());
         }
 
         return array(
@@ -108,5 +109,4 @@ class SessionController extends AbstractActionController
             'user' => $user,
         );
     }
-
 }

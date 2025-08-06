@@ -16,8 +16,12 @@ class Links extends AbstractHelper
         $backTitle = $view->placeholder('back-title')->getValue();
 
         if ($backHref && $backTitle) {
-            $html .= sprintf('<div class="links-back left-text"><a href="%s" class="unlined white back-button"><span class="light-gray">%s:</span><br>%s</a></div>',
-                $backHref, $view->translate('Back to'), $backTitle);
+            $html .= sprintf(
+                '<div class="links-back left-text"><a href="%s" class="unlined white back-button"><span class="light-gray">%s:</span><br>%s</a></div>',
+                $backHref,
+                $view->translate('Back to'),
+                $backTitle
+            );
         }
 
         $links = $view->placeholder('links')->getValue();
@@ -28,8 +32,11 @@ class Links extends AbstractHelper
             $html .= '<ul>';
 
             foreach ($links as $title => $href) {
-                $html .= sprintf('<li><a href="%s" class="unlined white">%s</a></li>',
-                    $href, $view->translate($title));
+                $html .= sprintf(
+                    '<li><a href="%s" class="unlined white">%s</a></li>',
+                    $href,
+                    $view->translate($title)
+                );
             }
 
             $html .= '</ul>';
@@ -42,5 +49,4 @@ class Links extends AbstractHelper
 
         return $html;
     }
-
 }

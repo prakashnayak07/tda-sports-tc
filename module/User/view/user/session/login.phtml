@@ -23,11 +23,7 @@ $this->setup(array(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $this->option(['client.name.short', 'service.name.full']) ?> - Login</title>
 
-    <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="/css/tailwind.css">
 
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- Custom styles -->
     <style>
@@ -89,11 +85,11 @@ $this->setup(array(
                     <p class="text-sm text-gray-600">Welcome back! Please sign in to your account.</p>
                 </div>
 
-                <!-- Back to calendar link -->
+                <!-- Back to main link -->
                 <div class="mb-6 text-center">
-                    <a href="<?= $this->url('calendar') ?>" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                    <a href="<?= $this->url('frontend') ?>" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors duration-200">
                         <i class="ph ph-arrow-left mr-2"></i>
-                        Go back to calendar
+                        Go back to main
                     </a>
                 </div>
 
@@ -161,13 +157,14 @@ $this->setup(array(
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <span class="text-gray-400 text-sm font-medium">@</span>
                             </div>
-                            <?php if ($form->get('lf-email')->getMessages()): ?>
-                                <p class="mt-2 text-sm text-red-600 flex items-center">
-                                    <i class="ph ph-warning mr-1"></i>
-                                    <?= implode(', ', $form->get('lf-email')->getMessages()) ?>
-                                </p>
-                            <?php endif; ?>
+
                         </div>
+                        <?php if ($form->get('lf-email')->getMessages()): ?>
+                            <p class="mt-2 my-4 justify-center text-sm text-red-600 flex items-center">
+                                <i class="ph ph-warning mr-1"></i>
+                                <?= implode(', ', $form->get('lf-email')->getMessages()) ?>
+                            </p>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Password field -->

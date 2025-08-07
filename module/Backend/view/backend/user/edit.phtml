@@ -1,11 +1,9 @@
 <?php
-
 if ($this->user) {
     $uid = $this->user->need('uid');
 } else {
     $uid = null;
 }
-
 if ($this->search) {
     $back = array(
         'User-Administration' => $this->url('backend/user', [], ['query' => ['usf-search' => $this->search]])
@@ -13,7 +11,6 @@ if ($this->search) {
 } else {
     $back = true;
 }
-
 $this->setup(array(
     'title' => 'User-Administration',
     'panel' => 'centered-panel large-sized',
@@ -24,194 +21,370 @@ $this->setup(array(
         'Configuration' => $this->url('backend/config'),
     ),
 ));
-
 $this->headScript()->appendFile($this->basePath('js/controller/backend/user/edit.min.js'));
-
 ?>
 
-<div>
-    <h1><?= $this->t('User-Administration') ?></h1>
+<style>
+    /* Override default form styles */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        background-color: #ffffff;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
 
-    <div class="separator-small"></div>
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
 
-    <p><?= $this->t('Here you can create, edit or delete the users of your system.') ?></p>
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+    }
 
-    <div class="separator separator-line"></div>
+    .form-element-errors {
+        color: #ef4444;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
 
-    <?= $this->partial('backend/user/index.search.phtml', ['search' => $this->search]) ?>
+    button[type="submit"] {
+        background: linear-gradient(to right, #10b981, #059669);
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
 
-    <div class="separator separator-line"></div>
+    button[type="submit"]:hover {
+        background: linear-gradient(to right, #059669, #047857);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
 
-    <div class="padded">
+    .default-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
 
-        <?php
+    .default-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
 
-        $form = $this->editUserForm;
-        $form->setAttribute('method', 'post');
-        $form->setAttribute('action', $this->url('backend/user/edit', ['uid' => $uid], ['query' => ['search' => $this->search]]));
-        $form->prepare();
+    .default-button.red {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
 
-        ?>
+    .default-button.red:hover {
+        background-color: #fecaca;
+    }
 
-        <?= $this->form()->openTag($form) ?>
+    /* Override table styles */
+    .default-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-        <div>
-            <table class="default-table half-table" style="float: left;">
-                <tr>
-                    <td colspan="2" class="centered-text">
-                        <div class="badge">1</div> <span class="badge-label"><?= $this->t('Account data') ?></span>
-                        <div class="separator-small"></div>
-                    </td>
-                </tr>
+    .default-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-                <?= $this->formRowDefault($form, 'euf-uid') ?>
-                <?= $this->formRowDefault($form, 'euf-alias') ?>
-                <?= $this->formRowDefault($form, 'euf-status') ?>
-                <?= $this->formRowDefault($form, 'euf-privileges') ?>
-                <?= $this->formRowDefault($form, 'euf-email') ?>
-                <?= $this->formRowDefault($form, 'euf-pw') ?>
+    .default-table .right-text {
+        text-align: right;
+    }
 
-                <tr>
-                    <td class="right-text"><?= $this->t('Last activity') ?></td>
-                    <td>
-                        <?php
+    .default-form-label-row {
+        text-align: right;
+        padding-right: 1rem;
+        font-weight: 500;
+        color: #374151;
+    }
 
-                        if ($this->user && $this->user->get('last_activity')) {
-                            echo $this->prettyDate(new DateTime($this->user->need('last_activity')));
-                        } else {
-                            echo '-';
-                        }
+    /* Badge styles */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        background: linear-gradient(to right, #10b981, #059669);
+        color: white;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 0.875rem;
+    }
 
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="right-text"><?= $this->t('Last IP') ?></td>
-                    <td>
-                        <?php
+    .badge-label {
+        font-weight: 600;
+        color: #1f2937;
+    }
 
-                        if ($this->user && $this->user->get('last_ip')) {
-                            echo $this->user->get('last_ip');
-                        } else {
-                            echo '-';
-                        }
+    /* Separator styles */
+    .separator {
+        margin: 1.5rem 0;
+    }
 
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="right-text"><?= $this->t('Created') ?></td>
-                    <td>
-                        <?php
+    .separator-line {
+        border-top: 1px solid #e5e7eb;
+    }
 
-                        if ($this->user && $this->user->get('created')) {
-                            echo $this->prettyDate(new DateTime($this->user->need('created')));
-                        } else {
-                            echo '-';
-                        }
+    .separator-small {
+        margin: 0.75rem 0;
+    }
 
-                        ?>
-                    </td>
-                </tr>
-            </table>
+    /* Padded section */
+    .padded {
+        padding: 1.5rem;
+    }
 
-            <table class="default-table half-table" style="float: right;">
-                <tr>
-                    <td colspan="2" class="centered-text">
-                        <div class="badge">2</div> <span class="badge-label"><?= $this->t('Personal data') ?></span>
-                        <div class="separator-small"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-gender')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-gender')) ?>
-                        <?= $this->formElementErrors($form->get('euf-gender')) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-firstname')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-firstname')) ?>
-                        <?= $this->formElement($form->get('euf-lastname')) ?>
-                        <?= $this->formElementErrors($form->get('euf-firstname')) ?>
-                        <?= $this->formElementErrors($form->get('euf-lastname')) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-street')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-street')) ?>
-                        <?= $this->formElementErrors($form->get('euf-street')) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-zip')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-zip')) ?>
-                        <?= $this->formElement($form->get('euf-city')) ?>
-                        <?= $this->formElementErrors($form->get('euf-zip')) ?>
-                        <?= $this->formElementErrors($form->get('euf-city')) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-phone')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-phone')) ?>
-                        <?= $this->formElementErrors($form->get('euf-phone')) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-birthdate')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-birthdate')) ?>
-                        <?= $this->formElementErrors($form->get('euf-birthdate')) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="default-form-label-row">
-                        <?= $this->formLabel($form->get('euf-notes')) ?>
-                    </td>
-                    <td>
-                        <?= $this->formElement($form->get('euf-notes')) ?>
-                        <?= $this->formElementNotes($form->get('euf-notes')) ?>
-                        <?= $this->formElementErrors($form->get('euf-notes')) ?>
-                    </td>
-                </tr>
-            </table>
+    /* Centered text */
+    .centered-text {
+        text-align: center;
+    }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2"><?= $this->t('User-Administration') ?></h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-500 mx-auto rounded-full"></div>
         </div>
 
-        <br clear="all">
-
-        <div class="separator separator-line"></div>
-
-        <div class="centered-text">
-            <div id="euf-generic-label" style="display: none;"><?= $this->t('Name') ?></div>
-
-            <?= $this->formElement($form->get('euf-submit')) ?>
-
-            <?php if ($this->user): ?>
-
-                &nbsp;
-
-                <a href="<?= $this->url('backend/user/delete', ['uid' => $uid], ['query' => ['search' => $this->search]]) ?>" class="default-button">
-                    <span class="symbolic symbolic-cross"><?= $this->t('Delete user') ?></span>
-                </a>
-            <?php endif; ?>
+        <!-- Description Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <p class="text-slate-600"><?= $this->t('Here you can create, edit or delete the users of your system.') ?></p>
         </div>
 
-        <?= $this->form()->closeTag() ?>
+        <!-- Search Section -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4"><?= $this->t('Search Users') ?></h2>
+            <?= $this->partial('backend/user/index.search.phtml', ['search' => $this->search]) ?>
+        </div>
+
+        <!-- Form Section -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+            <div class="p-5">
+                <?php
+                $form = $this->editUserForm;
+                $form->setAttribute('method', 'post');
+                $form->setAttribute('action', $this->url('backend/user/edit', ['uid' => $uid], ['query' => ['search' => $this->search]]));
+                $form->prepare();
+                ?>
+                <?= $this->form()->openTag($form) ?>
+
+                <!-- Form Header -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-bold text-slate-900 mb-2">
+                        <?= $this->user ? $this->t('Edit User') : $this->t('Create New User') ?>
+                    </h2>
+                    <p class="text-slate-600">
+                        <?= $this->user ? $this->t('Update user information and settings') : $this->t('Fill in the details to create a new user') ?>
+                    </p>
+                </div>
+
+                <!-- Form Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Account Data Section -->
+                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                        <div class="flex items-center mb-6">
+                            <div class="bg-gradient-to-r from-green-400 to-green-500 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold mr-3">1</div>
+                            <h3 class="text-lg font-semibold text-slate-900"><?= $this->t('Account data') ?></h3>
+                        </div>
+
+                        <div class="space-y-5">
+                            <?= $this->formRowDefault($form, 'euf-uid') ?>
+                            <?= $this->formRowDefault($form, 'euf-alias') ?>
+                            <?= $this->formRowDefault($form, 'euf-status') ?>
+                            <?= $this->formRowDefault($form, 'euf-privileges') ?>
+                            <?= $this->formRowDefault($form, 'euf-email') ?>
+                            <?= $this->formRowDefault($form, 'euf-pw') ?>
+
+                            <!-- Last Activity -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2"><?= $this->t('Last activity') ?></div>
+                                <div class="col-span-2">
+                                    <?php
+                                    if ($this->user && $this->user->get('last_activity')) {
+                                        echo $this->prettyDate(new DateTime($this->user->need('last_activity')));
+                                    } else {
+                                        echo '<span class="text-slate-400">-</span>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+
+                            <!-- Last IP -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2"><?= $this->t('Last IP') ?></div>
+                                <div class="col-span-2">
+                                    <?php
+                                    if ($this->user && $this->user->get('last_ip')) {
+                                        echo $this->user->get('last_ip');
+                                    } else {
+                                        echo '<span class="text-slate-400">-</span>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+
+                            <!-- Created -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2"><?= $this->t('Created') ?></div>
+                                <div class="col-span-2">
+                                    <?php
+                                    if ($this->user && $this->user->get('created')) {
+                                        echo $this->prettyDate(new DateTime($this->user->need('created')));
+                                    } else {
+                                        echo '<span class="text-slate-400">-</span>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Data Section -->
+                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                        <div class="flex items-center mb-6">
+                            <div class="bg-gradient-to-r from-green-400 to-green-500 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold mr-3">2</div>
+                            <h3 class="text-lg font-semibold text-slate-900"><?= $this->t('Personal data') ?></h3>
+                        </div>
+
+                        <div class="space-y-5">
+                            <!-- Gender -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-gender')) ?>
+                                </div>
+                                <div class="col-span-2">
+                                    <?= $this->formElement($form->get('euf-gender')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-gender')) ?>
+                                </div>
+                            </div>
+
+                            <!-- First Name & Last Name -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-firstname')) ?>
+                                </div>
+                                <div class="col-span-2 space-y-3">
+                                    <?= $this->formElement($form->get('euf-firstname')) ?>
+                                    <?= $this->formElement($form->get('euf-lastname')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-firstname')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-lastname')) ?>
+                                </div>
+                            </div>
+
+                            <!-- Street -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-street')) ?>
+                                </div>
+                                <div class="col-span-2">
+                                    <?= $this->formElement($form->get('euf-street')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-street')) ?>
+                                </div>
+                            </div>
+
+                            <!-- Zip & City -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-zip')) ?>
+                                </div>
+                                <div class="col-span-2 space-y-3">
+                                    <?= $this->formElement($form->get('euf-zip')) ?>
+                                    <?= $this->formElement($form->get('euf-city')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-zip')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-city')) ?>
+                                </div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-phone')) ?>
+                                </div>
+                                <div class="col-span-2">
+                                    <?= $this->formElement($form->get('euf-phone')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-phone')) ?>
+                                </div>
+                            </div>
+
+                            <!-- Birthdate -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-birthdate')) ?>
+                                </div>
+                                <div class="col-span-2">
+                                    <?= $this->formElement($form->get('euf-birthdate')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-birthdate')) ?>
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-right text-slate-700 font-medium pt-2">
+                                    <?= $this->formLabel($form->get('euf-notes')) ?>
+                                </div>
+                                <div class="col-span-2">
+                                    <?= $this->formElement($form->get('euf-notes')) ?>
+                                    <?= $this->formElementNotes($form->get('euf-notes')) ?>
+                                    <?= $this->formElementErrors($form->get('euf-notes')) ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="mt-8 pt-6 border-t border-slate-200">
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <div id="euf-generic-label" style="display: none;"><?= $this->t('Name') ?></div>
+                        <?= $this->formElement($form->get('euf-submit')) ?>
+                        <?php if ($this->user): ?>
+                            <a href="<?= $this->url('backend/user/delete', ['uid' => $uid], ['query' => ['search' => $this->search]]) ?>"
+                                class="default-button red">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                <?= $this->t('Delete user') ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?= $this->form()->closeTag() ?>
+            </div>
+        </div>
     </div>
 </div>

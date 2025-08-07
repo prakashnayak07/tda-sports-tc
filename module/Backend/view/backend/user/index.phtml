@@ -1,5 +1,4 @@
 <?php
-
 $this->setup(array(
     'title' => 'User-Administration',
     'panel' => 'centered-panel large-sized',
@@ -10,37 +9,75 @@ $this->setup(array(
         'Configuration' => $this->url('backend/config'),
     ),
 ));
-
 ?>
 
-<div>
-    <h1><?= $this->t('User-Administration') ?></h1>
+<div class="h-auto py-12 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2"><?= $this->t('User-Administration') ?></h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-500 mx-auto rounded-full"></div>
+        </div>
 
-    <div class="separator-small"></div>
+        <!-- Description Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <p class="text-slate-600"><?= $this->t('Here you can create, edit or delete the users of your system.') ?></p>
+        </div>
 
-    <p><?= $this->t('Here you can create, edit or delete the users of your system.') ?></p>
+        <!-- Search Section -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4"><?= $this->t('Search Users') ?></h2>
+            <?= $this->partial('backend/user/index.search.phtml', ['search' => $this->search]) ?>
+        </div>
 
-    <div class="separator separator-line"></div>
+        <!-- Users List Section -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+            <div class="p-5">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-semibold text-slate-800"><?= $this->t('Users') ?></h2>
+                    <a href="<?= $this->url('backend/user/edit') ?>" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                        <?= $this->t('New user') ?>
+                    </a>
+                </div>
 
-    <?= $this->partial('backend/user/index.search.phtml', ['search' => $this->search]) ?>
+                <!-- Users Table -->
+                <?php if ($this->users): ?>
+                    <div class="overflow-x-auto">
+                        <?= $this->backendUsersFormat($this->users, $this->search) ?>
+                    </div>
+                <?php else: ?>
+                    <!-- No Users Found -->
+                    <div class="text-center py-12">
+                        <?php if ($this->search): ?>
+                            <div class="mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <h3 class="mt-4 text-lg font-medium text-slate-900"><?= $this->t('No users found') ?></h3>
+                                <p class="mt-1 text-slate-500"><?= $this->t('No users match your search criteria.') ?></p>
+                            </div>
+                        <?php else: ?>
+                            <div class="mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                <h3 class="mt-4 text-lg font-medium text-slate-900"><?= $this->t('No users yet') ?></h3>
+                                <p class="mt-1 text-slate-500"><?= $this->t('Get started by creating a new user.') ?></p>
+                            </div>
+                        <?php endif; ?>
 
-    <div class="separator separator-line"></div>
-
-    <div class="centered-text" style="padding: 16px 0 16px 0;">
-
-        <?php if ($this->users): ?>
-
-            <?= $this->backendUsersFormat($this->users, $this->search) ?>
-
-        <?php else: ?>
-
-            <?php if ($this->search): ?>
-                <p><span class="red"><?= sprintf($this->t('%sNo users found%s for this search'), '<b>', '</b>') ?></span></p>
-            <?php endif; ?>
-
-            <p><a href="<?= $this->url('backend/user/edit') ?>" class="unlined gray"><span class="symbolic symbolic-plus"><?= $this->t('New user') ?></span></a></p>
-
-        <?php endif; ?>
-
+                        <a href="<?= $this->url('backend/user/edit') ?>" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                            </svg>
+                            <?= $this->t('New user') ?>
+                        </a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,8 +1,6 @@
 <?php
-
 if ($this->user->can('admin.bookings')) {
     $back = true;
-
     $links = array(
         'Edit bill' => $this->url('backend/booking/bills', ['bid' => $this->booking->need('bid')]),
     );
@@ -10,69 +8,91 @@ if ($this->user->can('admin.bookings')) {
     $back = array(
         'My bookings' => $this->url('user/bookings'),
     );
-
     $links = array();
 }
-
 $this->setup(array(
     'title' => 'Booking-Bill',
     'panel' => 'centered-panel',
     'back' => $back,
     'links' => $links,
 ));
-
 ?>
 
-<div>
-    <h1><?= $this->t('Booking-Bill') ?></h1>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4 sm:px-6">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2"><?= $this->t('Booking-Bill') ?></h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-500 mx-auto rounded-full"></div>
+        </div>
 
-    <div class="separator-small"></div>
+        <!-- Status Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-slate-800"><?= $this->t('Bill Status') ?></h2>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    <?= $this->bookingBillingStatus ?>
+                </span>
+            </div>
+        </div>
 
-    <p><?= $this->t(sprintf('Status: %s', '<code>' . $this->bookingBillingStatus . '</code>')) ?></p>
+        <!-- Bill Items -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200 mb-8">
+            <div class="p-5">
+                <h3 class="font-bold text-lg text-slate-900 mb-4"><?= $this->t('Bill Details') ?></h3>
 
-    <div class="sandbox">
-        <table class="bordered-table middle-table">
+                <div class="space-y-4">
+                    <?php
+                    $total = 0;
+                    foreach ($this->bills as $bill):
+                        if ($bill->get('quantity') == 1) {
+                            $squareUnit = $this->option('subject.square.unit');
+                        } else {
+                            $squareUnit = $this->option('subject.square.unit.plural');
+                        }
+                        $total += $bill->get('price');
+                    ?>
+                        <!-- Bill Item -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-slate-900"><?= $bill->get('description') ?></h4>
+                                <div class="flex flex-wrap gap-3 mt-1 text-sm text-slate-600">
+                                    <?php if ($bill->get('time')): ?>
+                                        <span><?= $this->prettyTime($bill->get('time')) ?></span>
+                                        <span><?= $this->numberFormat($bill->get('quantity')) . ' ' . $squareUnit ?></span>
+                                    <?php else: ?>
+                                        <span><?= sprintf($this->t('%s items'), $bill->get('quantity')) ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="font-semibold text-slate-900">
+                                <?= $this->priceFormat($bill->get('price'), $bill->get('rate'), $bill->get('gross')) ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
 
-            <?php
+                <!-- Total -->
+                <div class="flex items-center justify-between pt-4 mt-4 border-t-2 border-slate-300">
+                    <span class="font-bold text-lg text-slate-900"><?= $this->t('Total') ?></span>
+                    <span class="font-bold text-lg text-slate-900"><?= $this->priceFormat($total) ?></span>
+                </div>
+            </div>
+        </div>
 
-            $total = 0;
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3">
+            <?php if ($this->user->can('admin.bookings')): ?>
+                <a href="<?= $this->url('backend/booking/bills', ['bid' => $this->booking->need('bid')]) ?>"
+                    class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md">
+                    <?= $this->t('Edit Bill') ?>
+                </a>
+            <?php endif; ?>
 
-            ?>
-
-            <?php foreach ($this->bills as $bill): ?>
-
-                <?php
-
-                if ($bill->get('quantity') == 1) {
-                    $squareUnit = $this->option('subject.square.unit');
-                } else {
-                    $squareUnit = $this->option('subject.square.unit.plural');
-                }
-
-                $total += $bill->get('price');
-
-                ?>
-
-                <tr>
-                    <td><?= $bill->get('description') ?></td>
-
-                    <?php if ($bill->get('time')): ?>
-                        <td><?= $this->prettyTime($bill->get('time')) ?></td>
-                        <td><?= $this->numberFormat($bill->get('quantity')) . ' ' . $squareUnit ?></td>
-                    <?php else: ?>
-                        <td colspan="2"><?= sprintf($this->t('%s items'), $bill->get('quantity')) ?></td>
-                    <?php endif; ?>
-
-                    <td><?= $this->priceFormat($bill->get('price'), $bill->get('rate'), $bill->get('gross')) ?></td>
-                </tr>
-
-            <?php endforeach; ?>
-
-            <tr>
-                <td colspan="3" style="border-top: solid 2px #666;"><?= $this->t('Total') ?></td>
-                <td style="border-top: solid 2px #666;"><?= $this->priceFormat($total) ?></td>
-            </tr>
-
-        </table>
+            <a href="<?= $this->url('user/bookings') ?>"
+                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium rounded-lg transition-colors">
+                <?= $this->t('Back to Bookings') ?>
+            </a>
+        </div>
     </div>
 </div>

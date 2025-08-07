@@ -1,39 +1,141 @@
-<table style="height: 100%;">
-    <tr>
-        <td class="responsive-pass-4" style="padding-right: 12px; border-right: solid 1px #CCC;">
-            <div id="userpanel-status" class="no-wrap">
-                <?= sprintf($this->t('Online as %s'), $this->escapeHtml($this->user->need('alias'))) ?>
+<!-- Modern user panel with proper responsive design -->
+<div class="user-panel bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-12 gap-4">
+
+            <!-- Left section: Status -->
+            <div class="flex items-center space-x-4">
+                <div id="userpanel-status" class="text-sm text-gray-600 whitespace-nowrap">
+                    <span class="inline-flex items-center">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                        <?= sprintf($this->t('Online as %s'), $this->escapeHtml($this->user->need('alias'))) ?>
+                    </span>
+                </div>
+
+                <!-- Admin link - shown only if user has permission -->
+                <?php if ($this->user->can('admin.see-menu')): ?>
+                    <?php $this->headScript()->appendFile($this->basePath('js/controller/frontend/index.admin.min.js')) ?>
+                    <div class="hidden sm:block border-l border-gray-300 pl-4">
+                        <a href="<?= $this->url('backend') ?>"
+                            id="admin-menu-link"
+                            class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="hidden md:inline"><?= $this->t('Administration') ?></span>
+                        </a>
+                    </div>
+                <?php endif; ?>
             </div>
-        </td>
 
-        <td class="responsive-pass-4" style="padding-right: 12px;"></td>
+            <!-- Right section: Action buttons -->
+            <div class="flex items-center space-x-2">
 
-        <?php if ($this->user->can('admin.see-menu')): ?>
+                <!-- My Bookings -->
+                <a href="<?= $this->url('user/bookings') ?>"
+                    class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                    data-tooltip="<?= $this->userLastBookings($this->user) ?>"
+                    title="<?= $this->t('My bookings') ?>">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span class="hidden sm:inline"><?= $this->t('My bookings') ?></span>
+                </a>
 
-            <?php $this->headScript()->appendFile($this->basePath('js/controller/frontend/index.admin.min.js')) ?>
+                <!-- My Account -->
+                <a href="<?= $this->url('user/settings') ?>"
+                    class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                    title="<?= $this->t('My account') ?>">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="hidden sm:inline"><?= $this->t('My account') ?></span>
+                </a>
 
-            <td class="responsive-pass-4" style="padding-right: 12px; border-right: solid 1px #CCC;">
-                <a href="<?= $this->url('backend') ?>" id="admin-menu-link" class="default-button"><span class="symbolic symbolic-config"><?= $this->t('Administration') ?></span></a>
-            </td>
+                <!-- Logout -->
+                <a href="<?= $this->url('user/logout') ?>"
+                    class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+                    title="<?= $this->t('Logout') ?>">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    <span class="hidden sm:inline"><?= $this->t('Logout') ?></span>
+                </a>
 
-            <td class="responsive-pass-4" style="padding-right: 12px;"></td>
+                <!-- Mobile menu button (for admin if applicable) -->
+                <?php if ($this->user->can('admin.see-menu')): ?>
+                    <div class="sm:hidden">
+                        <button type="button"
+                            class="mobile-admin-toggle inline-flex items-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                            aria-expanded="false"
+                            onclick="toggleMobileAdmin()">
+                            <span class="sr-only">Open admin menu</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </button>
 
-        <?php endif; ?>
+                        <!-- Mobile admin dropdown -->
+                        <div id="mobile-admin-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <a href="<?= $this->url('backend') ?>"
+                                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <?= $this->t('Administration') ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <td>
-            <a href="<?= $this->url('user/bookings') ?>" class="default-button" data-tooltip="<?= $this->userLastBookings($this->user) ?>"><span class="symbolic symbolic-booking"><?= $this->t('My bookings') ?></span></a>
-        </td>
+<!-- Help section (uncommented and improved) -->
+<div class="bg-gray-50 border-b border-gray-200 py-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-center">
+            <a href="<?= $this->url('service/help') ?>"
+                class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                data-tooltip="<?= sprintf($this->t('Get additional %shelp and information%s'), '<b>', '</b>') ?>"
+                title="<?= $this->t('Help & Information') ?>">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <?= $this->t('Help & Information') ?>
+            </a>
+        </div>
+    </div>
+</div>
 
-        <td>
-            <a href="<?= $this->url('user/settings') ?>" class="default-button"><span class="symbolic symbolic-user"><?= $this->t('My account') ?></span></a>
-        </td>
+<script>
+    function toggleMobileAdmin() {
+        const menu = document.getElementById('mobile-admin-menu');
+        const button = document.querySelector('.mobile-admin-toggle');
 
-        <td style="padding-right: 12px;">
-            <a href="<?= $this->url('user/logout') ?>" class="default-button"><span class="symbolic symbolic-off"><?= $this->t('Logout') ?></span></a>
-        </td>
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+            button.setAttribute('aria-expanded', 'true');
+        } else {
+            menu.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    }
 
-        <td style="padding-left: 12px; border-left: solid 1px #CCC;">
-            <a href="<?= $this->url('service/help') ?>" class="default-button" data-tooltip="<?= sprintf($this->t('Get additional %shelp and information%s'), '<b>', '</b>') ?>"><b>?</b></a>
-        </td>
-    </tr>
-</table>
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('mobile-admin-menu');
+        const button = document.querySelector('.mobile-admin-toggle');
+
+        if (menu && !menu.contains(event.target) && !button.contains(event.target)) {
+            menu.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>

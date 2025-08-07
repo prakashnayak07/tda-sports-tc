@@ -4,7 +4,9 @@ module.exports = {
     "./module/**/view/**/*.phtml",
     "./public/**/*.html",
     "./public/js/**/*.js",
-    "./src/**/*.php"
+    "./src/**/*.php",
+    "./module/Base/src/Base/View/Helper/**/*.php",
+    "./module/Base/src/Base/View/Helper/**/*.phtml",
   ],
   theme: {
     extend: {

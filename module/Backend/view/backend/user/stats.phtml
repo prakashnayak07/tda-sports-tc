@@ -1,5 +1,4 @@
 <?php
-
 $this->setup(array(
     'title' => 'User-Statistic',
     'panel' => 'centered-panel',
@@ -9,98 +8,447 @@ $this->setup(array(
         'Event-Statistic' => $this->url('backend/event/stats'),
     ),
 ));
-
 $placeholder = $deleted = $blocked = $disabled = $enabled = $assist = $admin = 0;
-
 foreach ($this->stats as $stat) {
     $var = $stat['status'];
     $$var += $stat['count'];
 }
-
 $total = $deleted + $blocked + $disabled + $enabled + $assist + $admin;
-
 ?>
 
-<div>
-    <h1><?= $this->t('User-Statistic') ?></h1>
+<style>
+    /* Override default styles */
+    .bordered-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-    <div class="separator separator-line"></div>
+    .bordered-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-    <table class="bordered-table">
-        <tr>
-            <td><b><?= $this->t('Users total') ?></b></td>
-            <td class="right-text"><b><code><?= $this->numberFormat($total) ?></code></b></td>
-        </tr>
+    .bordered-table tr:last-child td {
+        border-bottom: none;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Deleted user') ?></td>
-            <td class="right-text">
-                <code>
-                    <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = deleted)']]) ?>">
-                        <?= $this->numberFormat($deleted) ?>
-                    </a>
-                </code>
-            </td>
-        </tr>
+    .right-text {
+        text-align: right;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Blocked user') ?></td>
-            <td class="right-text">
-                <code>
-                    <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = blocked)']]) ?>">
-                        <?= $this->numberFormat($blocked) ?>
-                    </a>
-                </code>
-            </td>
-        </tr>
+    .gray {
+        color: #6b7280;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Waiting for activation') ?></td>
-            <td class="right-text">
-                <code>
-                    <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = disabled)']]) ?>">
-                        <?= $this->numberFormat($disabled) ?>
-                    </a>
-                </code>
-            </td>
-        </tr>
+    .separator {
+        margin: 1.5rem 0;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Enabled user') ?></td>
-            <td class="right-text">
-                <code>
-                    <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = enabled)']]) ?>">
-                        <?= $this->numberFormat($enabled) ?>
-                    </a>
-                </code>
-            </td>
-        </tr>
+    .separator-line {
+        border-top: 1px solid #e5e7eb;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Assist') ?></td>
-            <td class="right-text">
-                <code>
-                    <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = assist)']]) ?>">
-                        <?= $this->numberFormat($assist) ?>
-                    </a>
-                </code>
-            </td>
-        </tr>
+    .stat-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        border: 1px solid #e5e7eb;
+        padding: 1.5rem;
+        height: 100%;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Admin') ?></td>
-            <td class="right-text">
-                <code>
-                    <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = admin)']]) ?>">
-                        <?= $this->numberFormat($admin) ?>
-                    </a>
-                </code>
-            </td>
-        </tr>
+    .stat-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
 
-        <tr>
-            <td><b><?= $this->t('Placeholders total') ?></b></td>
-            <td class="right-text"><b><code><?= $this->numberFormat($placeholder) ?></code></b></td>
-        </tr>
-    </table>
+    .stat-card-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .stat-card-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #10b981;
+    }
+
+    .stat-card-description {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .data-table th {
+        text-align: left;
+        padding: 0.75rem;
+        background-color: #f9fafb;
+        color: #374151;
+        font-weight: 600;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .data-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .data-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .data-table a {
+        color: #10b981;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .data-table a:hover {
+        text-decoration: underline;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-deleted {
+        background-color: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .status-blocked {
+        background-color: #fef3c7;
+        color: #b45309;
+    }
+
+    .status-disabled {
+        background-color: #e0e7ff;
+        color: #4338ca;
+    }
+
+    .status-enabled {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-assist {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-admin {
+        background-color: #ede9fe;
+        color: #5b21b6;
+    }
+</style>
+
+<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<div class="h-auto py-12 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2"><?= $this->t('User-Statistic') ?></h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-500 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Stats Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Users Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Users total') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($total) ?></div>
+                <p class="stat-card-description"><?= $this->t('Total registered users') ?></p>
+            </div>
+
+            <!-- Active Users Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Active Users') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($enabled + $assist + $admin) ?></div>
+                <p class="stat-card-description"><?= $this->t('Enabled, Assist, and Admin users') ?></p>
+            </div>
+
+            <!-- Inactive Users Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Inactive Users') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($blocked + $disabled) ?></div>
+                <p class="stat-card-description"><?= $this->t('Blocked and waiting for activation') ?></p>
+            </div>
+
+            <!-- Placeholders Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Placeholders') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($placeholder) ?></div>
+                <p class="stat-card-description"><?= $this->t('Placeholder accounts') ?></p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Pie Chart -->
+            <div class="stat-card">
+                <h3 class="stat-card-title mb-4"><?= $this->t('User Distribution') ?></h3>
+                <div class="chart-container">
+                    <div id="pieChart"></div>
+                </div>
+            </div>
+
+            <!-- Bar Chart -->
+            <div class="stat-card">
+                <h3 class="stat-card-title mb-4"><?= $this->t('User Status Count') ?></h3>
+                <div class="chart-container">
+                    <div id="barChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="stat-card">
+            <h3 class="stat-card-title mb-4"><?= $this->t('Detailed User Statistics') ?></h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th><?= $this->t('User Status') ?></th>
+                        <th class="right-text"><?= $this->t('Count') ?></th>
+                        <th class="right-text"><?= $this->t('Percentage') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-deleted"><?= $this->t('Deleted') ?></span>
+                        </td>
+                        <td class="right-text">
+                            <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = deleted)']]) ?>">
+                                <?= $this->numberFormat($deleted) ?>
+                            </a>
+                        </td>
+                        <td class="right-text"><?= $total > 0 ? round(($deleted / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-blocked"><?= $this->t('Blocked') ?></span>
+                        </td>
+                        <td class="right-text">
+                            <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = blocked)']]) ?>">
+                                <?= $this->numberFormat($blocked) ?>
+                            </a>
+                        </td>
+                        <td class="right-text"><?= $total > 0 ? round(($blocked / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-disabled"><?= $this->t('Waiting for activation') ?></span>
+                        </td>
+                        <td class="right-text">
+                            <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = disabled)']]) ?>">
+                                <?= $this->numberFormat($disabled) ?>
+                            </a>
+                        </td>
+                        <td class="right-text"><?= $total > 0 ? round(($disabled / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-enabled"><?= $this->t('Enabled') ?></span>
+                        </td>
+                        <td class="right-text">
+                            <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = enabled)']]) ?>">
+                                <?= $this->numberFormat($enabled) ?>
+                            </a>
+                        </td>
+                        <td class="right-text"><?= $total > 0 ? round(($enabled / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-assist"><?= $this->t('Assist') ?></span>
+                        </td>
+                        <td class="right-text">
+                            <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = assist)']]) ?>">
+                                <?= $this->numberFormat($assist) ?>
+                            </a>
+                        </td>
+                        <td class="right-text"><?= $total > 0 ? round(($assist / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-admin"><?= $this->t('Admin') ?></span>
+                        </td>
+                        <td class="right-text">
+                            <a href="<?= $this->url('backend/user', [], ['query' => ['usf-search' => '(status = admin)']]) ?>">
+                                <?= $this->numberFormat($admin) ?>
+                            </a>
+                        </td>
+                        <td class="right-text"><?= $total > 0 ? round(($admin / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td><strong><?= $this->t('Total') ?></strong></td>
+                        <td class="right-text"><strong><?= $this->numberFormat($total) ?></strong></td>
+                        <td class="right-text"><strong>100%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Initialize charts when DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Data for charts
+        const chartData = [{
+                status: '<?= $this->t("Deleted") ?>',
+                count: <?= $deleted ?>,
+                color: '#ef4444'
+            },
+            {
+                status: '<?= $this->t("Blocked") ?>',
+                count: <?= $blocked ?>,
+                color: '#f59e0b'
+            },
+            {
+                status: '<?= $this->t("Waiting for activation") ?>',
+                count: <?= $disabled ?>,
+                color: '#6366f1'
+            },
+            {
+                status: '<?= $this->t("Enabled") ?>',
+                count: <?= $enabled ?>,
+                color: '#10b981'
+            },
+            {
+                status: '<?= $this->t("Assist") ?>',
+                count: <?= $assist ?>,
+                color: '#3b82f6'
+            },
+            {
+                status: '<?= $this->t("Admin") ?>',
+                count: <?= $admin ?>,
+                color: '#8b5cf6'
+            }
+        ];
+
+        // Filter out statuses with 0 count
+        const filteredData = chartData.filter(item => item.count > 0);
+
+        // Pie Chart
+        const pieChartOptions = {
+            series: filteredData.map(item => item.count),
+            chart: {
+                type: 'pie',
+                height: 300,
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            },
+            labels: filteredData.map(item => item.status),
+            colors: filteredData.map(item => item.color),
+            legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
+                offsetY: 10
+            },
+            dataLabels: {
+                formatter: function(val, opts) {
+                    return opts.w.config.series[opts.seriesIndex];
+                }
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 300
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        const pieChart = new ApexCharts(document.querySelector("#pieChart"), pieChartOptions);
+        pieChart.render();
+
+        // Bar Chart
+        const barChartOptions = {
+            series: [{
+                name: '<?= $this->t("User Count") ?>',
+                data: chartData.map(item => item.count)
+            }],
+            chart: {
+                type: 'bar',
+                height: 300,
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: false,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: chartData.map(item => item.status),
+            },
+            yaxis: {
+                title: {
+                    text: '<?= $this->t("User Count") ?>'
+                }
+            },
+            colors: chartData.map(item => item.color),
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 300
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        const barChart = new ApexCharts(document.querySelector("#barChart"), barChartOptions);
+        barChart.render();
+    });
+</script>

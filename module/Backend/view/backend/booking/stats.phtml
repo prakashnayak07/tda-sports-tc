@@ -1,5 +1,4 @@
 <?php
-
 $this->setup(array(
     'title' => 'Booking-Statistic',
     'panel' => 'centered-panel',
@@ -9,50 +8,362 @@ $this->setup(array(
         'Event-Statistic' => $this->url('backend/event/stats'),
     ),
 ));
-
 $single = $subscription = $cancelled = 0;
-
 foreach ($this->stats as $stat) {
     $var = $stat['status'];
     $$var += $stat['count'];
 }
-
 $total = $single + $subscription;
-
 ?>
 
-<div>
-    <h1><?= $this->t('Booking-Statistic') ?></h1>
+<style>
+    /* Override default styles */
+    .bordered-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-    <div class="separator separator-line"></div>
+    .bordered-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-    <table class="bordered-table">
-        <tr>
-            <td><b><?= $this->t('Bookings') ?></b></td>
-            <td class="right-text"><b><code><?= $this->numberFormat($total) ?></code></b></td>
-        </tr>
+    .bordered-table tr:last-child td {
+        border-bottom: none;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Single') ?></td>
-            <td class="right-text">
-                <code>
-                    <?= $this->numberFormat($single) ?>
-                </code>
-            </td>
-        </tr>
+    .right-text {
+        text-align: right;
+    }
 
-        <tr>
-            <td><span class="gray">&lfloor;</span> <?= $this->t('Subscription') ?></td>
-            <td class="right-text">
-                <code>
-                    <?= $this->numberFormat($subscription) ?>
-                </code>
-            </td>
-        </tr>
+    .gray {
+        color: #6b7280;
+    }
 
-        <tr>
-            <td><b><?= $this->t('Cancelled') ?></b></td>
-            <td class="right-text"><b><code><?= $this->numberFormat($cancelled) ?></code></b></td>
-        </tr>
-    </table>
+    .separator {
+        margin: 1.5rem 0;
+    }
+
+    .separator-line {
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .stat-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        border: 1px solid #e5e7eb;
+        padding: 1.5rem;
+        height: 100%;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .stat-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .stat-card-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .stat-card-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #10b981;
+    }
+
+    .stat-card-description {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .data-table th {
+        text-align: left;
+        padding: 0.75rem;
+        background-color: #f9fafb;
+        color: #374151;
+        font-weight: 600;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .data-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .data-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-single {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-subscription {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-cancelled {
+        background-color: #fee2e2;
+        color: #b91c1c;
+    }
+</style>
+
+<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<div class="h-auto py-12 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2"><?= $this->t('Booking-Statistic') ?></h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-500 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Stats Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Bookings Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Bookings') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($total) ?></div>
+                <p class="stat-card-description"><?= $this->t('Total bookings') ?></p>
+            </div>
+
+            <!-- Single Bookings Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Single') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($single) ?></div>
+                <p class="stat-card-description"><?= $this->t('Single bookings') ?></p>
+            </div>
+
+            <!-- Subscription Bookings Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Subscription') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($subscription) ?></div>
+                <p class="stat-card-description"><?= $this->t('Subscription bookings') ?></p>
+            </div>
+
+            <!-- Cancelled Bookings Card -->
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h3 class="stat-card-title"><?= $this->t('Cancelled') ?></h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+                <div class="stat-card-value"><?= $this->numberFormat($cancelled) ?></div>
+                <p class="stat-card-description"><?= $this->t('Cancelled bookings') ?></p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Pie Chart -->
+            <div class="stat-card">
+                <h3 class="stat-card-title mb-4"><?= $this->t('Booking Type Distribution') ?></h3>
+                <div class="chart-container">
+                    <div id="pieChart"></div>
+                </div>
+            </div>
+
+            <!-- Bar Chart -->
+            <div class="stat-card">
+                <h3 class="stat-card-title mb-4"><?= $this->t('Booking Statistics') ?></h3>
+                <div class="chart-container">
+                    <div id="barChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="stat-card">
+            <h3 class="stat-card-title mb-4"><?= $this->t('Detailed Booking Statistics') ?></h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th><?= $this->t('Booking Type') ?></th>
+                        <th class="right-text"><?= $this->t('Count') ?></th>
+                        <th class="right-text"><?= $this->t('Percentage') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-single"><?= $this->t('Single') ?></span>
+                        </td>
+                        <td class="right-text"><?= $this->numberFormat($single) ?></td>
+                        <td class="right-text"><?= $total > 0 ? round(($single / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-subscription"><?= $this->t('Subscription') ?></span>
+                        </td>
+                        <td class="right-text"><?= $this->numberFormat($subscription) ?></td>
+                        <td class="right-text"><?= $total > 0 ? round(($subscription / $total) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="status-badge status-cancelled"><?= $this->t('Cancelled') ?></span>
+                        </td>
+                        <td class="right-text"><?= $this->numberFormat($cancelled) ?></td>
+                        <td class="right-text"><?= $total > 0 ? round(($cancelled / ($total + $cancelled)) * 100, 1) : '0' ?>%</td>
+                    </tr>
+                    <tr>
+                        <td><strong><?= $this->t('Total') ?></strong></td>
+                        <td class="right-text"><strong><?= $this->numberFormat($total) ?></strong></td>
+                        <td class="right-text"><strong>100%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Initialize charts when DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Data for charts
+        const chartData = [{
+                status: '<?= $this->t("Single") ?>',
+                count: <?= $single ?>,
+                color: '#3b82f6'
+            },
+            {
+                status: '<?= $this->t("Subscription") ?>',
+                count: <?= $subscription ?>,
+                color: '#10b981'
+            },
+            {
+                status: '<?= $this->t("Cancelled") ?>',
+                count: <?= $cancelled ?>,
+                color: '#ef4444'
+            }
+        ];
+
+        // Filter out statuses with 0 count
+        const filteredData = chartData.filter(item => item.count > 0);
+
+        // Pie Chart
+        const pieChartOptions = {
+            series: filteredData.map(item => item.count),
+            chart: {
+                type: 'pie',
+                height: 300,
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            },
+            labels: filteredData.map(item => item.status),
+            colors: filteredData.map(item => item.color),
+            legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
+                offsetY: 10
+            },
+            dataLabels: {
+                formatter: function(val, opts) {
+                    return opts.w.config.series[opts.seriesIndex];
+                }
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 300
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        const pieChart = new ApexCharts(document.querySelector("#pieChart"), pieChartOptions);
+        pieChart.render();
+
+        // Bar Chart
+        const barChartOptions = {
+            series: [{
+                name: '<?= $this->t("Booking Count") ?>',
+                data: chartData.map(item => item.count)
+            }],
+            chart: {
+                type: 'bar',
+                height: 300,
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: false,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: chartData.map(item => item.status),
+            },
+            yaxis: {
+                title: {
+                    text: '<?= $this->t("Booking Count") ?>'
+                }
+            },
+            colors: chartData.map(item => item.color),
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 300
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        const barChart = new ApexCharts(document.querySelector("#barChart"), barChartOptions);
+        barChart.render();
+    });
+</script>

@@ -1,80 +1,274 @@
 <?php
-
 $this->setup(array(
-    'title' => 'Names and text',
-    'panel' => 'centered-panel large-sized',
-    'back' => array(
-        'Configuration' => $this->url('backend/config'),
-    ),
+	'title' => 'Names and text',
+	'panel' => 'centered-panel large-sized',
+	'back' => array(
+		'Configuration' => $this->url('backend/config'),
+	),
 ));
-
 ?>
 
-<div>
-    <h1><?= $this->t('Names and text') ?></h1>
+<style>
+	/* Override default form styles */
+	input[type="text"],
+	input[type="password"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="date"],
+	textarea,
+	select {
+		width: 100%;
+		padding: 0.625rem 0.875rem;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		border: 1px solid #d1d5db;
+		border-radius: 0.5rem;
+		background-color: #ffffff;
+		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	}
 
-    <div class="separator-small"></div>
+	input:focus,
+	textarea:focus,
+	select:focus {
+		outline: none;
+		border-color: #10b981;
+		box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+	}
 
-    <p><?= $this->t('What is the name of your service? What is your name?') ?></p>
+	label {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: #374151;
+	}
 
-    <?= $this->backendInfo('i18n') ?>
+	.form-element-errors {
+		color: #ef4444;
+		font-size: 0.75rem;
+		margin-top: 0.25rem;
+	}
 
-    <div class="separator separator-line"></div>
+	.form-element-notes {
+		color: #6b7280;
+		font-size: 0.75rem;
+		margin-top: 0.25rem;
+		font-style: italic;
+	}
 
-    <div class="padded">
-        <?php
+	button[type="submit"] {
+		background: linear-gradient(to right, #10b981, #059669);
+		color: white;
+		font-weight: 600;
+		padding: 0.75rem 1.5rem;
+		border-radius: 0.5rem;
+		border: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	}
 
-        $form = $this->textForm;
-        $form->setAttribute('method', 'post');
-        $form->setAttribute('action', $this->url('backend/config/text'));
-        $form->prepare();
+	button[type="submit"]:hover {
+		background: linear-gradient(to right, #059669, #047857);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	}
 
-        ?>
+	/* Checkbox styles */
+	input[type="checkbox"] {
+		width: 1.25rem;
+		height: 1.25rem;
+		border-radius: 0.25rem;
+		border: 1px solid #d1d5db;
+		background-color: #ffffff;
+		transition: all 0.2s ease;
+		cursor: pointer;
+		position: relative;
+		top: 0;
+		margin-right: 0.5rem;
+	}
 
-        <?= $this->form()->openTag($form) ?>
+	input[type="checkbox"]:checked {
+		background-color: #10b981;
+		border-color: #10b981;
+	}
 
-        <table class="default-table">
-            <?php foreach (\Backend\Form\Config\TextForm::$definitions as $key => $value): $key = str_replace('.', '_', $key); ?>
+	input[type="checkbox"]:focus {
+		outline: none;
+		border-color: #10b981;
+		box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+	}
 
-	            <?php
+	/* Table styles */
+	.default-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
 
-	            if (isset($value[2]) && $value[2]) {
-			        $type = $value[2];
-		        } else {
-			        $type = 'Text';
-		        }
+	.default-table td {
+		padding: 1rem 0;
+		vertical-align: top;
+	}
 
-	            ?>
+	.default-form-label-row {
+		text-align: right;
+		padding-right: 1.5rem;
+		font-weight: 500;
+		color: #374151;
+		width: 30%;
+	}
 
-	            <?php if ($type == 'Checkbox'): ?>
-	                <tr>
-	                    <td class="default-form-label-row"></td>
-	                    <td colspan="2">
-		                    <div style="position: relative; top: -8px;">
-	                            <?= $this->formElement($form->get('cf-' . $key)) ?>
-		                        <?= $this->formLabel($form->get('cf-' . $key)) ?>
-		                    </div>
-	                    </td>
-	                </tr>
-	            <?php elseif ($type == 'Text'): ?>
-		            <tr>
-	                    <td class="default-form-label-row">
-	                        <?= $this->formLabel($form->get('cf-' . $key)) ?>
-	                    </td>
-	                    <td>
-	                        <?= $this->formElement($form->get('cf-' . $key)) ?>
-	                    </td>
-	                    <td>
-	                        <?= $this->formElementErrors($form->get('cf-' . $key)) ?>
-	                        <?= $this->formElementNotes($form->get('cf-' . $key)) ?>
-	                    </td>
-	                </tr>
-	            <?php endif; ?>
-            <?php endforeach; ?>
+	/* Separator styles */
+	.separator {
+		margin: 1.5rem 0;
+	}
 
-            <?= $this->formRowSubmit($form, 'cf-submit') ?>
-        </table>
+	.separator-line {
+		border-top: 1px solid #e5e7eb;
+	}
 
-        <?= $this->form()->closeTag() ?>
-    </div>
+	.separator-small {
+		margin: 0.75rem 0;
+	}
+
+	/* Padded section */
+	.padded {
+		padding: 1.5rem;
+	}
+
+	/* Form section styles */
+	.form-section {
+		background-color: #ffffff;
+		border-radius: 0.75rem;
+		border: 1px solid #e5e7eb;
+		padding: 1.5rem;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	}
+
+	.form-section-title {
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 1rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.form-section-icon {
+		width: 2rem;
+		height: 2rem;
+		border-radius: 0.5rem;
+		background: linear-gradient(to right, #10b981, #059669);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		margin-right: 0.75rem;
+	}
+
+	/* Info box styles */
+	.info-box {
+		background-color: #f0fdf4;
+		border-left: 4px solid #10b981;
+		padding: 1rem;
+		border-radius: 0.5rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.info-box-title {
+		font-weight: 600;
+		color: #065f46;
+		margin-bottom: 0.5rem;
+	}
+
+	.info-box-content {
+		color: #047857;
+		font-size: 0.875rem;
+	}
+</style>
+
+<div class="h-auto py-12 px-4 sm:px-6">
+	<div class="max-w-4xl mx-auto">
+		<!-- Header -->
+		<div class="text-center mb-10">
+			<h1 class="text-3xl font-bold text-slate-900 mb-2"><?= $this->t('Names and text') ?></h1>
+			<div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-500 mx-auto rounded-full"></div>
+		</div>
+
+		<!-- Description Card -->
+		<div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+			<p class="text-slate-600"><?= $this->t('What is the name of your service? What is your name?') ?></p>
+		</div>
+
+		<!-- Info Box -->
+		<div class="info-box">
+			<div class="info-box-title"><?= $this->t('Internationalization') ?></div>
+			<div class="info-box-content">
+				<?= $this->backendInfo('i18n') ?>
+			</div>
+		</div>
+
+		<!-- Form Section -->
+		<div class="form-section">
+			<div class="form-section-title">
+				<div class="form-section-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+						<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+					</svg>
+				</div>
+				<?= $this->t('Text Configuration') ?>
+			</div>
+
+			<?php
+			$form = $this->textForm;
+			$form->setAttribute('method', 'post');
+			$form->setAttribute('action', $this->url('backend/config/text'));
+			$form->prepare();
+			?>
+			<?= $this->form()->openTag($form) ?>
+
+			<div class="space-y-6">
+				<?php foreach (\Backend\Form\Config\TextForm::$definitions as $key => $value):
+					$key = str_replace('.', '_', $key);
+					if (isset($value[2]) && $value[2]) {
+						$type = $value[2];
+					} else {
+						$type = 'Text';
+					}
+				?>
+					<?php if ($type == 'Checkbox'): ?>
+						<div class="flex items-start">
+							<div class="flex items-center h-5">
+								<?= $this->formElement($form->get('cf-' . $key)) ?>
+							</div>
+							<div class="ml-3 text-sm">
+								<?= $this->formLabel($form->get('cf-' . $key)) ?>
+							</div>
+						</div>
+					<?php elseif ($type == 'Text'): ?>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+							<div class="md:text-right">
+								<?= $this->formLabel($form->get('cf-' . $key)) ?>
+							</div>
+							<div class="md:col-span-2">
+								<?= $this->formElement($form->get('cf-' . $key)) ?>
+								<div class="mt-1">
+									<?= $this->formElementErrors($form->get('cf-' . $key)) ?>
+									<?= $this->formElementNotes($form->get('cf-' . $key)) ?>
+								</div>
+							</div>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+
+				<!-- Submit Button -->
+				<div class="flex justify-end pt-4">
+					<?= $this->formRowSubmit($form, 'cf-submit') ?>
+				</div>
+			</div>
+
+			<?= $this->form()->closeTag() ?>
+		</div>
+	</div>
 </div>

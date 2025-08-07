@@ -17,8 +17,8 @@ class PasswordForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'id' => 'pf-email',
-                'class' => 'autofocus',
-                'style' => 'width: 250px;',
+                // 'class' => 'autofocus',
+                // 'style' => 'width: 250px;',
             ),
             'options' => array(
                 'label' => 'Email address',
@@ -62,5 +62,4 @@ class PasswordForm extends Form
             ),
         )));
     }
-
 }

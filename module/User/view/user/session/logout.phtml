@@ -10,19 +10,102 @@ $this->setup(array(
 ));
 
 ?>
+<!DOCTYPE html>
+<html lang="<?= $this->config('i18n.locale') ?>">
 
-<div>
-    <?php
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $this->option(['client.name.short', 'service.name.full']) ?> - Logout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#93b353',
+                        'brand-dark': '#b0c817',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
 
-    switch ($this->result) {
-        case true:
-            echo $this->message(sprintf($this->t('Bye, %s'), $this->user->need('alias')), 'success');
-            break;
-        case false:
-        default:
-            echo $this->message($this->t('You are not logged in (anymore)'), 'info');
-            break;
-    }
+<body class="bg-gray-50 font-sans antialiased">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-white rounded-lg shadow-sm overflow-hidden">
+            <!-- Content -->
+            <div class="p-8 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ph ph-sign-out text-3xl text-green-600"></i>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">
+                    <?php
+                    switch ($this->result) {
+                        case true:
+                            echo $this->t('Goodbye!');
+                            break;
+                        case false:
+                        default:
+                            echo $this->t('Not logged in');
+                            break;
+                    }
+                    ?>
+                </h2>
+                <p class="text-gray-600 mb-6">
+                    <?php
+                    switch ($this->result) {
+                        case true:
+                            echo sprintf($this->t('Bye, %s'), $this->user->need('alias'));
+                            break;
+                        case false:
+                        default:
+                            echo $this->t('You are not logged in (anymore)');
+                            break;
+                    }
+                    ?>
+                </p>
+                <a href="<?= $this->url('user/login') ?>" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand">
+                    <i class="ph ph-sign-in"></i>
+                    <?= $this->t('Back to Login') ?>
+                </a>
+            </div>
+        </div>
+    </div>
 
-    ?>
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add subtle animations
+            const elements = document.querySelectorAll('.bg-gray-50, .bg-white');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Add hover effects to buttons
+            const buttons = document.querySelectorAll('a[href], button[type="submit"]');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px)';
+                });
+
+                button.addEventListener('mouseleave', function() {
+                    this.style.tr ansform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

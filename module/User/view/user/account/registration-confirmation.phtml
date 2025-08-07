@@ -14,30 +14,218 @@ $this->setup(array(
 ));
 
 ?>
+<!DOCTYPE html>
+<html lang="<?= $this->config('i18n.locale') ?>">
 
-<div class="padded centered-text">
-    <?php if ($this->activation == 'immediate'): ?>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $this->option(['client.name.short', 'service.name.full']) ?> - Registration Complete</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#93b353',
+                        'brand-dark': '#b0c817',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
 
-        <p><?= $this->t('You can now login with your email address and password. Have fun!') ?></p>
+<body class="bg-gray-50 font-sans antialiased">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-white rounded-lg shadow-sm overflow-hidden">
+            <!-- Header -->
+            <div class="bg-brand p-6 text-white">
+                <div class="flex justify-between items-center mb-4">
+                    <a href="<?= $this->url('frontend') ?>" class="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+                        <i class="ph ph-arrow-left"></i>
+                        <span>Back to main</span>
+                    </a>
+                    <h1 class="text-2xl font-light"><?= $this->t('Registration Complete') ?></h1>
+                </div>
+                <p class="text-white/90 text-sm"><?= sprintf($this->t('Welcome to %s'), $this->option('service.name.full')) ?></p>
+            </div>
 
-    <?php elseif ($this->activation == 'manual' || $this->activation == 'manual-email'): ?>
+            <!-- Content -->
+            <div class="p-6 md:p-8">
+                <!-- Success Message -->
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="ph ph-check-circle text-3xl text-green-600"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-2"><?= $this->t('Account Created Successfully!') ?></h2>
+                    <p class="text-gray-600"><?= $this->t('The registration is complete and your user account has been created successfully') ?></p>
+                </div>
 
-        <p><?= sprintf($this->t('However, your user account is %snot yet activated%s.'), '<b>', '</b>') ?></p>
+                <!-- Activation Status -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                    <?php if ($this->activation == 'immediate'): ?>
+                        <!-- Immediate Activation -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="ph ph-check text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2"><?= $this->t('Ready to Go!') ?></h3>
+                                <p class="text-gray-600 mb-4"><?= $this->t('You can now login with your email address and password. Have fun!') ?></p>
+                                <a href="<?= $this->url('user/login') ?>" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                    <i class="ph ph-sign-in"></i>
+                                    <?= $this->t('Sign In Now') ?>
+                                </a>
+                            </div>
+                        </div>
 
-        <p><?= $this->t('This will happen during a quick manual verification of your user account data.') ?></p>
+                    <?php elseif ($this->activation == 'manual' || $this->activation == 'manual-email'): ?>
+                        <!-- Manual Activation -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="ph ph-clock text-amber-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2"><?= $this->t('Manual Verification Required') ?></h3>
+                                <p class="text-gray-600 mb-2"><?= sprintf($this->t('However, your user account is %snot yet activated%s.'), '<span class="font-semibold text-amber-700">', '</span>') ?></p>
+                                <p class="text-gray-600 mb-2"><?= $this->t('This will happen during a quick manual verification of your user account data.') ?></p>
+                                <p class="text-gray-600 mb-4"><?= $this->t('Please be patient, this will be done soon.') ?></p>
+                                <div class="flex items-center gap-2 text-sm text-gray-500">
+                                    <i class="ph ph-info"></i>
+                                    <span><?= $this->t('You will receive an email notification once your account is activated.') ?></span>
+                                </div>
+                            </div>
+                        </div>
 
-        <p><?= $this->t('Please be patient, this will be done soon.') ?></p>
+                    <?php elseif ($this->activation == 'email'): ?>
+                        <!-- Email Activation -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="ph ph-envelope text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2"><?= $this->t('Email Activation Required') ?></h3>
+                                <p class="text-gray-600 mb-2"><?= sprintf($this->t('The only step remaining is to %sactivate your user account%s.'), '<span class="font-semibold text-blue-700">', '</span>') ?></p>
+                                <p class="text-gray-600 mb-4"><?= $this->t('For this, we just sent you an email with an activation link within. Please check your inbox.') ?></p>
 
-    <?php elseif ($this->activation == 'email'): ?>
+                                <!-- Email Tips -->
+                                <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
+                                    <h4 class="text-sm font-medium text-blue-900 mb-2"><?= $this->t('Email Tips:') ?></h4>
+                                    <ul class="text-sm text-blue-800 space-y-1">
+                                        <li class="flex items-center gap-2">
+                                            <i class="ph ph-check-circle text-blue-600"></i>
+                                            <?= $this->t('Check your spam/junk folder') ?>
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="ph ph-check-circle text-blue-600"></i>
+                                            <?= $this->t('Make sure the email address is correct') ?>
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="ph ph-check-circle text-blue-600"></i>
+                                            <?= $this->t('Wait a few minutes for the email to arrive') ?>
+                                        </li>
+                                    </ul>
+                                </div>
 
-        <p><?= sprintf($this->t('The only step remaining is to %sactivate your user account%s.'), '<b>', '</b>') ?></p>
+                                <!-- Action Buttons -->
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="<?= $this->url('user/activation-resend') ?>" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                        <i class="ph ph-envelope-simple"></i>
+                                        <?= $this->t('Resend Activation Email') ?>
+                                    </a>
+                                    <a href="<?= $this->url('user/login') ?>" class="inline-flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                        <i class="ph ph-sign-in"></i>
+                                        <?= $this->t('Go to Login') ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
 
-        <p><?= $this->t('For this, we just sent you an email with an activation link within. Please check.') ?></p>
+                <!-- Next Steps -->
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4"><?= $this->t('What\'s Next?') ?></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-6 h-6 bg-brand rounded-full flex items-center justify-center">
+                                    <span class="text-white text-xs font-medium">1</span>
+                                </div>
+                                <h4 class="font-medium text-gray-900"><?= $this->t('Activate Your Account') ?></h4>
+                            </div>
+                            <p class="text-sm text-gray-600"><?= $this->t('Complete the activation process to access all features.') ?></p>
+                        </div>
 
-        <p class="gray small-text">
-            <?= sprintf($this->t('If you did not receive an email from us, you can always %srequest a new one%s.'),
-                '<a href="' . $this->url('user/activation-resend') . '">', '</a>') ?>
-        </p>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-6 h-6 bg-brand rounded-full flex items-center justify-center">
+                                    <span class="text-white text-xs font-medium">2</span>
+                                </div>
+                                <h4 class="font-medium text-gray-900"><?= $this->t('Start Booking') ?></h4>
+                            </div>
+                            <p class="text-sm text-gray-600"><?= sprintf($this->t('Begin booking %s and manage your reservations.'), $this->option('subject.square.type.plural')) ?></p>
+                        </div>
+                    </div>
+                </div>
 
-    <?php endif; ?>
-</div>
+                <!-- Help Section -->
+                <div class="mt-8 bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-3"><?= $this->t('Need Help?') ?></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-question text-gray-400"></i>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900"><?= $this->t('Contact Support') ?></p>
+                                <p class="text-xs text-gray-500"><?= $this->t('Get help with your account') ?></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-book text-gray-400"></i>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900"><?= $this->t('User Guide') ?></p>
+                                <p class="text-xs text-gray-500"><?= $this->t('Learn how to use the platform') ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some subtle animations
+            const elements = document.querySelectorAll('.bg-gray-50, .bg-white');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Add hover effects to buttons
+            const buttons = document.querySelectorAll('a[href]');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px)';
+                });
+
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

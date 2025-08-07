@@ -199,11 +199,11 @@ $this->setup(array(
                     <!-- Remember me and Forgot password -->
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-[#93b353] focus:ring-green-500" />
                             <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember Me</label>
                         </div>
                         <div class="text-sm">
-                            <a href="<?= $this->url('user/password') ?>" class="font-medium text-green-600 hover:text-green-500 transition-colors duration-200">
+                            <a href="<?= $this->url('user/password') ?>" class="font-medium text-[#93b353] hover:text-green-500 transition-colors duration-200">
                                 Forgot Password?
                             </a>
                         </div>
@@ -214,7 +214,7 @@ $this->setup(array(
                         <?= $this->formElement(
                             $form->get('lf-submit')
                                 ->setAttribute('type', 'submit')
-                                ->setAttribute('class', 'flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200')
+                                ->setAttribute('class', 'flex w-full justify-center rounded-md border border-transparent bg-[#93b353] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200')
                         ) ?>
                     </div>
 
@@ -224,7 +224,7 @@ $this->setup(array(
                     <div class="mt-8 text-center">
                         <p class="text-sm text-gray-600">
                             Not registered yet?
-                            <a href="<?= $this->url('user/registration') ?>" class="inline-flex items-center font-medium text-green-600 hover:text-green-500 transition-colors duration-200">
+                            <a href="<?= $this->url('user/registration') ?>" class="inline-flex items-center font-medium text-[#93b353] hover:text-green-500 transition-colors duration-200">
                                 Create an account
                                 <i class="ph ph-arrow-up-right ml-1"></i>
                             </a>

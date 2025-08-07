@@ -34,13 +34,13 @@ class RegistrationForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'id' => 'rf-email1',
-                'class' => 'autofocus',
-                'style' => 'width: 250px;',
+                // 'class' => 'autofocus',
+                // 'style' => 'width: 250px;',
             ),
             'options' => array(
                 'label' => 'Email address',
                 'label_attributes' => array(
-                    'class' => 'symbolic symbolic-email',
+                    // 'class' => 'symbolic symbolic-email',
                 ),
                 'notes' => 'Please provide your email address',
             ),
@@ -51,7 +51,7 @@ class RegistrationForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'id' => 'rf-email2',
-                'style' => 'width: 250px;',
+                // 'style' => 'width: 250px;',
             ),
             'options' => array(
                 'label' => ' ',
@@ -64,12 +64,12 @@ class RegistrationForm extends Form
             'type' => 'Password',
             'attributes' => array(
                 'id' => 'rf-pw1',
-                'style' => 'width: 250px;',
+                // 'style' => 'width: 250px;',
             ),
             'options' => array(
                 'label' => 'Password',
                 'label_attributes' => array(
-                    'class' => 'symbolic symbolic-pw',
+                    // 'class' => 'symbolic symbolic-pw',
                 ),
                 'notes' => 'Your password will be safely encrypted',
             ),
@@ -80,7 +80,7 @@ class RegistrationForm extends Form
             'type' => 'Password',
             'attributes' => array(
                 'id' => 'rf-pw2',
-                'style' => 'width: 250px;',
+                // 'style' => 'width: 250px;',
             ),
             'options' => array(
                 'label' => ' ',
@@ -93,9 +93,9 @@ class RegistrationForm extends Form
         $this->add(array(
             'name' => 'rf-gender',
             'type' => 'Select',
-            'attributes' => array(
-                'id' => 'rf-gender',
-            ),
+            // 'attributes' => array(
+            //     'id' => 'rf-gender',
+            // ),
             'options' => array(
                 'label' => 'Salutation',
                 'value_options' => User::$genderOptions,
@@ -106,8 +106,8 @@ class RegistrationForm extends Form
             'name' => 'rf-firstname',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'rf-firstname',
-                'style' => 'width: 116px;',
+                // 'id' => 'rf-firstname',
+                // 'style' => 'width: 116px;',
             ),
             'options' => array(
                 'label' => 'First & Last name',
@@ -118,8 +118,8 @@ class RegistrationForm extends Form
             'name' => 'rf-lastname',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'rf-lastname',
-                'style' => 'width: 116px;',
+                // 'id' => 'rf-lastname',
+                // 'style' => 'width: 116px;',
             ),
             'options' => array(
                 'label' => 'Last name',
@@ -130,8 +130,8 @@ class RegistrationForm extends Form
             'name' => 'rf-street',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'rf-street',
-                'style' => 'width: 182px;',
+                // 'id' => 'rf-street',
+                // 'style' => 'width: 182px;',
             ),
             'options' => array(
                 'label' => 'Street & Number',
@@ -143,7 +143,7 @@ class RegistrationForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'id' => 'rf-number',
-                'style' => 'width: 50px;',
+                // 'style' => 'width: 50px;',
             ),
             'options' => array(
                 'label' => 'Street number',
@@ -154,8 +154,8 @@ class RegistrationForm extends Form
             'name' => 'rf-zip',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'rf-zip',
-                'style' => 'width: 116px;',
+                //  'id' => 'rf-zip',
+                // 'style' => 'width: 116px;',
             ),
             'options' => array(
                 'label' => 'Postal code & City',
@@ -166,8 +166,8 @@ class RegistrationForm extends Form
             'name' => 'rf-city',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'rf-city',
-                'style' => 'width: 116px;',
+                //  'id' => 'rf-city',
+                // 'style' => 'width: 116px;',
             ),
             'options' => array(
                 'label' => 'City',
@@ -178,8 +178,8 @@ class RegistrationForm extends Form
             'name' => 'rf-phone',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'rf-phone',
-                'style' => 'width: 250px;',
+                // 'id' => 'rf-phone',
+                // 'style' => 'width: 250px;',
             ),
             'options' => array(
                 'label' => 'Phone number',
@@ -271,8 +271,8 @@ class RegistrationForm extends Form
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Complete registration',
-                'class' => 'default-button',
-                'style' => 'width: 250px;',
+                // 'class' => 'default-button',
+                // 'style' => 'width: 250px;',
             ),
         ));
 
@@ -309,7 +309,7 @@ class RegistrationForm extends Form
                     array(
                         'name' => 'Callback',
                         'options' => array(
-                            'callback' => function($value) {
+                            'callback' => function ($value) {
                                 $blacklist = getcwd() . '/data/res/blacklist-emails.txt';
 
                                 if (is_readable($blacklist)) {
@@ -334,7 +334,7 @@ class RegistrationForm extends Form
                     array(
                         'name' => 'Callback',
                         'options' => array(
-                            'callback' => function($value) use ($userManager) {
+                            'callback' => function ($value) use ($userManager) {
                                 if ($userManager->getBy(array('email' => $value))) {
                                     return false;
                                 } else {
@@ -458,7 +458,9 @@ class RegistrationForm extends Form
             'rf-street' => array(
                 'filters' => array(
                     array('name' => 'StringTrim'),
-                    array('name' => 'Callback', 'options' => array('callback' => function($name) { return ucfirst($name); })),
+                    array('name' => 'Callback', 'options' => array('callback' => function ($name) {
+                        return ucfirst($name);
+                    })),
                 ),
                 'validators' => array(
                     array(
@@ -484,27 +486,27 @@ class RegistrationForm extends Form
                     ),
                 ),
             ),
-            'rf-number' => array(
-                'filters' => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'NotEmpty',
-                        'options' => array(
-                            'message' => 'Please type your street number here',
-                        ),
-                        'break_chain_on_failure' => true,
-                    ),
-                    array(
-                        'name' => 'Regex',
-                        'options' => array(
-                            'pattern' => '/^([0-9a-zA-Z\.\-\/])+$/u',
-                            'message' => 'This street number contains invalid characters - sorry',
-                        ),
-                    ),
-                ),
-            ),
+            // 'rf-number' => array(
+            //     'filters' => array(
+            //         array('name' => 'StringTrim'),
+            //     ),
+            //     'validators' => array(
+            //         array(
+            //             'name' => 'NotEmpty',
+            //             'options' => array(
+            //                 'message' => 'Please type your street number here',
+            //             ),
+            //             'break_chain_on_failure' => true,
+            //         ),
+            //         array(
+            //             'name' => 'Regex',
+            //             'options' => array(
+            //                 'pattern' => '/^([0-9a-zA-Z\.\-\/])+$/u',
+            //                 'message' => 'This street number contains invalid characters - sorry',
+            //             ),
+            //         ),
+            //     ),
+            // ),
             'rf-zip' => array(
                 'filters' => array(
                     array('name' => 'StringTrim'),
@@ -529,7 +531,9 @@ class RegistrationForm extends Form
             'rf-city' => array(
                 'filters' => array(
                     array('name' => 'StringTrim'),
-                    array('name' => 'Callback', 'options' => array('callback' => function($name) { return ucfirst($name); })),
+                    array('name' => 'Callback', 'options' => array('callback' => function ($name) {
+                        return ucfirst($name);
+                    })),
                 ),
                 'validators' => array(
                     array(
@@ -604,7 +608,7 @@ class RegistrationForm extends Form
                     array(
                         'name' => 'Callback',
                         'options' => array(
-                            'callback' => function($value) {
+                            'callback' => function ($value) {
                                 return $value === 'true';
                             },
                             'message' => 'Please agree to this',
@@ -626,7 +630,7 @@ class RegistrationForm extends Form
                     array(
                         'name' => 'Callback',
                         'options' => array(
-                            'callback' => function($value) {
+                            'callback' => function ($value) {
                                 return $value === 'true';
                             },
                             'message' => 'Please agree to this',
@@ -659,7 +663,7 @@ class RegistrationForm extends Form
                     array(
                         'name' => 'Callback',
                         'options' => array(
-                            'callback' => function($value) use ($bcrypt) {
+                            'callback' => function ($value) use ($bcrypt) {
                                 $time = time();
 
                                 $formTime = substr($value, 0, strlen($time));
@@ -683,5 +687,4 @@ class RegistrationForm extends Form
             ),
         )));
     }
-
 }

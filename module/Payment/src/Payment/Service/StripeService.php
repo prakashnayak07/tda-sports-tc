@@ -60,9 +60,16 @@ class StripeService
                     'success_url' => $successUrl,
                     'cancel_url' => $cancelUrl,
                     'metadata' => [
+                        // No booking_id in deferred mode; carry all info to reconstruct after success
                         'booking_id' => $bookingData['booking_id'] ?? '',
                         'user_id' => $bookingData['user_id'] ?? '',
                         'square_id' => $bookingData['square_id'] ?? '',
+                        'ds' => $bookingData['ds'] ?? '',
+                        'de' => $bookingData['de'] ?? '',
+                        'ts' => $bookingData['ts'] ?? '',
+                        'te' => $bookingData['te'] ?? '',
+                        'quantity' => $bookingData['quantity'] ?? '',
+                        'meta' => isset($bookingData['meta']) ? json_encode($bookingData['meta']) : '',
                     ],
                     'customer_email' => $bookingData['customer_email'] ?? null,
                 ];

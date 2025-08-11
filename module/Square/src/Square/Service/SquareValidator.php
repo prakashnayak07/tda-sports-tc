@@ -24,10 +24,14 @@ class SquareValidator extends AbstractService
     protected $optionManager;
     protected $user;
 
-    public function __construct(BookingManager $bookingManager, ReservationManager $reservationManager,
-        EventManager $eventManager, SquareManager $squareManager, UserSessionManager $userSessionManager,
-        OptionManager $optionManager)
-    {
+    public function __construct(
+        BookingManager $bookingManager,
+        ReservationManager $reservationManager,
+        EventManager $eventManager,
+        SquareManager $squareManager,
+        UserSessionManager $userSessionManager,
+        OptionManager $optionManager
+    ) {
         $this->bookingManager = $bookingManager;
         $this->reservationManager = $reservationManager;
         $this->eventManager = $eventManager;
@@ -217,8 +221,10 @@ class SquareValidator extends AbstractService
 
             $dayExceptions = $dayExceptionsCleaned;
 
-            if (in_array($dateStart->format($this->t('Y-m-d')), $dayExceptions) ||
-                in_array($this->t($dateStart->format('l')), $dayExceptions)) {
+            if (
+                in_array($dateStart->format($this->t('Y-m-d')), $dayExceptions) ||
+                in_array($this->t($dateStart->format('l')), $dayExceptions)
+            ) {
 
                 if (! in_array($dateStart->format($this->t('Y-m-d')), $dayExceptionsExceptions)) {
                     throw new RuntimeException('The passed date has been hidden from the calendar');
@@ -274,11 +280,17 @@ class SquareValidator extends AbstractService
             if ($booking->need('sid') == $square->need('sid')) {
                 if ($booking->need('visibility') == 'public') {
                     if ($booking->need('status') != 'cancelled') {
-                        $bookings[$bid] = $booking;
-                        $quantity += $booking->need('quantity');
+                        // Only count bookings that are paid or do not require billing
+                        $statusBilling = $booking->get('status_billing');
+                        $isPaidOrNotRequired = ($statusBilling === null) || ($statusBilling === 'paid');
 
-                        if ($user && $user->need('uid') == $booking->need('uid')) {
-                            $bookingsFromUser[$bid] = $booking;
+                        if ($isPaidOrNotRequired) {
+                            $bookings[$bid] = $booking;
+                            $quantity += $booking->need('quantity');
+
+                            if ($user && $user->need('uid') == $booking->need('uid')) {
+                                $bookingsFromUser[$bid] = $booking;
+                            }
                         }
                     }
                 }
@@ -321,6 +333,11 @@ class SquareValidator extends AbstractService
                 $activeBookingsCount = 0;
 
                 foreach ($activeBookings as $activeBooking) {
+                    // Ignore bookings that are not yet paid when counting active bookings
+                    $statusBilling = $activeBooking->get('status_billing');
+                    if ($statusBilling && $statusBilling !== 'paid') {
+                        continue;
+                    }
                     foreach ($activeBooking->getExtra('reservations') as $activeReservation) {
                         $activeReservationDate = new DateTime($activeReservation->get('date') . ' ' . $activeReservation->get('time_start'));
 
@@ -414,5 +431,4 @@ class SquareValidator extends AbstractService
             return false;
         }
     }
-
 }

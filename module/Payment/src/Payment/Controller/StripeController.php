@@ -92,11 +92,13 @@ class StripeController extends AbstractActionController
                 $session = $stripeService->getCheckoutSession($sessionId);
 
                 if ($session->payment_status === 'paid') {
-                    // Update booking status to paid
+                    // If a booking was pre-created, mark it paid; otherwise create it now (deferred mode)
                     $bookingId = $session->metadata->booking_id ?? null;
 
                     if ($bookingId) {
                         $this->updateBookingPaymentStatus($bookingId, 'paid', $sessionId);
+                    } else {
+                        $this->createBookingFromSession($session);
                     }
 
                     $this->flashMessenger()->addSuccessMessage(
@@ -114,6 +116,11 @@ class StripeController extends AbstractActionController
             }
         }
 
+        // Redirect back to origin if available
+        $redirectBack = $this->redirectBack();
+        if (method_exists($redirectBack, 'toOrigin')) {
+            return $redirectBack->toOrigin();
+        }
         return $this->redirect()->toRoute('frontend');
     }
 
@@ -161,6 +168,11 @@ class StripeController extends AbstractActionController
             );
         }
 
+        // Always redirect user back to the original origin if possible
+        $redirectBack = $this->redirectBack();
+        if (method_exists($redirectBack, 'toOrigin')) {
+            return $redirectBack->toOrigin();
+        }
         return $this->redirect()->toRoute('frontend');
     }
 
@@ -227,6 +239,51 @@ class StripeController extends AbstractActionController
         } catch (\Exception $e) {
             // Log error but don't throw to avoid webhook retries
             error_log('Failed to update booking payment status: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Create booking record after successful payment (deferred booking model)
+     */
+    private function createBookingFromSession($session)
+    {
+        $serviceManager = $this->getServiceLocator();
+        $bookingService = $serviceManager->get('Booking\Service\BookingService');
+        $squareManager = $serviceManager->get('Square\Manager\SquareManager');
+        $userManager = $serviceManager->get('User\Manager\UserManager');
+
+        try {
+            $metadata = $session->metadata ?? (object)[];
+            $uid = isset($metadata->user_id) ? (int)$metadata->user_id : 0;
+            $sid = isset($metadata->square_id) ? (int)$metadata->square_id : 0;
+            $ds = $metadata->ds ?? '';
+            $de = $metadata->de ?? '';
+            $ts = $metadata->ts ?? '';
+            $te = $metadata->te ?? '';
+            $quantity = isset($metadata->quantity) ? (int)$metadata->quantity : 1;
+
+            if (!($uid && $sid && $ds && $de && $ts && $te)) {
+                throw new RuntimeException('Incomplete session metadata to create booking');
+            }
+
+            $user = $userManager->get($uid);
+            $square = $squareManager->get($sid);
+
+            $dateStart = new \DateTime($ds . ' ' . $ts);
+            $dateEnd = new \DateTime($de . ' ' . $te);
+
+            $meta = [];
+            if (!empty($metadata->meta)) {
+                $decoded = json_decode($metadata->meta, true);
+                if (is_array($decoded)) {
+                    $meta = $decoded;
+                }
+            }
+
+            $booking = $bookingService->createSingle($user, $square, $quantity, $dateStart, $dateEnd, [], $meta);
+            $this->updateBookingPaymentStatus($booking->need('bid'), 'paid', $session->id);
+        } catch (\Exception $e) {
+            error_log('Failed to create booking from session: ' . $e->getMessage());
         }
     }
 

@@ -148,7 +148,7 @@ if ($requiresPayment) {
                 <input type="hidden" name="bf-confirm" value="<?= sha1('Quick and dirty' . floor(time() / 1800)) ?>">
                 <input type="hidden" name="bf-submission-token" value="<?= $submissionToken ?>">
 
-                <button type="submit" name="bf-submit" class="w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-green-900 font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg">
+                <button type="submit" name="bf-submit" class="w-full text-white bg-[#93b353] hover:bg-green-900 font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg">
                     <?= $paymentRequired ? $this->t('Proceed to Payment') : $this->t('Complete Booking') ?>
                 </button>
 

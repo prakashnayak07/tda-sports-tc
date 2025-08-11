@@ -223,45 +223,63 @@ class BookingController extends AbstractActionController
                 $bookingService = $serviceManager->get('Booking\Service\BookingService');
 
                 if ($requiresPayment) {
-                    // Create booking with pending payment status
-                    $booking = $bookingService->createSingle($user, $square, $quantityParam, $byproducts['dateStart'], $byproducts['dateEnd'], $bills, array(
-                        'player-names' => serialize($playerNames),
-                        'notes' => $userNotes,
-                    ));
+                    // Build complete bills without creating a booking yet (deferred booking until payment success)
+                    $completeBills = [];
 
-                    // Set booking to pending payment status
-                    $booking->set('status_billing', 'pending_payment');
-                    $bookingManager = $serviceManager->get('Booking\Manager\BookingManager');
-                    $bookingManager->save($booking);
+                    // Include square pricing as primary bill
+                    $squarePricingManager = $serviceManager->get('Square\Manager\SquarePricingManager');
+                    $pricing = $squarePricingManager->getFinalPricingInRange($byproducts['dateStart'], $byproducts['dateEnd'], $square, $quantityParam);
 
-                    // Get the complete bills from the booking (includes court pricing + products)
-                    $completeBills = $booking->getExtra('bills', array());
+                    if ($pricing) {
+                        $optionManager = $serviceManager->get('Base\Manager\OptionManager');
+                        $squareTypeOpt = $optionManager->need('subject.square.type');
+                        $squareName = $this->t($square->need('name'));
+                        $dateRangeHelper = $serviceManager->get('ViewHelperManager')->get('DateRange');
+                        $description = sprintf('%s %s, %s', $squareTypeOpt, $squareName, $dateRangeHelper($byproducts['dateStart'], $byproducts['dateEnd']));
 
-                    // Check if there's actually an amount to pay from ALL bills
+                        $completeBills[] = [
+                            'description' => $description,
+                            'quantity' => $quantityParam,
+                            'price' => $pricing['price'],
+                            'rate' => $pricing['rate'],
+                            'gross' => $pricing['gross'],
+                        ];
+                    }
+
+                    // Add additional product bills
+                    foreach ($bills as $bill) {
+                        $completeBills[] = [
+                            'description' => $bill->get('description'),
+                            'quantity' => $bill->get('quantity') ?: 1,
+                            'price' => $bill->get('price'),
+                            'rate' => $bill->get('rate'),
+                            'gross' => $bill->get('gross'),
+                        ];
+                    }
+
+                    // Calculate total amount
                     $totalAmount = 0;
-                    foreach ($completeBills as $bill) {
-                        $totalAmount += $bill->get('price');
+                    foreach ($completeBills as $billArr) {
+                        $totalAmount += $billArr['price'];
                     }
 
                     if ($totalAmount > 0) {
-                        // Prepare booking data for Stripe with ALL bills (court pricing + products)
+                        // Prepare booking data payload to attach to the Stripe session metadata
                         $bookingData = [
-                            'booking_id' => $booking->get('bid'),
                             'user_id' => $user->get('uid'),
                             'square_id' => $square->get('sid'),
                             'customer_email' => $user->get('email'),
-                            'bills' => []
+                            'ds' => $dateStartParam,
+                            'de' => $dateEndParam,
+                            'ts' => $timeStartParam,
+                            'te' => $timeEndParam,
+                            'quantity' => $quantityParam,
+                            'meta' => [
+                                'player-names' => $playerNames ? serialize($playerNames) : null,
+                                'notes' => $userNotes,
+                            ],
+                            'bills' => $completeBills,
                         ];
-
-                        foreach ($completeBills as $bill) {
-                            $bookingData['bills'][] = [
-                                'description' => $bill->get('description'),
-                                'quantity' => $bill->get('quantity') ?: 1,
-                                'price' => $bill->get('price'),
-                                'rate' => $bill->get('rate'),
-                                'gross' => $bill->get('gross')
-                            ];
-                        }
 
                         // Create Stripe checkout session
                         try {
@@ -274,14 +292,20 @@ class BookingController extends AbstractActionController
                             // Redirect to Stripe checkout
                             return $this->redirect()->toUrl($session->url);
                         } catch (\Exception $e) {
-                            // If payment setup fails, cancel the booking
-                            $bookingService->cancelSingle($booking);
-
                             $this->flashMessenger()->addErrorMessage(sprintf($this->t('Payment setup failed: %s'), $e->getMessage()));
                             return $this->redirectBack()->toOrigin();
                         }
                     } else {
-                        // No payment required, booking is complete
+                        // No payment required, create booking immediately and mark as paid
+                        $booking = $bookingService->createSingle($user, $square, $quantityParam, $byproducts['dateStart'], $byproducts['dateEnd'], $bills, array(
+                            'player-names' => $playerNames ? serialize($playerNames) : null,
+                            'notes' => $userNotes,
+                        ));
+
+                        // Mark billing as paid explicitly
+                        $booking->set('status_billing', 'paid');
+                        $serviceManager->get('Booking\\Manager\\BookingManager')->save($booking);
+
                         $this->flashMessenger()->addSuccessMessage(sprintf(
                             $this->t('%sCongratulations:%s Your %s has been booked!'),
                             '<b>',
@@ -293,10 +317,14 @@ class BookingController extends AbstractActionController
                     }
                 } else {
                     // Original flow - no payment processing
-                    $bookingService->createSingle($user, $square, $quantityParam, $byproducts['dateStart'], $byproducts['dateEnd'], $bills, array(
+                    $booking = $bookingService->createSingle($user, $square, $quantityParam, $byproducts['dateStart'], $byproducts['dateEnd'], $bills, array(
                         'player-names' => serialize($playerNames),
                         'notes' => $userNotes,
                     ));
+
+                    // Mark billing as paid explicitly
+                    $booking->set('status_billing', 'paid');
+                    $serviceManager->get('Booking\\Manager\\BookingManager')->save($booking);
 
                     $this->flashMessenger()->addSuccessMessage(sprintf(
                         $this->t('%sCongratulations:%s Your %s has been booked!'),

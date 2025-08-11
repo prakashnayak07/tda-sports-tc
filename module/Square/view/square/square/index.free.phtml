@@ -3,19 +3,52 @@
 $square = $this->square;
 $squareType = $this->option('subject.square.type');
 
-echo sprintf('<p><span class="green">' . $this->t('This %s is still free.') . '</span></p>', $squareType);
+// Add Font Awesome for better icons
+echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">';
 
-echo $this->squareCapacityInfo($square, $this->quantity);
+// Enhanced status message with compact styling
+echo '<div class="status-message" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #0ea5e9; border-radius: 8px; padding: 10px; margin-bottom: 12px; text-align: center;">';
+echo '<div style="display: inline-flex; align-items: center; background: white; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);">';
+echo '<i class="fas fa-check-circle" style="color: #10b981; font-size: 16px; margin-right: 6px;"></i>';
+echo '<span style="color: #065f46; font-weight: 600; font-size: 13px;">' . sprintf($this->t('This %s is still free'), $squareType) . '</span>';
+echo '</div>';
+echo '</div>';
+
+// Enhanced capacity info with compact styling
+$capacityInfo = $this->squareCapacityInfo($square, $this->quantity);
+if ($capacityInfo) {
+    echo '<div class="capacity-info" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 12px;">';
+    echo '<div style="display: flex; align-items: center; margin-bottom: 6px;">';
+    echo '<i class="fas fa-users" style="color: #64748b; margin-right: 6px;"></i>';
+    echo '<span style="color: #475569; font-weight: 600; font-size: 13px;">' . $this->t('Capacity Information') . '</span>';
+    echo '</div>';
+    echo '<div style="color: #64748b; font-size: 13px;">' . $capacityInfo . '</div>';
+    echo '</div>';
+}
 
 if ($square->need('status') == 'readonly') {
     if ($square->getMeta('readonly.message')) {
-        echo '<p class="gray">' . $square->getMeta('readonly.message') . '</p>';
+        echo '<div class="readonly-message" style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 10px; margin-bottom: 12px;">';
+        echo '<div style="display: flex; align-items: center;">';
+        echo '<i class="fas fa-exclamation-triangle" style="color: #d97706; margin-right: 6px;"></i>';
+        echo '<span style="color: #92400e; font-weight: 600; font-size: 13px;">' . $square->getMeta('readonly.message') . '</span>';
+        echo '</div>';
+        echo '</div>';
     } else {
-        echo '<p class="gray">' . sprintf($this->t('Bookings for this %s are currently not possible online'), $squareType) . '</p>';
+        echo '<div class="readonly-message" style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 10px; margin-bottom: 12px;">';
+        echo '<div style="display: flex; align-items: center;">';
+        echo '<i class="fas fa-exclamation-triangle" style="color: #d97706; margin-right: 6px;"></i>';
+        echo '<span style="color: #92400e; font-weight: 600; font-size: 13px;">' . sprintf($this->t('Bookings for this %s are currently not possible online'), $squareType) . '</span>';
+        echo '</div>';
+        echo '</div>';
     }
 } else {
     if ($this->user) {
-        echo '<p>';
+        echo '<div class="booking-section" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; margin-bottom: 12px;">';
+        echo '<div style="display: flex; align-items: center; margin-bottom: 10px;">';
+        echo '<i class="fas fa-calendar-check" style="color: #16a34a; font-size: 18px; margin-right: 8px;"></i>';
+        echo '<span style="color: #15803d; font-weight: 600; font-size: 14px;">' . $this->t('Ready to Book') . '</span>';
+        echo '</div>';
 
         echo $this->ajaxAwareScript('js/controller/square/index.free.min.js');
         echo $this->squareTimeBlockChoice($this->dateStart, $this->dateEnd, $square);
@@ -34,24 +67,59 @@ if ($square->need('status') == 'readonly') {
             's' => $square->need('sid')
         ]]);
 
-        echo sprintf(
-            '<a href="%s" id="sb-button" class="default-button squarebox-internal-link"><span class="symbolic symbolic-plus">%s</span></a>',
-            $url,
-            $this->t('Book now')
-        );
-
-        echo '</p>';
+        echo '<div style="text-align: center; margin-top: 10px;">';
+        echo '<a href="' . $url . '" id="sb-button" class="default-button squarebox-internal-link" style="display: inline-flex; align-items: center; background: linear-gradient(135deg, #93b353 0%, #7a9646 100%); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; box-shadow: 0 2px 8px rgba(147, 179, 83, 0.3); transition: all 0.3s ease; transform: translateY(0);"><i class="fas fa-plus" style="margin-right: 6px;"></i>' . $this->t('Book now') . '</a>';
+        echo '</div>';
+        echo '</div>';
     } else {
-        echo '<p class="gray">' . sprintf(
-            $this->t('You can %slogin%s or %sregister%s, %s to book this %s'),
-            '<a href="' . $this->url('user/login') . '">',
-            '</a>',
-            '<a href="' . $this->url('user/registration') . '">',
-            '</a>',
-            '<br>',
-            $squareType
-        ) . '.</p>';
+        // Compact login/register section with modern card design
+        echo '<div class="login-register-card" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);">';
+
+        // Header section - compact
+        echo '<div style="text-align: center; margin-bottom: 16px;">';
+        echo '<div style="display: inline-flex; align-items: center; background: white; border-radius: 8px; padding: 8px 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin-bottom: 10px;">';
+        echo '<i class="fas fa-lock" style="color: #93b353; font-size: 16px; margin-right: 8px;"></i>';
+        echo '<span style="color: #1e293b; font-weight: 600; font-size: 14px;">' . sprintf($this->t('Book this %s'), $squareType) . '</span>';
+        echo '</div>';
+        echo '<p style="color: #64748b; font-size: 13px; line-height: 1.4; margin: 0;">' . sprintf($this->t('To book this %s, you need to be logged in.'), $squareType) . '</p>';
+        echo '</div>';
+
+        // Action buttons with compact styling
+        echo '<div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">';
+
+        // Login button - compact
+        echo '<a href="' . $this->url('user/login') . '" style="display: flex; align-items: center; justify-content: center; width: 100%; max-width: 240px; background: linear-gradient(135deg, #93b353 0%, #7a9646 100%); color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; box-shadow: 0 2px 8px rgba(147, 179, 83, 0.3); transition: all 0.3s ease; transform: translateY(0);">';
+        echo '<i class="fas fa-sign-in-alt" style="margin-right: 8px; font-size: 16px;"></i>';
+        echo $this->t('Login to Book');
+        echo '</a>';
+
+        // Register button - compact
+        echo '<a href="' . $this->url('user/registration') . '" style="display: flex; align-items: center; justify-content: center; width: 100%; max-width: 240px; background: white; color: #93b353; padding: 12px 20px; border: 2px solid #93b353; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s ease; transform: translateY(0);">';
+        echo '<i class="fas fa-user-plus" style="margin-right: 8px; font-size: 16px;"></i>';
+        echo $this->t('Register Now');
+        echo '</a>';
+        echo '</div>';
+
+        // Additional info section - compact
+        echo '<div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0;">';
+        echo '<div style="display: grid; grid-template-columns: 1fr; gap: 8px;">';
+
+
+
+
+
+        echo '</div>';
     }
 
-    echo $this->squarePricingHints($this->dateStart, $this->dateEnd, $square);
+    // Enhanced pricing hints display - compact
+    $pricingHints = $this->squarePricingHints($this->dateStart, $this->dateEnd, $square);
+    if ($pricingHints) {
+        echo '<div class="pricing-hints" style="background: #fefce8; border: 1px solid #fde047; border-radius: 8px; padding: 10px; margin-top: 12px;">';
+        echo '<div style="display: flex; align-items: center; margin-bottom: 6px;">';
+        echo '<i class="fas fa-tag" style="color: #ca8a04; margin-right: 6px;"></i>';
+        echo '<span style="color: #92400e; font-weight: 600; font-size: 13px;">' . $this->t('Pricing Information') . '</span>';
+        echo '</div>';
+        echo '<div style="color: #92400e; font-size: 13px;">' . $pricingHints . '</div>';
+        echo '</div>';
+    }
 }

@@ -1,11 +1,70 @@
 <?php
 
+$square = $this->square;
 $squareType = $this->option('subject.square.type');
 
+// Add Font Awesome for better icons
+echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">';
+
+// Enhanced occupied slot message with modern styling
+echo '<div class="occupied-slot" style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 1px solid #fecaca; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);">';
+
+// Header section
+echo '<div style="text-align: center; margin-bottom: 16px;">';
+echo '<div style="display: inline-flex; align-items: center; background: white; border-radius: 8px; padding: 8px 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin-bottom: 10px;">';
+echo '<i class="fas fa-ban" style="color: #ef4444; font-size: 18px; margin-right: 8px;"></i>';
+echo '<span style="color: #dc2626; font-weight: 600; font-size: 14px;">' . sprintf($this->t('%s is Occupied'), ucfirst($squareType)) . '</span>';
+echo '</div>';
+
+// Dynamic reason message
 if ($this->notBookableReason) {
     $reason = $this->notBookableReason;
 } else {
-    $reason = $this->t('This %s is already occupied.');
+    $reason = sprintf($this->t('This %s is already occupied.'), $squareType);
 }
 
-echo sprintf('<p><span class="red">' . $reason . '</span></p>', $squareType);
+echo '<p style="color: #64748b; font-size: 13px; line-height: 1.4; margin: 0;">' . $reason . '</p>';
+echo '</div>';
+
+// Additional info section - compact
+echo '<div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0;">';
+echo '<div style="display: grid; grid-template-columns: 1fr; gap: 8px;">';
+
+// Court Information Card
+echo '<div style="display: flex; align-items: center; background: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">';
+echo '<div style="background: #f0f9ff; border-radius: 6px; padding: 8px; margin-right: 10px;">';
+echo '<i class="fas fa-map-marker-alt" style="color: #93b353; font-size: 14px;"></i>';
+echo '</div>';
+echo '<div>';
+echo '<h3 style="font-weight: 600; color: #1e293b; margin: 0 0 2px 0; font-size: 13px;">' . $this->t('Court Details') . '</h3>';
+echo '<p style="color: #64748b; margin: 0; font-size: 11px;">' . $square->need('name') . '</p>';
+echo '</div>';
+echo '</div>';
+
+// Timing Information Card
+echo '<div style="display: flex; align-items: center; background: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">';
+echo '<div style="background: #f0f9ff; border-radius: 6px; padding: 8px; margin-right: 10px;">';
+echo '<i class="fas fa-clock" style="color: #93b353; font-size: 14px;"></i>';
+echo '</div>';
+echo '<div>';
+echo '<h3 style="font-weight: 600; color: #1e293b; margin: 0 0 2px 0; font-size: 13px;">' . $this->t('Requested Time') . '</h3>';
+$duration = $this->dateStart->diff($this->dateEnd);
+echo '<p style="color: #64748b; margin: 0; font-size: 11px;">' . $this->dateStart->format('g:i A') . ' - ' . $this->dateEnd->format('g:i A') . ' (' . $duration->h . 'h)</p>';
+echo '</div>';
+echo '</div>';
+
+// Alternative options card
+echo '<div style="display: flex; align-items: center; background: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">';
+echo '<div style="background: #f0f9ff; border-radius: 6px; padding: 8px; margin-right: 10px;">';
+echo '<i class="fas fa-lightbulb" style="color: #93b353; font-size: 14px;"></i>';
+echo '</div>';
+echo '<div>';
+echo '<h3 style="font-weight: 600; color: #1e293b; margin: 0 0 2px 0; font-size: 13px;">' . $this->t('Alternative Options') . '</h3>';
+echo '<p style="color: #64748b; margin: 0; font-size: 11px;">' . $this->t('Try different time slots or courts') . '</p>';
+echo '</div>';
+echo '</div>';
+
+echo '</div>';
+echo '</div>';
+
+echo '</div>';

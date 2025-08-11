@@ -1,30 +1,103 @@
 <?php
 
+$square = $this->square;
 $squareType = $this->option('subject.square.type');
 
+// Add Font Awesome for better icons
+echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">';
+
 foreach ($this->bookingsFromUser as $bid => $booking) {
-    echo sprintf('<p><span class="green">' . $this->t('This %s has been %sbooked to you%s.') . '</span></p>',
-        $squareType, '<b>', '</b>');
+    // Enhanced booking confirmation message with modern styling
+    echo '<div class="booking-confirmation" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);">';
+
+    // Header section
+    echo '<div style="text-align: center; margin-bottom: 16px;">';
+    echo '<div style="display: inline-flex; align-items: center; background: white; border-radius: 8px; padding: 8px 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin-bottom: 10px;">';
+    echo '<i class="fas fa-check-circle" style="color: #16a34a; font-size: 18px; margin-right: 8px;"></i>';
+    echo '<span style="color: #15803d; font-weight: 600; font-size: 14px;">' . sprintf($this->t('Your %s is Booked'), $squareType) . '</span>';
+    echo '</div>';
+    echo '<p style="color: #64748b; font-size: 13px; line-height: 1.4; margin: 0;">' . sprintf($this->t('This %s has been booked to you.'), $squareType) . '</p>';
+    echo '</div>';
+
+    // Action buttons section
+    echo '<div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">';
 
     if ($this->validator->isCancellable($booking)) {
-        echo sprintf('<p><a href="%s" class="default-button squarebox-internal-link"><span class="symbolic symbolic-cross">%s</span></a></p>',
-            $this->url('square/booking/cancellation', [], ['query' => ['bid' => $bid]]), $this->t('Cancel this booking'));
+        // Cancel booking button - compact
+        echo '<a href="' . $this->url('square/booking/cancellation', [], ['query' => ['bid' => $bid]]) . '" style="display: flex; align-items: center; justify-content: center; width: 100%; max-width: 240px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3); transition: all 0.3s ease; transform: translateY(0);">';
+        echo '<i class="fas fa-times" style="margin-right: 8px; font-size: 16px;"></i>';
+        echo $this->t('Cancel this booking');
+        echo '</a>';
     } else {
-        echo '<p><em>' . $this->t('This booking cannot be cancelled anymore online.') . '</em></p>';
+        // Non-cancellable message
+        echo '<div style="display: flex; align-items: center; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 12px; width: 100%; max-width: 240px;">';
+        echo '<i class="fas fa-exclamation-triangle" style="color: #d97706; margin-right: 8px; font-size: 16px;"></i>';
+        echo '<span style="color: #92400e; font-weight: 600; font-size: 13px;">' . $this->t('This booking cannot be cancelled anymore online.') . '</span>';
+        echo '</div>';
     }
+    echo '</div>';
+
+    // Additional info section - compact
+    echo '<div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0;">';
+    echo '<div style="display: grid; grid-template-columns: 1fr; gap: 8px;">';
+
+    // Court Information Card
+    echo '<div style="display: flex; align-items: center; background: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">';
+    echo '<div style="background: #f0f9ff; border-radius: 6px; padding: 8px; margin-right: 10px;">';
+    echo '<i class="fas fa-map-marker-alt" style="color: #93b353; font-size: 14px;"></i>';
+    echo '</div>';
+    echo '<div>';
+    echo '<h3 style="font-weight: 600; color: #1e293b; margin: 0 0 2px 0; font-size: 13px;">' . $this->t('Court Details') . '</h3>';
+    echo '<p style="color: #64748b; margin: 0; font-size: 11px;">' . $square->need('name') . '</p>';
+    echo '</div>';
+    echo '</div>';
+
+    // Timing Information Card
+    echo '<div style="display: flex; align-items: center; background: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">';
+    echo '<div style="background: #f0f9ff; border-radius: 6px; padding: 8px; margin-right: 10px;">';
+    echo '<i class="fas fa-clock" style="color: #93b353; font-size: 14px;"></i>';
+    echo '</div>';
+    echo '<div>';
+    echo '<h3 style="font-weight: 600; color: #1e293b; margin: 0 0 2px 0; font-size: 13px;">' . $this->t('Booking Time') . '</h3>';
+    $duration = $this->dateStart->diff($this->dateEnd);
+    echo '<p style="color: #64748b; margin: 0; font-size: 11px;">' . $this->dateStart->format('g:i A') . ' - ' . $this->dateEnd->format('g:i A') . ' (' . $duration->h . 'h)</p>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+
+    echo '</div>';
 }
 
 if ($this->bookable) {
-    echo sprintf('<p><span class="green">' . $this->t('This %s is still free.') . '</span></p>', $squareType);
+    // Additional booking option section
+    echo '<div class="additional-booking" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);">';
 
+    // Header section
+    echo '<div style="text-align: center; margin-bottom: 16px;">';
+    echo '<div style="display: inline-flex; align-items: center; background: white; border-radius: 8px; padding: 8px 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin-bottom: 10px;">';
+    echo '<i class="fas fa-plus-circle" style="color: #93b353; font-size: 16px; margin-right: 8px;"></i>';
+    echo '<span style="color: #1e293b; font-weight: 600; font-size: 14px;">' . sprintf($this->t('Book More %s'), $squareType) . '</span>';
+    echo '</div>';
+    echo '<p style="color: #64748b; font-size: 13px; line-height: 1.4; margin: 0;">' . sprintf($this->t('This %s is still free for additional bookings.'), $squareType) . '</p>';
+    echo '</div>';
+
+    // Book more button
     $url = $this->url('square', [], ['query' => [
         'ds' => $this->dateStart->format('Y-m-d'),
         'de' => $this->dateEnd->format('Y-m-d'),
         'ts' => $this->dateStart->format('H:i'),
         'te' => $this->dateEnd->format('H:i'),
         's' => $this->square->need('sid'),
-        'f' => 'fb']]);
+        'f' => 'fb'
+    ]]);
 
-    echo sprintf('<p><a href="%s" class="default-button squarebox-internal-link"><span class="symbolic symbolic-plus">%s</span></a></p>',
-        $url, $this->t('Book more'));
+    echo '<div style="display: flex; justify-content: center;">';
+    echo '<a href="' . $url . '" style="display: flex; align-items: center; justify-content: center; width: 100%; max-width: 240px; background: linear-gradient(135deg, #93b353 0%, #7a9646 100%); color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; box-shadow: 0 2px 8px rgba(147, 179, 83, 0.3); transition: all 0.3s ease; transform: translateY(0);">';
+    echo '<i class="fas fa-plus" style="margin-right: 8px; font-size: 16px;"></i>';
+    echo $this->t('Book more');
+    echo '</a>';
+    echo '</div>';
+
+    echo '</div>';
 }

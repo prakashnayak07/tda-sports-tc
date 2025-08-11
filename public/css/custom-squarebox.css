@@ -1,0 +1,423 @@
+/* Custom Squarebox Popup Styles */
+
+/* Enhanced overlay */
+#squarebox-overlay {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease-in-out !important;
+}
+
+/* Modern popup container */
+#squarebox-overlay + div[class*="panel"] {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  position: relative !important;
+  transform: scale(0.95) !important;
+  opacity: 0 !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* Popup animation when visible */
+#squarebox-overlay + div[class*="panel"].squarebox-visible {
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+/* Enhanced close button */
+a.squarebox-primary-close-link {
+  position: absolute !important;
+  right: 16px !important;
+  top: 16px !important;
+  width: 32px !important;
+  height: 32px !important;
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #6c757d !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease-in-out !important;
+  z-index: 10 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+a.squarebox-primary-close-link:hover {
+  background: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
+}
+
+/* Popup header styling */
+#squarebox-overlay + div[class*="panel"] h1,
+#squarebox-overlay + div[class*="panel"] h2,
+#squarebox-overlay + div[class*="panel"] h3 {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+  padding-right: 40px !important;
+}
+
+/* Popup content styling */
+#squarebox-overlay + div[class*="panel"] .padded {
+  padding: 24px !important;
+}
+
+/* Enhanced buttons in popup */
+#squarebox-overlay + div[class*="panel"] .default-button {
+  background: linear-gradient(135deg, #93b353 0%, #7a9646 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 12px 24px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  transition: all 0.3s ease-in-out !important;
+  box-shadow: 0 4px 15px rgba(147, 179, 83, 0.3) !important;
+  transform: translateY(0) !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .default-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(147, 179, 83, 0.4) !important;
+  background: linear-gradient(135deg, #7a9646 0%, #6a8540 100%) !important;
+}
+
+/* Green booking button */
+#squarebox-overlay + div[class*="panel"] .default-button[href*="booking"] {
+  background: linear-gradient(135deg, #93b353 0%, #7a9646 100%) !important;
+  box-shadow: 0 4px 15px rgba(147, 179, 83, 0.3) !important;
+}
+
+#squarebox-overlay
+  + div[class*="panel"]
+  .default-button[href*="booking"]:hover {
+  background: linear-gradient(135deg, #7a9646 0%, #6a8540 100%) !important;
+  box-shadow: 0 8px 25px rgba(147, 179, 83, 0.4) !important;
+}
+
+/* Enhanced text styling */
+#squarebox-overlay + div[class*="panel"] .green {
+  color: #93b353 !important;
+  font-weight: 600 !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .gray {
+  color: #6c757d !important;
+}
+
+/* Modern form elements */
+#squarebox-overlay + div[class*="panel"] input[type="text"],
+#squarebox-overlay + div[class*="panel"] input[type="email"],
+#squarebox-overlay + div[class*="panel"] input[type="password"],
+#squarebox-overlay + div[class*="panel"] select,
+#squarebox-overlay + div[class*="panel"] textarea {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease-in-out !important;
+  background: #ffffff !important;
+  color: #374151 !important;
+}
+
+#squarebox-overlay + div[class*="panel"] input[type="text"]:focus,
+#squarebox-overlay + div[class*="panel"] input[type="email"]:focus,
+#squarebox-overlay + div[class*="panel"] input[type="password"]:focus,
+#squarebox-overlay + div[class*="panel"] select:focus,
+#squarebox-overlay + div[class*="panel"] textarea:focus {
+  border-color: #93b353 !important;
+  box-shadow: 0 0 0 3px rgba(147, 179, 83, 0.1) !important;
+  outline: none !important;
+}
+
+/* Enhanced select dropdowns */
+#squarebox-overlay + div[class*="panel"] select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-position: right 8px center !important;
+  background-repeat: no-repeat !important;
+  background-size: 16px 12px !important;
+  padding-right: 40px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+/* Enhanced tables */
+#squarebox-overlay + div[class*="panel"] .default-table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e9ecef !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .default-table td {
+  padding: 16px !important;
+  border-bottom: 1px solid #f8f9fa !important;
+}
+
+/* Loading animation */
+#squarebox-overlay + div[class*="panel"] .loading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 40px !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .loading::after {
+  content: "" !important;
+  width: 32px !important;
+  height: 32px !important;
+  border: 3px solid #f3f3f3 !important;
+  border-top: 3px solid #93b353 !important;
+  border-radius: 50% !important;
+  animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced login/register form styling */
+#squarebox-overlay + div[class*="panel"] form {
+  background: #f8f9fa !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  border: 1px solid #e9ecef !important;
+}
+
+/* Form input groups */
+#squarebox-overlay + div[class*="panel"] .relative {
+  position: relative !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .relative input {
+  padding-left: 40px !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .relative .absolute {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #6b7280 !important;
+  pointer-events: none !important;
+}
+
+/* Enhanced button styling for login/register */
+#squarebox-overlay + div[class*="panel"] button[type="submit"] {
+  background: linear-gradient(135deg, #93b353 0%, #7a9646 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease-in-out !important;
+  box-shadow: 0 4px 15px rgba(147, 179, 83, 0.3) !important;
+  cursor: pointer !important;
+}
+
+#squarebox-overlay + div[class*="panel"] button[type="submit"]:hover {
+  background: linear-gradient(135deg, #7a9646 0%, #6a8540 100%) !important;
+  box-shadow: 0 8px 25px rgba(147, 179, 83, 0.4) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Secondary button styling */
+#squarebox-overlay + div[class*="panel"] a[href*="registration"],
+#squarebox-overlay + div[class*="panel"] a[href*="login"] {
+  background: white !important;
+  border: 2px solid #93b353 !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  color: #93b353 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease-in-out !important;
+  display: inline-block !important;
+}
+
+#squarebox-overlay + div[class*="panel"] a[href*="registration"]:hover,
+#squarebox-overlay + div[class*="panel"] a[href*="login"]:hover {
+  background: #93b353 !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(147, 179, 83, 0.3) !important;
+}
+
+/* Enhanced links styling */
+#squarebox-overlay + div[class*="panel"] a {
+  color: #93b353 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease-in-out !important;
+}
+
+#squarebox-overlay + div[class*="panel"] a:hover {
+  color: #7a9646 !important;
+  text-decoration: underline !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #squarebox-overlay + div[class*="panel"] {
+    max-width: 95vw !important;
+    margin: 20px !important;
+    border-radius: 12px !important;
+  }
+
+  #squarebox-overlay + div[class*="panel"] .padded {
+    padding: 16px !important;
+  }
+
+  a.squarebox-primary-close-link {
+    right: 12px !important;
+    top: 12px !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 16px !important;
+  }
+
+  /* Mobile form adjustments */
+  #squarebox-overlay + div[class*="panel"] form {
+    padding: 16px !important;
+  }
+
+  #squarebox-overlay + div[class*="panel"] .flex {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  #squarebox-overlay + div[class*="panel"] .flex > * {
+    width: 100% !important;
+  }
+}
+
+/* Smooth scrollbar for popup content */
+#squarebox-overlay + div[class*="panel"]::-webkit-scrollbar {
+  width: 8px;
+}
+
+#squarebox-overlay + div[class*="panel"]::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+#squarebox-overlay + div[class*="panel"]::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+#squarebox-overlay + div[class*="panel"]::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Enhanced separators */
+#squarebox-overlay + div[class*="panel"] .separator-line {
+  border-top: 1px solid #e9ecef !important;
+  margin: 20px 0 !important;
+}
+
+/* Modern badge styling */
+#squarebox-overlay + div[class*="panel"] .badge {
+  background: linear-gradient(135deg, #93b353 0%, #7a9646 100%) !important;
+  color: white !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Enhanced login/register section styling */
+#squarebox-overlay + div[class*="panel"] .gray p {
+  background: #f8f9fa !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  margin: 12px 0 !important;
+  border-left: 4px solid #93b353 !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .gray a {
+  color: #93b353 !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease-in-out !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .gray a:hover {
+  color: #7a9646 !important;
+  text-decoration: underline !important;
+}
+
+/* Enhanced form layout for login/register */
+#squarebox-overlay + div[class*="panel"] .flex.flex-col {
+  gap: 16px !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .flex.flex-col > * {
+  margin: 0 !important;
+}
+
+/* Enhanced input placeholder styling */
+#squarebox-overlay + div[class*="panel"] input::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* Enhanced focus states for better accessibility */
+#squarebox-overlay + div[class*="panel"] button:focus,
+#squarebox-overlay + div[class*="panel"] a:focus {
+  outline: 2px solid #93b353 !important;
+  outline-offset: 2px !important;
+}
+
+/* Enhanced form validation styling */
+#squarebox-overlay + div[class*="panel"] input:invalid {
+  border-color: #ef4444 !important;
+}
+
+#squarebox-overlay + div[class*="panel"] input:valid {
+  border-color: #10b981 !important;
+}
+
+/* Enhanced button group styling */
+#squarebox-overlay + div[class*="panel"] .flex.gap-2 {
+  gap: 8px !important;
+}
+
+#squarebox-overlay + div[class*="panel"] .flex.gap-2 > * {
+  flex: 1 !important;
+  text-align: center !important;
+}
+
+/* Enhanced text styling for better readability */
+#squarebox-overlay + div[class*="panel"] p {
+  line-height: 1.6 !important;
+  margin-bottom: 12px !important;
+}
+
+#squarebox-overlay + div[class*="panel"] p:last-child {
+  margin-bottom: 0 !important;
+}
